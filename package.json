@@ -1,0 +1,31 @@
+{
+  "name": "cryptian",
+  "version": "0.0.1",
+  "description": "Crypto suite",
+  "main": "index-back.js",
+  "scripts": {
+    "test": "mocha --recursive"
+  },
+  "keywords": [
+    "crypto",
+    "mcrypt"
+  ],
+  "author": "Tugrul Topuz <tugrultopuz@gmail.com>",
+  "bugs": {
+    "url": "https://github.com/tugrul/cryptian/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tugrul/cryptian.git"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "bindings": "^1.3.0",
+    "nan": "^2.10.0"
+  },
+
+  "devDependencies": {
+    "mocha": "^5.1.1"
+  },
+  "gypfile": true
+}
