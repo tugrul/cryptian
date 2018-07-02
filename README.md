@@ -1,7 +1,5 @@
 
-<aside class="notice">
-Repository state is experimental and releases are no ready to use in production
-</aside>
+__Repository state is experimental and releases are no ready to use in production__
 
 # cryptian
 
