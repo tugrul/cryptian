@@ -107,6 +107,13 @@ protected:
 
         return info.GetReturnValue().Set(Nan::New<Boolean>(container->mode->isPaddingRequired()));
     }
+    
+    static NAN_METHOD(GetBlockSize) {
+
+        Mode<T>* container = ObjectWrap::Unwrap<Mode<T>>(info.This());
+
+        return info.GetReturnValue().Set(Nan::New<Number>(container->mode->getBlockSize()));
+    }
 
 public:
 
@@ -118,6 +125,7 @@ public:
 
         Nan::SetPrototypeMethod(tpl, "transform", Transform);
         Nan::SetPrototypeMethod(tpl, "isPaddingRequired", IsPaddingRequired);
+        Nan::SetPrototypeMethod(tpl, "getBlockSize", GetBlockSize);
 
         constructor.Reset(tpl->GetFunction());
 

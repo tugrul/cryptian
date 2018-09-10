@@ -23,6 +23,16 @@ describe('cbc', () => {
 
     it('should throw padding exception', () => {
 
+        describe('cipher getBlockSize', () => {
+            const cipher = new mode.cbc.Cipher(dummy, iv);
+            assert.equal(cipher.getBlockSize(), dummy.getBlockSize(), 'cipher.getBlockSize() should equal algorithm.getBlockSize()');
+        });
+    
+        describe('decipher getBlockSize', () => {
+            const decipher = new mode.cbc.Decipher(dummy, iv);
+            assert.equal(decipher.getBlockSize(), dummy.getBlockSize(), 'decipher.getBlockSize() should equal algorithm.getBlockSize()');
+        });
+    
         describe('cipher transform using 5 bytes', () => {
             const cipher = new mode.cbc.Cipher(dummy, iv);
 

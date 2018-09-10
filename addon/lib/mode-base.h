@@ -24,6 +24,10 @@ public:
         _register = iv;
     }
 
+    std::size_t getBlockSize() {
+        return _algorithm->getBlockSize();
+    }
+
     bool isSizeValid(size_t size) {
 
         const std::size_t blockSize = _algorithm->getBlockSize();

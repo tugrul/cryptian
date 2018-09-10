@@ -24,6 +24,16 @@ describe('ncfb', () => {
 
     it('should do cipher and decipher operations', () => {
 
+        describe('cipher getBlockSize', () => {
+            const cipher = new mode.ncfb.Cipher(dummy, iv);
+            assert.equal(cipher.getBlockSize(), dummy.getBlockSize(), 'cipher.getBlockSize() should equal algorithm.getBlockSize()');
+        });
+    
+        describe('decipher getBlockSize', () => {
+            const decipher = new mode.ncfb.Decipher(dummy, iv);
+            assert.equal(decipher.getBlockSize(), dummy.getBlockSize(), 'decipher.getBlockSize() should equal algorithm.getBlockSize()');
+        });
+    
         describe('cipher undivided', () => {
             const cipher = new mode.ncfb.Cipher(dummy, iv);
 
