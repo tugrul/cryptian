@@ -9,9 +9,9 @@
 
 #define EXPORT_MODE(name) v8::Local<v8::Object> name = Nan::New<v8::Object>();\
     name->Set(Nan::New("Cipher").ToLocalChecked(), \
-    cryptian::Mode<cryptian::mode::name::Cipher>::getFunctionTemplate("Cipher")->GetFunction()); \
+    cryptian::Mode<cryptian::mode::name::Cipher>::getFunctionTemplate("Cipher", modeBase)->GetFunction()); \
     name->Set(Nan::New("Decipher").ToLocalChecked(), \
-    cryptian::Mode<cryptian::mode::name::Decipher>::getFunctionTemplate("Decipher")->GetFunction()); \
+    cryptian::Mode<cryptian::mode::name::Decipher>::getFunctionTemplate("Decipher", modeBase)->GetFunction()); \
     mode->Set(Nan::New(#name).ToLocalChecked(), name);
 
 template <typename T>
@@ -22,6 +22,9 @@ Nan::Persistent<Function> cryptian::AlgorithmBase<T>::constructor;
 
 template <typename T>
 Nan::Persistent<Function> cryptian::Mode<T>::constructor;
+
+
+Nan::Persistent<Function> cryptian::ModeBase::constructor;
 
 
 static void Init(v8::Handle<v8::Object> exports) {
@@ -37,6 +40,9 @@ static void Init(v8::Handle<v8::Object> exports) {
     v8::Local<v8::FunctionTemplate> algorithmStream =
         cryptian::AlgorithmBase<cryptian::algorithm::AlgorithmStream>::getFunctionTemplate("AlgorithmStream");
 
+    v8::Local<v8::FunctionTemplate> modeBase =
+        cryptian::ModeBase::getFunctionTemplate();
+        
 
     EXPORT_ALGORITHM_BLOCK(Blowfish)
     EXPORT_ALGORITHM_BLOCK(Cast128)
@@ -73,6 +79,8 @@ static void Init(v8::Handle<v8::Object> exports) {
 
     exports->Set(Nan::New("AlgorithmBlock").ToLocalChecked(), algorithmBlock->GetFunction());
     exports->Set(Nan::New("AlgorithmStream").ToLocalChecked(), algorithmStream->GetFunction());
+    
+    exports->Set(Nan::New("Mode").ToLocalChecked(), modeBase->GetFunction());
 }
 
 NODE_MODULE(cryptian, Init)

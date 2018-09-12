@@ -10,6 +10,28 @@ using namespace v8;
 
 namespace cryptian {
 
+class ModeBase: public node::ObjectWrap {
+protected:
+    static Nan::Persistent<Function> constructor;
+
+    static NAN_METHOD(New) {
+        Nan::ThrowTypeError("Invalid usage. This method is abstract.");
+        return info.GetReturnValue().Set(Nan::Undefined());
+    }
+    
+public:
+    static Handle<FunctionTemplate> getFunctionTemplate() {
+
+        Local<FunctionTemplate> tpl = Nan::New<FunctionTemplate>(New);
+        tpl->SetClassName(Nan::New("Mode").ToLocalChecked());
+
+        constructor.Reset(tpl->GetFunction());
+
+        return tpl;
+    }
+
+};
+
 template <typename T>
 class Mode: public node::ObjectWrap {
 protected:
@@ -117,11 +139,12 @@ protected:
 
 public:
 
-    static Handle<FunctionTemplate> getFunctionTemplate(std::string className) {
+    static Handle<FunctionTemplate> getFunctionTemplate(std::string className, Local<FunctionTemplate> parent) {
 
         Local<FunctionTemplate> tpl = Nan::New<FunctionTemplate>(New);
         tpl->SetClassName(Nan::New(className).ToLocalChecked());
         tpl->InstanceTemplate()->SetInternalFieldCount(1);
+        tpl->Inherit(parent);
 
         Nan::SetPrototypeMethod(tpl, "transform", Transform);
         Nan::SetPrototypeMethod(tpl, "isPaddingRequired", IsPaddingRequired);
