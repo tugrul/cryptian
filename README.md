@@ -3,7 +3,7 @@ __Repository state is experimental and releases are no ready to use in productio
 
 # cryptian
 
-Modern crypto wrapper for Node.js
+Modern MCrypt compatible crypto wrapper for Node.js
 
 ## install
 
