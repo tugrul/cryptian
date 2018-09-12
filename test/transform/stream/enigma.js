@@ -1,7 +1,7 @@
 
 const {algorithm, 
     createEncryptStream, 
-    createDecryptStream} = require('../..');
+    createDecryptStream} = require('../../..');
 
 const assert = require('assert');
 

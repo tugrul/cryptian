@@ -15,8 +15,6 @@ const padding = cryptian.padding = {
 const block = require('./lib/transform/block.js');
 const stream = require('./lib/transform/stream.js');
 
-const Padding = require('./lib/padding.js');
-
 const {prepareStream} = require('./lib/stream.js');
 
 cryptian.createEncryptStream = prepareStream(cryptian, stream.StreamEncrypt, block.BlockEncrypt);
