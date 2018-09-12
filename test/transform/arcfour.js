@@ -48,7 +48,7 @@ describe('arcfour transform', () => {
             const arcfour = new algorithm.Arcfour();
             arcfour.setKey(key);
 
-            const transform = createDecryptStream(arcfour)
+            const transform = createDecryptStream(arcfour);
             const buffer = transform.pipe(new streamBuffers.WritableStreamBuffer());
             
             buffer.on('finish', () => {
