@@ -1,4 +1,5 @@
 
+
 const {algorithm, mode, padding,
     createEncryptStream, 
     createDecryptStream} = require('../../../..');
@@ -8,7 +9,7 @@ const assert = require('assert');
 
 const streamBuffers = require('stream-buffers');
 
-describe('blowfish transform cbc mode', () => {
+describe('blowfish transform ecb mode', () => {
 
     it('should be constructor', () => {
         assert(typeof algorithm.Blowfish === 'function', 'there is no constructor');
@@ -22,55 +23,55 @@ describe('blowfish transform cbc mode', () => {
     }
 
     const plaintext = new Buffer(
-        'd7944f4102aced25534ed06b413cc5763fc53199fd6ff2fcc2' +
-        '5d7d7c476d0257aca394c1693645f85f84ce8a238fb3955372', 'hex');
+        'efe4100ebd0f60807a6f194b46c1b179a5900eee31bd629538' +
+        'b1b53c7ce2e63c27b6ffcbc15f440cc39f10df097bbfced422', 'hex');
 
-    const iv = new Buffer('e3343cad08296fdc', 'hex');
+    const iv = new Buffer('33f90a870be427b5', 'hex');
 
     describe('standard', () => {
 
         const fixture = [
             {
                 title: 'null padding',
-                ciphertext: '8c0585fe8fd31056b6984bfbb0c9154b4305c38302f5e12716a9e042' +
-                            'd7b75f21e1f5963d0eb649dd32f29e0e1e21981bfe75f97bfb50f6a6',
+                ciphertext: '7f0c90b0291a3e73b6612fbd555335feff113aa922dafab1b137039b' + 
+                            '1d9cdd500d98d57714dd0c257556db074867ef64b11d4e9ee82778a1',
                 padding: padding.Null
             },
             {
                 title: 'space padding',
-                ciphertext: '8c0585fe8fd31056b6984bfbb0c9154b4305c38302f5e12716a9e042' +
-                            'd7b75f21e1f5963d0eb649dd32f29e0e1e21981b843c91843b1ccd78',
+                ciphertext: '7f0c90b0291a3e73b6612fbd555335feff113aa922dafab1b137039b' + 
+                            '1d9cdd500d98d57714dd0c257556db074867ef6407c7ef92c545dee1',
                 padding: padding.Space
             },
             {
                 title: 'ansi-x923 padding',
-                ciphertext: '8c0585fe8fd31056b6984bfbb0c9154b4305c38302f5e12716a9e042' +
-                            'd7b75f21e1f5963d0eb649dd32f29e0e1e21981b6e7011f7da6993e7',
+                ciphertext: '7f0c90b0291a3e73b6612fbd555335feff113aa922dafab1b137039b' +
+                            '1d9cdd500d98d57714dd0c257556db074867ef64bea9594e63bd1692',
                 padding: padding.AnsiX923
             },
             {
                 title: 'iso-10126 padding',
-                ciphertext: '8c0585fe8fd31056b6984bfbb0c9154b4305c38302f5e12716a9e042' +
-                            'd7b75f21e1f5963d0eb649dd32f29e0e1e21981b2dbce6ffdc88a3ff',
+                ciphertext: '7f0c90b0291a3e73b6612fbd555335feff113aa922dafab1b137039b' +
+                            '1d9cdd500d98d57714dd0c257556db074867ef64bea9594e63bd1692',
                 padding: padding.Iso10126,
                 skipEncrypt: true // because there are random bytes in padding and not match
             },
             {
                 title: 'iso-7816 padding',
-                ciphertext: '8c0585fe8fd31056b6984bfbb0c9154b4305c38302f5e12716a9e042' +
-                            'd7b75f21e1f5963d0eb649dd32f29e0e1e21981b26823608487f6570',
+                ciphertext: '7f0c90b0291a3e73b6612fbd555335feff113aa922dafab1b137039b' +
+                            '1d9cdd500d98d57714dd0c257556db074867ef642eafc3ed9cac7433',
                 padding: padding.Iso7816
             },
             {
                 title: 'PKCS5 padding',
-                ciphertext: '8c0585fe8fd31056b6984bfbb0c9154b4305c38302f5e12716a9e042' +
-                            'd7b75f21e1f5963d0eb649dd32f29e0e1e21981b242cf115f4258982',
+                ciphertext: '7f0c90b0291a3e73b6612fbd555335feff113aa922dafab1b137039b' +
+                            '1d9cdd500d98d57714dd0c257556db074867ef6483f1614e930d6d7c',
                 padding: padding.Pkcs5
             },
             {
                 title: 'PKCS7 padding',
-                ciphertext: '8c0585fe8fd31056b6984bfbb0c9154b4305c38302f5e12716a9e042' +
-                            'd7b75f21e1f5963d0eb649dd32f29e0e1e21981b242cf115f4258982',
+                ciphertext: '7f0c90b0291a3e73b6612fbd555335feff113aa922dafab1b137039b' +
+                            '1d9cdd500d98d57714dd0c257556db074867ef6483f1614e930d6d7c',
                 padding: padding.Pkcs7
             }
         ];
@@ -92,7 +93,7 @@ describe('blowfish transform cbc mode', () => {
                         const blowfish = new algorithm.Blowfish();
                         blowfish.setKey(key);
 
-                        const cipher = new mode.cbc.Cipher(blowfish, iv);
+                        const cipher = new mode.ecb.Cipher(blowfish, iv);
 
                         const transform = createEncryptStream(cipher, target.padding);
                         const buffer = transform.pipe(new streamBuffers.WritableStreamBuffer());
@@ -112,7 +113,7 @@ describe('blowfish transform cbc mode', () => {
                         const blowfish = new algorithm.Blowfish();
                         blowfish.setKey(key);
                         
-                        const decipher = new mode.cbc.Decipher(blowfish, iv);
+                        const decipher = new mode.ecb.Decipher(blowfish, iv);
 
                         const transform = createDecryptStream(decipher, target.padding);
                         const buffer = transform.pipe(new streamBuffers.WritableStreamBuffer());
@@ -133,60 +134,60 @@ describe('blowfish transform cbc mode', () => {
 
         });
 
+        
 
     });
-
+    
     describe('endian compat', () => {
 
         const fixture = [
             {
                 title: 'null padding',
-                ciphertext: '0c7149f6ac781f51c6822d8b166c83530664cdb709b29017d7293dc7' +
-                            '02ff763b6868cedc16095bab971ad332a96c9a497d5e67c0b16cd79c',
+                ciphertext: '7ed9a84617bc54ca794f1b82af52c3b1c8dbad129c83dcf35fd36f4c' +
+                            '6352a104bde2d1902cf9580e94485b53567307db76fa0289fc07f0e1',
                 padding: padding.Null
             },
             {
                 title: 'space padding',
-                ciphertext: '0c7149f6ac781f51c6822d8b166c83530664cdb709b29017d7293dc7' +
-                            '02ff763b6868cedc16095bab971ad332a96c9a4921abe1ac9a150f82',
+                ciphertext: '7ed9a84617bc54ca794f1b82af52c3b1c8dbad129c83dcf35fd36f4c' + 
+                            '6352a104bde2d1902cf9580e94485b53567307dbfcebb595dd6deeda',
                 padding: padding.Space
             },
             {
                 title: 'ansi-x923 padding',
-                ciphertext: '0c7149f6ac781f51c6822d8b166c83530664cdb709b29017d7293dc7' +
-                            '02ff763b6868cedc16095bab971ad332a96c9a497127a9424cda3966',
+                ciphertext: '7ed9a84617bc54ca794f1b82af52c3b1c8dbad129c83dcf35fd36f4c' +
+                            '6352a104bde2d1902cf9580e94485b53567307db2eb48b604e7655df',
                 padding: padding.AnsiX923
             },
             {
                 title: 'iso-10126 padding',
-                ciphertext: '0c7149f6ac781f51c6822d8b166c83530664cdb709b29017d7293dc7' +
-                            '02ff763b6868cedc16095bab971ad332a96c9a4915ba9f8fe3597c40',
+                ciphertext: '7ed9a84617bc54ca794f1b82af52c3b1c8dbad129c83dcf35fd36f4c' +
+                            '6352a104bde2d1902cf9580e94485b53567307db34f4a375e0d5b7bf',
                 padding: padding.Iso10126,
                 skipEncrypt: true // because there are random bytes in padding and not match
             },
             {
                 title: 'iso-7816 padding',
-                ciphertext: '0c7149f6ac781f51c6822d8b166c83530664cdb709b29017d7293dc7' +
-                            '02ff763b6868cedc16095bab971ad332a96c9a499bc059429102d631',
+                ciphertext: '7ed9a84617bc54ca794f1b82af52c3b1c8dbad129c83dcf35fd36f4c' +
+                            '6352a104bde2d1902cf9580e94485b53567307dbd36c5d83802eac2f',
                 padding: padding.Iso7816
             },
             {
                 title: 'PKCS5 padding',
-                ciphertext: '0c7149f6ac781f51c6822d8b166c83530664cdb709b29017d7293dc7' +
-                            '02ff763b6868cedc16095bab971ad332a96c9a493ec89ae20d96aa44',
+                ciphertext: '7ed9a84617bc54ca794f1b82af52c3b1c8dbad129c83dcf35fd36f4c' + 
+                            '6352a104bde2d1902cf9580e94485b53567307db67a812695b3b4faa',
                 padding: padding.Pkcs5
             },
             {
                 title: 'PKCS7 padding',
-                ciphertext: '0c7149f6ac781f51c6822d8b166c83530664cdb709b29017d7293dc7' +
-                            '02ff763b6868cedc16095bab971ad332a96c9a493ec89ae20d96aa44',
+                ciphertext: '7ed9a84617bc54ca794f1b82af52c3b1c8dbad129c83dcf35fd36f4c' +
+                            '6352a104bde2d1902cf9580e94485b53567307db67a812695b3b4faa',
                 padding: padding.Pkcs7
             }
         ];
     
         fixture.forEach(target => {
 
-        
             describe(target.title, () => {
     
                 const ciphertext = new Buffer(target.ciphertext, 'hex');
@@ -200,10 +201,10 @@ describe('blowfish transform cbc mode', () => {
                         }
                     
                         const blowfish = new algorithm.Blowfish();
-                        blowfish.setKey(key);
                         blowfish.setEndianCompat(true);
+                        blowfish.setKey(key);
 
-                        const cipher = new mode.cbc.Cipher(blowfish, iv);
+                        const cipher = new mode.ecb.Cipher(blowfish, iv);
 
                         const transform = createEncryptStream(cipher, target.padding);
                         const buffer = transform.pipe(new streamBuffers.WritableStreamBuffer());
@@ -221,10 +222,10 @@ describe('blowfish transform cbc mode', () => {
                     describe('decrypt', () => {
 
                         const blowfish = new algorithm.Blowfish();
-                        blowfish.setKey(key);
                         blowfish.setEndianCompat(true);
+                        blowfish.setKey(key);
                         
-                        const decipher = new mode.cbc.Decipher(blowfish, iv);
+                        const decipher = new mode.ecb.Decipher(blowfish, iv);
 
                         const transform = createDecryptStream(decipher, target.padding);
                         const buffer = transform.pipe(new streamBuffers.WritableStreamBuffer());
@@ -245,9 +246,11 @@ describe('blowfish transform cbc mode', () => {
 
         });
 
+  
 
     });
-    
+
 
 });
+
 
