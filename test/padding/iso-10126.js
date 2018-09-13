@@ -2,7 +2,6 @@
 
 const {padding} = require('../..');
 const assert = require('assert');
-const crypto = require('crypto');
 
 describe('iso-10126', () => {
 
