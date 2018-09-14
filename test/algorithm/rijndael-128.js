@@ -9,31 +9,31 @@ describe('rijndael-128', () => {
     });
 
 
-    const key = new Buffer(16);
-    key.fill(0);
+    const key = Buffer.alloc(16, 0); 
     key[0] = 1;
 
-
     // ciphertext & plaintext from mcrypt test rule
-    const ciphertext = new Buffer('5352e43763eec1a8502433d6d520b1f0', 'hex');
-    const plaintext  = new Buffer('000102030405060708090a0b0c0d0e0f', 'hex');
+    const ciphertext = Buffer.from('5352e43763eec1a8502433d6d520b1f0', 'hex');
+    const plaintext  = Buffer.from('000102030405060708090a0b0c0d0e0f', 'hex');
 
 
-    it('should do encrypt and decrypt operations', () => {
+    it('should encrypt', () => {
 
-        describe('encrypt', () => {
-            const rijndael = new algorithm.Rijndael128();
-            rijndael.setKey(key);
+        const rijndael = new algorithm.Rijndael128();
 
-            assert(ciphertext.equals(rijndael.encrypt(plaintext)), 'encrypted plaintext should be equal to ciphertext');
-        });
+        rijndael.setKey(key);
 
-        describe('decrypt', () => {
-            const rijndael = new algorithm.Rijndael128();
-            rijndael.setKey(key);
+        assert(ciphertext.equals(rijndael.encrypt(plaintext)), 'encrypted plaintext should equal to ciphertext');
 
-            assert(plaintext.equals(rijndael.decrypt(ciphertext)), 'decrypted ciphertext should be equal to plaintext');
-        });
+    });
+    
+    it('should decrypt', () => {
+
+        const rijndael = new algorithm.Rijndael128();
+
+        rijndael.setKey(key);
+
+        assert(plaintext.equals(rijndael.decrypt(ciphertext)), 'decrypted ciphertext should equal to plaintext');
 
     });
 

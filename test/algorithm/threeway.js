@@ -9,32 +9,34 @@ describe('threeway', () => {
     });
 
 
-    const key = new Buffer(12);
+    const key = Buffer.alloc(12, 0);
 
     for (let i = 0; i < 12; i++) {
         key[i] = ((i * 2 + 10) % 256);
     }
 
     // ciphertext & plaintext from mcrypt test rule
-    const ciphertext = new Buffer('46823287358d68f6e034ca62', 'hex');
-    const plaintext  = new Buffer('000102030405060708090a0b', 'hex');
+    const ciphertext = Buffer.from('46823287358d68f6e034ca62', 'hex');
+    const plaintext  = Buffer.from('000102030405060708090a0b', 'hex');
 
 
-    it('should do encrypt and decrypt operations', () => {
+    it('should encrypt', () => {
 
-        describe('encrypt', () => {
-            const threeway = new algorithm.Threeway();
-            threeway.setKey(key);
+        const threeway = new algorithm.Threeway();
 
-            assert(ciphertext.equals(threeway.encrypt(plaintext)), 'encrypted plaintext should be equal to ciphertext');
-        });
+        threeway.setKey(key);
 
-        describe('decrypt', () => {
-            const threeway = new algorithm.Threeway();
-            threeway.setKey(key);
+        assert(ciphertext.equals(threeway.encrypt(plaintext)), 'encrypted plaintext should equal to ciphertext');
 
-            assert(plaintext.equals(threeway.decrypt(ciphertext)), 'decrypted ciphertext should be equal to plaintext');
-        });
+    });
+    
+    it('should decrypt', () => {
+
+        const threeway = new algorithm.Threeway();
+
+        threeway.setKey(key);
+
+        assert(plaintext.equals(threeway.decrypt(ciphertext)), 'decrypted ciphertext should equal to plaintext');
 
     });
 

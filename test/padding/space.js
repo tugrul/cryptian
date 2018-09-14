@@ -10,7 +10,6 @@ describe('space', () => {
         assert(typeof padding.Space === 'function', 'there is no Null constructor');
     });
 
-
     const fixture = [
         {size: 1, unpadded: 'd1',               padded: 'd120202020202020'},
         {size: 2, unpadded: '7c7b',             padded: '7c7b202020202020'},
@@ -22,15 +21,15 @@ describe('space', () => {
         {size: 8, unpadded: 'd91f5fd905527420', padded: 'd91f5fd9055274202020202020202020'}
     ];
 
-    it('should done padding operation', () => {
+    describe('padding', () => {
 
         fixture.forEach(sample => {
 
-            describe('pad ' + sample.size + ' bytes', () => {
+            it('should pad ' + sample.size + ' bytes', () => {
 
                 const padder = new padding.Space(8);
-                const padded = new Buffer(sample.padded, 'hex');
-                const unpadded = new Buffer(sample.unpadded, 'hex');
+                const padded = Buffer.from(sample.padded, 'hex');
+                const unpadded = Buffer.from(sample.unpadded, 'hex');
 
                 assert(padded.equals(padder.pad(unpadded)));
             });
@@ -40,15 +39,15 @@ describe('space', () => {
     });
 
 
-    it('should done unpadding operation', () => {
+    describe('unpadding', () => {
 
         fixture.forEach(sample => {
 
-            describe('unpad ' + sample.size + ' bytes', () => {
+            it('should unpad ' + sample.size + ' bytes', () => {
 
                 const padder = new padding.Space(8);
-                const padded = new Buffer(sample.padded, 'hex');
-                const unpadded = new Buffer(sample.unpadded, 'hex');
+                const padded = Buffer.from(sample.padded, 'hex');
+                const unpadded = Buffer.from(sample.unpadded, 'hex');
 
                 assert(unpadded.equals(padder.unpad(padded)));
             });

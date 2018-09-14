@@ -16,17 +16,17 @@ describe('blowfish transform ecb mode', () => {
     });
 
 
-    const key = new Buffer(56);
+    const key = Buffer.alloc(56, 0);
 
     for (let i = 0; i < 56; i++) {
         key[i] = ((i * 2 + 10) % 256);
     }
 
-    const plaintext = new Buffer(
+    const plaintext = Buffer.from(
         'efe4100ebd0f60807a6f194b46c1b179a5900eee31bd629538' +
         'b1b53c7ce2e63c27b6ffcbc15f440cc39f10df097bbfced422', 'hex');
 
-    const iv = new Buffer('33f90a870be427b5', 'hex');
+    const iv = Buffer.from('33f90a870be427b5', 'hex');
 
     describe('standard', () => {
 
@@ -80,55 +80,52 @@ describe('blowfish transform ecb mode', () => {
 
             describe(target.title, () => {
     
-                const ciphertext = new Buffer(target.ciphertext, 'hex');
+                const ciphertext = Buffer.from(target.ciphertext, 'hex');
 
-                it('should do encrypt and decrypt operations', () => {
+                it('should encrypt', () => {
+                
+                    if (target.skipEncrypt) {
+                        return;
+                    }
+                
+                    const blowfish = new algorithm.Blowfish();
+                    blowfish.setKey(key);
 
-                    describe('encrypt', () => {
-                    
-                        if (target.skipEncrypt) {
-                            return;
-                        }
-                    
-                        const blowfish = new algorithm.Blowfish();
-                        blowfish.setKey(key);
+                    const cipher = new mode.ecb.Cipher(blowfish, iv);
 
-                        const cipher = new mode.ecb.Cipher(blowfish, iv);
+                    const transform = createEncryptStream(cipher, target.padding);
+                    const buffer = transform.pipe(new streamBuffers.WritableStreamBuffer());
 
-                        const transform = createEncryptStream(cipher, target.padding);
-                        const buffer = transform.pipe(new streamBuffers.WritableStreamBuffer());
-
-                        buffer.on('finish', () => {
-                            assert(ciphertext.equals(buffer.getContents()), 'encrypted plaintext should be equal to ciphertext');
-                        });
-
-                        transform.write(plaintext.slice(0, 22));
-                        transform.write(plaintext.slice(22, 39));
-                        transform.end(plaintext.slice(39));
-                        
+                    buffer.on('finish', () => {
+                        assert(ciphertext.equals(buffer.getContents()), 'encrypted plaintext should be equal to ciphertext');
                     });
 
-                    describe('decrypt', () => {
-
-                        const blowfish = new algorithm.Blowfish();
-                        blowfish.setKey(key);
-                        
-                        const decipher = new mode.ecb.Decipher(blowfish, iv);
-
-                        const transform = createDecryptStream(decipher, target.padding);
-                        const buffer = transform.pipe(new streamBuffers.WritableStreamBuffer());
-
-                        buffer.on('finish', () => {
-                            assert(plaintext.equals(buffer.getContents()), 'decrypted ciphertext should be equal to plaintext');
-                        });
-
-                        transform.write(ciphertext.slice(0, 27));
-                        transform.write(ciphertext.slice(27, 42));
-                        transform.end(ciphertext.slice(42));
-                        
-                    });
-
+                    transform.write(plaintext.slice(0, 22));
+                    transform.write(plaintext.slice(22, 39));
+                    transform.end(plaintext.slice(39));
+                    
                 });
+
+                it('should decrypt', () => {
+
+                    const blowfish = new algorithm.Blowfish();
+                    blowfish.setKey(key);
+                    
+                    const decipher = new mode.ecb.Decipher(blowfish, iv);
+
+                    const transform = createDecryptStream(decipher, target.padding);
+                    const buffer = transform.pipe(new streamBuffers.WritableStreamBuffer());
+
+                    buffer.on('finish', () => {
+                        assert(plaintext.equals(buffer.getContents()), 'decrypted ciphertext should be equal to plaintext');
+                    });
+
+                    transform.write(ciphertext.slice(0, 27));
+                    transform.write(ciphertext.slice(27, 42));
+                    transform.end(ciphertext.slice(42));
+                    
+                });
+
             
             });
 
@@ -190,57 +187,54 @@ describe('blowfish transform ecb mode', () => {
 
             describe(target.title, () => {
     
-                const ciphertext = new Buffer(target.ciphertext, 'hex');
+                const ciphertext = Buffer.from(target.ciphertext, 'hex');
 
-                it('should do encrypt and decrypt operations', () => {
+                it('should encrypt', () => {
+                
+                    if (target.skipEncrypt) {
+                        return;
+                    }
+                
+                    const blowfish = new algorithm.Blowfish();
+                    blowfish.setEndianCompat(true);
+                    blowfish.setKey(key);
 
-                    describe('encrypt', () => {
-                    
-                        if (target.skipEncrypt) {
-                            return;
-                        }
-                    
-                        const blowfish = new algorithm.Blowfish();
-                        blowfish.setEndianCompat(true);
-                        blowfish.setKey(key);
+                    const cipher = new mode.ecb.Cipher(blowfish, iv);
 
-                        const cipher = new mode.ecb.Cipher(blowfish, iv);
+                    const transform = createEncryptStream(cipher, target.padding);
+                    const buffer = transform.pipe(new streamBuffers.WritableStreamBuffer());
 
-                        const transform = createEncryptStream(cipher, target.padding);
-                        const buffer = transform.pipe(new streamBuffers.WritableStreamBuffer());
-
-                        buffer.on('finish', () => {
-                            assert(ciphertext.equals(buffer.getContents()), 'encrypted plaintext should be equal to ciphertext');
-                        });
-
-                        transform.write(plaintext.slice(0, 22));
-                        transform.write(plaintext.slice(22, 39));
-                        transform.end(plaintext.slice(39));
-                        
+                    buffer.on('finish', () => {
+                        assert(ciphertext.equals(buffer.getContents()), 'encrypted plaintext should be equal to ciphertext');
                     });
 
-                    describe('decrypt', () => {
-
-                        const blowfish = new algorithm.Blowfish();
-                        blowfish.setEndianCompat(true);
-                        blowfish.setKey(key);
-                        
-                        const decipher = new mode.ecb.Decipher(blowfish, iv);
-
-                        const transform = createDecryptStream(decipher, target.padding);
-                        const buffer = transform.pipe(new streamBuffers.WritableStreamBuffer());
-
-                        buffer.on('finish', () => {
-                            assert(plaintext.equals(buffer.getContents()), 'decrypted ciphertext should be equal to plaintext');
-                        });
-
-                        transform.write(ciphertext.slice(0, 27));
-                        transform.write(ciphertext.slice(27, 42));
-                        transform.end(ciphertext.slice(42));
-                        
-                    });
-
+                    transform.write(plaintext.slice(0, 22));
+                    transform.write(plaintext.slice(22, 39));
+                    transform.end(plaintext.slice(39));
+                    
                 });
+
+                it('should decrypt', () => {
+
+                    const blowfish = new algorithm.Blowfish();
+                    blowfish.setEndianCompat(true);
+                    blowfish.setKey(key);
+                    
+                    const decipher = new mode.ecb.Decipher(blowfish, iv);
+
+                    const transform = createDecryptStream(decipher, target.padding);
+                    const buffer = transform.pipe(new streamBuffers.WritableStreamBuffer());
+
+                    buffer.on('finish', () => {
+                        assert(plaintext.equals(buffer.getContents()), 'decrypted ciphertext should be equal to plaintext');
+                    });
+
+                    transform.write(ciphertext.slice(0, 27));
+                    transform.write(ciphertext.slice(27, 42));
+                    transform.end(ciphertext.slice(42));
+                    
+                });
+
             
             });
 

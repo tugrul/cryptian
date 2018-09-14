@@ -9,28 +9,31 @@ describe('enigma', () => {
     });
 
 
-    const key = new Buffer("enadyotr");
+    const key = Buffer.from('enadyotr', 'ascii');
 
     // ciphertext & plaintext from mcrypt test rule
-    const ciphertext = new Buffer('f3edda7da20f8975884600f014d32c7a08e59d7b', 'hex');
-    const plaintext  = new Buffer('000102030405060708090a0b0c0d0e0f10111213', 'hex');
+    const ciphertext = Buffer.from('f3edda7da20f8975884600f014d32c7a08e59d7b', 'hex');
+    const plaintext  = Buffer.from('000102030405060708090a0b0c0d0e0f10111213', 'hex');
 
 
-    it('should do encrypt and decrypt operations', () => {
+    it('should encrypt', () => {
 
-        describe('encrypt', () => {
-            const enigma = new algorithm.Enigma();
-            enigma.setKey(key);
+        const enigma = new algorithm.Enigma();
 
-            assert(ciphertext.equals(enigma.encrypt(plaintext)), 'encrypted plaintext should be equal to ciphertext');
-        });
+        enigma.setKey(key);
 
-        describe('decrypt', () => {
-            const enigma = new algorithm.Enigma();
-            enigma.setKey(key);
+        assert(ciphertext.equals(enigma.encrypt(plaintext)), 'encrypted plaintext should equal to ciphertext');
 
-            assert(plaintext.equals(enigma.decrypt(ciphertext)), 'decrypted ciphertext should be equal to plaintext');
-        });
+    });
+    
+    
+    it('should decrypt', () => {
+
+        const enigma = new algorithm.Enigma();
+        
+        enigma.setKey(key);
+
+        assert(plaintext.equals(enigma.decrypt(ciphertext)), 'decrypted ciphertext should equal to plaintext');
 
     });
 

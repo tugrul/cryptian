@@ -24,15 +24,15 @@ describe('pkcs7', () => {
             padded: 'f5ec378f5c625e1b782bff8301c7cbe510101010101010101010101010101010'}
     ];
 
-    it('should done padding operation', () => {
+    describe('padding', () => {
 
         fixture.forEach(sample => {
 
-            describe('blocksize ' + sample.blockSize + ' pad ' + sample.size + ' bytes', () => {
+            it('blocksize ' + sample.blockSize + ' pad ' + sample.size + ' bytes', () => {
 
                 const padder = new padding.Pkcs7(sample.blockSize);
-                const padded = new Buffer(sample.padded, 'hex');
-                const unpadded = new Buffer(sample.unpadded, 'hex');
+                const padded = Buffer.from(sample.padded, 'hex');
+                const unpadded = Buffer.from(sample.unpadded, 'hex');
 
                 assert(padded.equals(padder.pad(unpadded)));
             });
@@ -42,15 +42,15 @@ describe('pkcs7', () => {
     });
 
 
-    it('should done unpadding operation', () => {
+    describe('unpadding', () => {
 
         fixture.forEach(sample => {
 
-            describe('blocksize ' + sample.blockSize + ' unpad ' + sample.size + ' bytes', () => {
+            it('blocksize ' + sample.blockSize + ' unpad ' + sample.size + ' bytes', () => {
 
                 const padder = new padding.Pkcs7(sample.blockSize);
-                const padded = new Buffer(sample.padded, 'hex');
-                const unpadded = new Buffer(sample.unpadded, 'hex');
+                const padded = Buffer.from(sample.padded, 'hex');
+                const unpadded = Buffer.from(sample.unpadded, 'hex');
 
                 assert(unpadded.equals(padder.unpad(padded)));
             });

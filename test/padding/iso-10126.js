@@ -9,8 +9,6 @@ describe('iso-10126', () => {
         assert(typeof padding.Iso10126 === 'function', 'there is no Null constructor');
     });
 
-
-
     const fixture = [
         {size: 7, unpadded: 'd1',               padded: 'd19c6fa8024b6a07'},
         {size: 6, unpadded: '7c7b',             padded: '7c7bc1bb612aee06'},
@@ -22,15 +20,15 @@ describe('iso-10126', () => {
         {size: 8, unpadded: 'd91f5fd9055274ea', padded: 'd91f5fd9055274ea1ad227c97c515608'}
     ];
 
-    it('should done padding operation', () => {
+    describe('padding', () => {
 
         fixture.forEach(sample => {
 
-            describe('pad ' + sample.size + ' bytes', () => {
+            it('should pad ' + sample.size + ' bytes', () => {
 
                 const padder = new padding.Iso10126(8);
-                const padded = new Buffer(sample.padded, 'hex');
-                const unpadded = new Buffer(sample.unpadded, 'hex');
+                const padded = Buffer.from(sample.padded, 'hex');
+                const unpadded = Buffer.from(sample.unpadded, 'hex');
 
                 const target = padder.pad(unpadded);
 
@@ -42,15 +40,15 @@ describe('iso-10126', () => {
     });
 
 
-    it('should done unpadding operation', () => {
+    describe('unpadding', () => {
 
         fixture.forEach(sample => {
 
-            describe('unpad ' + sample.size + ' bytes', () => {
+            it('should unpad ' + sample.size + ' bytes', () => {
 
                 const padder = new padding.Iso10126(8);
-                const padded = new Buffer(sample.padded, 'hex');
-                const unpadded = new Buffer(sample.unpadded, 'hex');
+                const padded = Buffer.from(sample.padded, 'hex');
+                const unpadded = Buffer.from(sample.unpadded, 'hex');
 
                 assert(unpadded.equals(padder.unpad(padded)));
             });

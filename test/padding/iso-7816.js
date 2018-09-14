@@ -23,15 +23,15 @@ describe('iso-7816', () => {
         {size: 8, unpadded: 'd91f5fd905527480', padded: 'd91f5fd9055274808000000000000000'}
     ];
 
-    it('should done padding operation', () => {
+    describe('padding', () => {
 
         fixture.forEach(sample => {
 
-            describe('pad ' + sample.size + ' bytes', () => {
+            it('should pad ' + sample.size + ' bytes', () => {
 
                 const padder = new padding.Iso7816(8);
-                const padded = new Buffer(sample.padded, 'hex');
-                const unpadded = new Buffer(sample.unpadded, 'hex');
+                const padded = Buffer.from(sample.padded, 'hex');
+                const unpadded = Buffer.from(sample.unpadded, 'hex');
 
                 assert(padded.equals(padder.pad(unpadded)));
             });
@@ -41,15 +41,15 @@ describe('iso-7816', () => {
     });
 
 
-    it('should done unpadding operation', () => {
+    describe('unpadding', () => {
 
         fixture.forEach(sample => {
 
-            describe('unpad ' + sample.size + ' bytes', () => {
+            it('should unpad ' + sample.size + ' bytes', () => {
 
                 const padder = new padding.Iso7816(8);
-                const padded = new Buffer(sample.padded, 'hex');
-                const unpadded = new Buffer(sample.unpadded, 'hex');
+                const padded = Buffer.from(sample.padded, 'hex');
+                const unpadded = Buffer.from(sample.unpadded, 'hex');
 
                 assert(unpadded.equals(padder.unpad(padded)));
             });
