@@ -8,7 +8,7 @@ const assert = require('assert');
 
 const streamBuffers = require('stream-buffers');
 
-describe('blowfish transform ncfb mode', () => {
+describe('cast-128 transform ncfb mode', () => {
 
     it('should be constructor', () => {
         assert(typeof algorithm.Blowfish === 'function', 'there is no constructor');

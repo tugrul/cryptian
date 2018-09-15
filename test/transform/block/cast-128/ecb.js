@@ -26,9 +26,7 @@ describe('cast-128 transform ecb mode', () => {
         '4f4037c503026d0d20b3c4a61650b45b1b7ab43966dd4c52a7' +
         'e5658cf402002a02539664544516e5d7ce9a3c898079516de9', 'hex');
 
-    const iv = Buffer.from('7038a5ce93379c8b', 'hex');
-
-
+    const iv = Buffer.alloc(0);
 
     const fixture = [
         {

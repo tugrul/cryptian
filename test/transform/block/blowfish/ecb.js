@@ -26,7 +26,7 @@ describe('blowfish transform ecb mode', () => {
         'efe4100ebd0f60807a6f194b46c1b179a5900eee31bd629538' +
         'b1b53c7ce2e63c27b6ffcbc15f440cc39f10df097bbfced422', 'hex');
 
-    const iv = Buffer.from('33f90a870be427b5', 'hex');
+    const iv = Buffer.alloc(0);
 
     describe('standard', () => {
 

@@ -29,7 +29,6 @@ describe('cast-128 transform cbc mode', () => {
     const iv = Buffer.from('f1a3609bf97de038', 'hex');
 
 
-
     const fixture = [
         {
             title: 'null padding',
