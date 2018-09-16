@@ -8,11 +8,8 @@ const assert = require('assert');
 
 const streamBuffers = require('stream-buffers');
 
-describe('cast-256 transform ofb mode', () => {
-
-    it('should be constructor', () => {
-        assert(typeof algorithm.Blowfish === 'function', 'there is no constructor');
-    });
+(typeof algorithm.Cast256 === 'function' && typeof mode.ofb === 'object' ? describe : describe.skip)
+('cast-256 transform ofb mode', () => {
 
     const key = Buffer.alloc(32, 0);
 

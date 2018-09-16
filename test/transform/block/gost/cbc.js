@@ -11,12 +11,8 @@ const assert = require('assert');
 
 const streamBuffers = require('stream-buffers');
 
-describe('gost transform cbc mode', () => {
-
-    it('should be constructor', () => {
-        assert(typeof algorithm.Blowfish === 'function', 'there is no constructor');
-    });
-
+(typeof algorithm.Gost === 'function' && typeof mode.cbc === 'object' ? describe : describe.skip)
+('gost transform cbc mode', () => {
 
     const key = Buffer.alloc(32, 0);
 
@@ -84,11 +80,8 @@ describe('gost transform cbc mode', () => {
             const ciphertext = Buffer.from(target.ciphertext, 'hex');
 
 
-            it('should encrypt', () => {
-            
-                if (target.skipEncrypt) {
-                    return;
-                }
+            (target.skipEncrypt ? xit : it)
+            ('should encrypt', () => {
             
                 const gost = new algorithm.Gost();
                 gost.setKey(key);

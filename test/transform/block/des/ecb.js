@@ -9,12 +9,8 @@ const assert = require('assert');
 
 const streamBuffers = require('stream-buffers');
 
-describe('des transform ecb mode', () => {
-
-    it('should be constructor', () => {
-        assert(typeof algorithm.Blowfish === 'function', 'there is no constructor');
-    });
-
+(typeof algorithm.Des === 'function' && typeof mode.ecb === 'object' ? describe : describe.skip)
+('des transform ecb mode', () => {
 
     const key = Buffer.alloc(8, 0);
 
@@ -82,11 +78,8 @@ describe('des transform ecb mode', () => {
             const ciphertext = Buffer.from(target.ciphertext, 'hex');
 
 
-            it('should encrypt', () => {
-            
-                if (target.skipEncrypt) {
-                    return;
-                }
+            (target.skipEncrypt ? xit : it)
+            ('should encrypt', () => {
             
                 const des = new algorithm.Des();
                 des.setKey(key);

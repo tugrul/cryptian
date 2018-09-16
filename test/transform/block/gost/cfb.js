@@ -8,11 +8,8 @@ const assert = require('assert');
 
 const streamBuffers = require('stream-buffers');
 
-describe('gost transform cfb mode', () => {
-
-    it('should be constructor', () => {
-        assert(typeof algorithm.Blowfish === 'function', 'there is no constructor');
-    });
+(typeof algorithm.Gost === 'function' && typeof mode.cfb === 'object' ? describe : describe.skip)
+('gost transform cfb mode', () => {
 
     const key = Buffer.alloc(32, 0);
 
