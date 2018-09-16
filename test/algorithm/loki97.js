@@ -2,11 +2,8 @@
 const {algorithm} = require('../..');
 const assert = require('assert');
 
-describe('loki97', () => {
-
-    it('should be constructor', () => {
-        assert(typeof algorithm.Loki97 === 'function', 'there is no constructor');
-    });
+(typeof algorithm.Loki97 === 'function'? describe : describe.skip)
+('loki97', () => {
 
     const key = Buffer.alloc(32, 0);
 
@@ -16,6 +13,7 @@ describe('loki97', () => {
 
     // ciphertext & plaintext from mcrypt test rule
     const ciphertext = Buffer.from('8cb28c958024bae27a94c698f96f12a9', 'hex');
+
     const plaintext  = Buffer.from('000102030405060708090a0b0c0d0e0f', 'hex');
 
     it('should encrypt', () => {

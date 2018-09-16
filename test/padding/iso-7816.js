@@ -6,12 +6,6 @@ const crypto = require('crypto');
 
 describe('iso-7816', () => {
 
-    it('should be constructor', () => {
-        assert(typeof padding.Iso7816 === 'function', 'there is no Null constructor');
-    });
-
-
-
     const fixture = [
         {size: 1, unpadded: 'd1',               padded: 'd180000000000000'},
         {size: 2, unpadded: '7c7b',             padded: '7c7b800000000000'},

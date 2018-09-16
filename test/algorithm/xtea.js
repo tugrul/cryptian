@@ -2,11 +2,8 @@
 const {algorithm} = require('../..');
 const assert = require('assert');
 
-describe('xtea', () => {
-
-    it('should be constructor', () => {
-        assert(typeof algorithm.Xtea === 'function', 'there is no constructor');
-    });
+(typeof algorithm.Xtea === 'function'? describe : describe.skip)
+('xtea', () => {
 
     const key = Buffer.alloc(16, 0);
 
@@ -16,6 +13,7 @@ describe('xtea', () => {
 
     // ciphertext & plaintext from mcrypt test rule
     const ciphertext = Buffer.from('f61e7ff6da7cdb27', 'hex');
+
     const plaintext  = Buffer.from('0001020304050607', 'hex');
 
     it('should encrypt', () => {

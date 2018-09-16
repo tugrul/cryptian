@@ -5,10 +5,6 @@ const assert = require('assert');
 
 describe('iso-10126', () => {
 
-    it('should be constructor', () => {
-        assert(typeof padding.Iso10126 === 'function', 'there is no Null constructor');
-    });
-
     const fixture = [
         {size: 7, unpadded: 'd1',               padded: 'd19c6fa8024b6a07'},
         {size: 6, unpadded: '7c7b',             padded: '7c7bc1bb612aee06'},

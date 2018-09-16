@@ -6,10 +6,6 @@ const crypto = require('crypto');
 
 describe('space', () => {
 
-    it('should be constructor', () => {
-        assert(typeof padding.Space === 'function', 'there is no Null constructor');
-    });
-
     const fixture = [
         {size: 1, unpadded: 'd1',               padded: 'd120202020202020'},
         {size: 2, unpadded: '7c7b',             padded: '7c7b202020202020'},

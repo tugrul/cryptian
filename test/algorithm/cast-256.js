@@ -2,11 +2,8 @@
 const {algorithm} = require('../..');
 const assert = require('assert');
 
-describe('cast 256', () => {
-
-    it('should be constructor', () => {
-        assert(typeof algorithm.Cast256 === 'function', 'there is no constructor');
-    });
+(typeof algorithm.Cast256 === 'function'? describe : describe.skip)
+('cast 256', () => {
 
     const key = Buffer.alloc(32, 0);
 
@@ -16,6 +13,7 @@ describe('cast 256', () => {
 
     // ciphertext & plaintext from mcrypt test rule
     const ciphertext = Buffer.from('5db4dd765f1d3835615a14afcb5dc2f5', 'hex');
+
     const plaintext  = Buffer.from('000102030405060708090a0b0c0d0e0f', 'hex');
 
     it('should encrypt', () => {

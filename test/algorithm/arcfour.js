@@ -2,12 +2,8 @@
 const {algorithm} = require('../..');
 const assert = require('assert');
 
-describe('arcfour', () => {
-
-    it('should be constructor', () => {
-        assert(typeof algorithm.Arcfour === 'function', 'there is no constructor');
-    });
-
+(typeof algorithm.Arcfour === 'function'? describe : describe.skip)
+('arcfour', () => {
 
     const key = Buffer.alloc(256, 0);
 
@@ -17,6 +13,7 @@ describe('arcfour', () => {
 
     // ciphertext & plaintext from mcrypt test rule
     const ciphertext = Buffer.from('3abaa03a286e24c4196d292ab72934d6854c3eee', 'hex');
+
     const plaintext  = Buffer.from('000102030405060708090a0b0c0d0e0f10111213', 'hex');
 
 

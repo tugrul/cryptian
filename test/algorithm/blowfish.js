@@ -2,12 +2,8 @@
 const {algorithm} = require('../..');
 const assert = require('assert');
 
-describe('blowfish', () => {
-
-    it('should be constructor', () => {
-        assert(typeof algorithm.Blowfish === 'function', 'there is no constructor');
-    });
-
+(typeof algorithm.Blowfish === 'function'? describe : describe.skip)
+('blowfish', () => {
 
     const key = Buffer.alloc(56, 0);
 

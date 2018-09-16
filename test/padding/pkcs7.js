@@ -6,10 +6,6 @@ const crypto = require('crypto');
 
 describe('pkcs7', () => {
 
-    it('should be constructor', () => {
-        assert(typeof padding.Pkcs7 === 'function', 'there is no Pkcs5 constructor');
-    });
-
     const fixture = [
         {blockSize: 8, size: 1, unpadded: 'd1',               padded: 'd107070707070707'},
         {blockSize: 8, size: 2, unpadded: '7c7b',             padded: '7c7b060606060606'},

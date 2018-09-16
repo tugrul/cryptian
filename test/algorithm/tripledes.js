@@ -2,11 +2,8 @@
 const {algorithm} = require('../..');
 const assert = require('assert');
 
-describe('tripledes', () => {
-
-    it('should be constructor', () => {
-        assert(typeof algorithm.Tripledes === 'function', 'there is no constructor');
-    });
+(typeof algorithm.Tripledes === 'function'? describe : describe.skip)
+('tripledes', () => {
 
     const key = Buffer.alloc(24, 0);
 
@@ -16,6 +13,7 @@ describe('tripledes', () => {
 
     // ciphertext & plaintext from mcrypt test rule
     const ciphertext = Buffer.from('58ed248f77f6b19e', 'hex');
+
     const plaintext  = Buffer.from('0001020304050607', 'hex');
 
     it('should encrypt', () => {

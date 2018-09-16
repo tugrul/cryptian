@@ -2,11 +2,8 @@
 const {algorithm} = require('../..');
 const assert = require('assert');
 
-describe('threeway', () => {
-
-    it('should be constructor', () => {
-        assert(typeof algorithm.Threeway === 'function', 'there is no constructor');
-    });
+(typeof algorithm.Threeway === 'function'? describe : describe.skip)
+('threeway', () => {
 
 
     const key = Buffer.alloc(12, 0);
@@ -17,6 +14,7 @@ describe('threeway', () => {
 
     // ciphertext & plaintext from mcrypt test rule
     const ciphertext = Buffer.from('46823287358d68f6e034ca62', 'hex');
+
     const plaintext  = Buffer.from('000102030405060708090a0b', 'hex');
 
 

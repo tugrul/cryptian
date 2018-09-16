@@ -2,12 +2,8 @@
 const {algorithm} = require('../..');
 const assert = require('assert');
 
-describe('saferplus', () => {
-
-    it('should be constructor', () => {
-        assert(typeof algorithm.Saferplus === 'function', 'there is no constructor');
-    });
-
+(typeof algorithm.Saferplus === 'function'? describe : describe.skip)
+('saferplus', () => {
 
     const key = Buffer.alloc(32, 0);
 

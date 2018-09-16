@@ -6,10 +6,6 @@ const crypto = require('crypto');
 
 describe('pkcs5', () => {
 
-    it('should be constructor', () => {
-        assert(typeof padding.Pkcs5 === 'function', 'there is no Pkcs5 constructor');
-    });
-
     it('should not accept different padding size by 8', () => {
 
         assert.throws(() => {

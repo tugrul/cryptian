@@ -2,12 +2,8 @@
 const {algorithm} = require('../..');
 const assert = require('assert');
 
-describe('safer-64', () => {
-
-    it('should be constructor', () => {
-        assert(typeof algorithm.Safer === 'function', 'there is no constructor');
-    });
-
+(typeof algorithm.Safer === 'function'? describe : describe.skip)
+('safer-64', () => {
 
     const key = Buffer.alloc(8, 0);
 
@@ -17,6 +13,7 @@ describe('safer-64', () => {
 
     // ciphertext & plaintext from mcrypt test rule
     const ciphertext = Buffer.from('e490eebffd908f34', 'hex');
+
     const plaintext  = Buffer.from('0001020304050607', 'hex');
 
 

@@ -2,11 +2,8 @@
 const {algorithm} = require('../..');
 const assert = require('assert');
 
-describe('dummy', () => {
-
-    it('should be constructor', () => {
-        assert(typeof algorithm.Dummy === 'function', 'there is no constructor');
-    });
+(typeof algorithm.Dummy === 'function'? describe : describe.skip)
+('dummy', () => {
 
     const ciphertext = Buffer.from('a1502d70ba1320c8', 'hex');
     const plaintext  = Buffer.from('0001020304050607', 'hex');

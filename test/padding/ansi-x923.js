@@ -6,11 +6,6 @@ const crypto = require('crypto');
 
 describe('ansi-x923', () => {
 
-    it('should be constructor', () => {
-        assert(typeof padding.AnsiX923 === 'function', 'there is no Null constructor');
-    });
-
-
     const fixture = [
         {size: 1, unpadded: 'd1',               padded: 'd100000000000007'},
         {size: 2, unpadded: '7c7b',             padded: '7c7b000000000006'},
