@@ -22,6 +22,10 @@ const assert = require('assert');
 
         const threeway = new algorithm.Threeway();
 
+        // original implementation do not have byteswap but mcrypt implementation have byteswap
+        // i reversed byteswap from LE to BE. in this case results same with original implementation
+        threeway.setEndianCompat(true); 
+        
         threeway.setKey(key);
 
         assert(ciphertext.equals(threeway.encrypt(plaintext)), 'encrypted plaintext should equal to ciphertext');
@@ -32,6 +36,10 @@ const assert = require('assert');
 
         const threeway = new algorithm.Threeway();
 
+        // original implementation do not have byteswap but mcrypt implementation have byteswap
+        // i reversed byteswap from LE to BE. in this case results same with original implementation
+        threeway.setEndianCompat(true);
+        
         threeway.setKey(key);
 
         assert(plaintext.equals(threeway.decrypt(ciphertext)), 'decrypted ciphertext should equal to plaintext');

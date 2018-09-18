@@ -28,7 +28,7 @@ void Threeway::reset() {
     std::copy_n(_key.begin(), 12, key.c);
 
     for (size_t i = 0; i < 3; i++) {
-        key.ui[i] = byteswapLE(key.ui[i]);
+        key.ui[i] = byteswapBE(key.ui[i]);
     }
 
 }
@@ -42,7 +42,7 @@ std::vector<char> Threeway::encrypt(const std::vector<char> plaintext) {
     std::copy_n(plaintext.begin(), 12, ciphertext.c);
 
     for (size_t i = 0; i < 3; i++) {
-        ciphertext.ui[i] = byteswapLE(ciphertext.ui[i]);
+        ciphertext.ui[i] = byteswapBE(ciphertext.ui[i]);
     }
 
 	rndcon_gen(STRT_E, rcon);
@@ -61,7 +61,7 @@ std::vector<char> Threeway::encrypt(const std::vector<char> plaintext) {
 	theta(ciphertext.ui);
 
     for (size_t i = 0; i < 3; i++) {
-        ciphertext.ui[i] = byteswapLE(ciphertext.ui[i]);
+        ciphertext.ui[i] = byteswapBE(ciphertext.ui[i]);
     }
 
     return std::vector<char>(ciphertext.c, ciphertext.c + 12);
@@ -72,36 +72,38 @@ std::vector<char> Threeway::decrypt(const std::vector<char> ciphertext) {
     unsigned int rcon[NMBR + 1]; // the `inverse' round constants
 
     block plaintext = {.ui = {0,0,0}};
+    block _key = {.ui = {0,0,0}};
 
     std::copy_n(ciphertext.begin(), 12, plaintext.c);
+    std::copy_n(key.c, 12, _key.c);
 
     for (size_t i = 0; i < 3; i++) {
-        plaintext.ui[i] = byteswapLE(plaintext.ui[i]);
+        plaintext.ui[i] = byteswapBE(plaintext.ui[i]);
     }
 
-	theta(key.ui);
-	mu(key.ui);
+	theta(_key.ui);
+	mu(_key.ui);
 
 	rndcon_gen(STRT_D, rcon);
 
 	mu(plaintext.ui);
 
 	for (size_t i = 0; i < NMBR; i++) {
-		plaintext.ui[0] ^= key.ui[0] ^ (rcon[i] << 16);
-		plaintext.ui[1] ^= key.ui[1];
-		plaintext.ui[2] ^= key.ui[2] ^ rcon[i];
+		plaintext.ui[0] ^= _key.ui[0] ^ (rcon[i] << 16);
+		plaintext.ui[1] ^= _key.ui[1];
+		plaintext.ui[2] ^= _key.ui[2] ^ rcon[i];
 		rho(plaintext.ui);
 	}
 
-	plaintext.ui[0] ^= key.ui[0] ^ (rcon[NMBR] << 16);
-	plaintext.ui[1] ^= key.ui[1];
-	plaintext.ui[2] ^= key.ui[2] ^ rcon[NMBR];
+	plaintext.ui[0] ^= _key.ui[0] ^ (rcon[NMBR] << 16);
+	plaintext.ui[1] ^= _key.ui[1];
+	plaintext.ui[2] ^= _key.ui[2] ^ rcon[NMBR];
 
 	theta(plaintext.ui);
 	mu(plaintext.ui);
 
     for (size_t i = 0; i < 3; i++) {
-        plaintext.ui[i] = byteswapLE(plaintext.ui[i]);
+        plaintext.ui[i] = byteswapBE(plaintext.ui[i]);
     }
 
 	return std::vector<char>(plaintext.c, plaintext.c + 12);
@@ -214,10 +216,13 @@ void Threeway::rndcon_gen(unsigned int strt, unsigned int* rtab) {
     // generates the round constants
 
 	for (size_t i = 0; i <= NMBR; i++) {
+        
 		rtab[i] = strt;
 		strt <<= 1;
-		if (strt & 0x10000)
+        
+		if (strt & 0x10000) {
 			strt ^= 0x11011;
+        }
 	}
 }
 
