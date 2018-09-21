@@ -15,6 +15,7 @@ protected:
     cryptian::algorithm::AlgorithmBlock* _algorithm;
     std::vector<char> _register;
 public:
+    virtual ~ModeBase() {}
 
     void setAlgorithm(cryptian::algorithm::AlgorithmBlock* algorithm) {
         _algorithm = algorithm;

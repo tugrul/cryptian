@@ -44,6 +44,10 @@ protected:
 
     T* mode;
 
+    ~Mode() {
+        delete mode;
+    }
+    
     static void freeBuffer(char *buffer, void *hint) {
         delete[] buffer;
     }

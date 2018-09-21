@@ -87,6 +87,7 @@ protected:
 
 public:
     AlgorithmBase() : _endianCompat(false) {}
+    virtual ~AlgorithmBase() {}
 
     virtual std::string getName() = 0;
     virtual std::size_t getVersion() = 0;

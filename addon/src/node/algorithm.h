@@ -28,6 +28,10 @@ protected:
     AlgorithmBase() {
         algorithm = new T();
     }
+    
+    ~AlgorithmBase() {
+        delete algorithm;
+    }
 
     T* algorithm;
 
