@@ -17,14 +17,7 @@ private:
     const unsigned int CAST_SMALL_ROUNDS = 12;
     const unsigned int CAST_FULL_ROUNDS = 16;
 
-    const static unsigned int cast_sbox1[256];
-    const static unsigned int cast_sbox2[256];
-    const static unsigned int cast_sbox3[256];
-    const static unsigned int cast_sbox4[256];
-    const static unsigned int cast_sbox5[256];
-    const static unsigned int cast_sbox6[256];
-    const static unsigned int cast_sbox7[256];
-    const static unsigned int cast_sbox8[256];
+    const static unsigned int sbox[8][256];
 
     unsigned int xkey[32]; // Key, after expansion
 	unsigned int rounds;   // Number of rounds to use, 12 or 16
@@ -40,17 +33,17 @@ private:
     // CAST-128 uses three different round functions
     inline void F1(unsigned int &t, unsigned int &l, const unsigned int r, const unsigned int i) {
         t = ROL(xkey[i] + r, xkey[i+16]);
-    	l ^= ((cast_sbox1[U8a(t)] ^ cast_sbox2[U8b(t)]) - cast_sbox3[U8c(t)]) + cast_sbox4[U8d(t)];
+    	l ^= ((sbox[0][U8a(t)] ^ sbox[1][U8b(t)]) - sbox[2][U8c(t)]) + sbox[3][U8d(t)];
     }
 
     inline void F2(unsigned int &t, unsigned int &l, const unsigned int r, const unsigned int i) {
         t = ROL(xkey[i] ^ r, xkey[i+16]);
-    	l ^= ((cast_sbox1[U8a(t)] - cast_sbox2[U8b(t)]) + cast_sbox3[U8c(t)]) ^ cast_sbox4[U8d(t)];
+    	l ^= ((sbox[0][U8a(t)] - sbox[1][U8b(t)]) + sbox[2][U8c(t)]) ^ sbox[3][U8d(t)];
     }
 
     inline void F3(unsigned int &t, unsigned int &l, const unsigned int r, const unsigned int i) {
         t = ROL(xkey[i] - r, xkey[i+16]);
-    	l ^= ((cast_sbox1[U8a(t)] + cast_sbox2[U8b(t)]) ^ cast_sbox3[U8c(t)]) - cast_sbox4[U8d(t)];
+    	l ^= ((sbox[0][U8a(t)] + sbox[1][U8b(t)]) ^ sbox[2][U8c(t)]) - sbox[3][U8d(t)];
     }
 
 

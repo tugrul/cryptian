@@ -156,107 +156,107 @@ void Cast128::reset() {
 	for (i = 0; i < 32; i += 4) {
 		switch (i & 4) {
 		case 0:
-			t[0] = z[0] = x[0] ^ cast_sbox5[U8b(x[3])]
-			    ^ cast_sbox6[U8d(x[3])] ^ cast_sbox7[U8a(x[3])]
-			    ^ cast_sbox8[U8c(x[3])] ^
-			    cast_sbox7[U8a(x[2])];
-			t[1] = z[1] = x[2] ^ cast_sbox5[U8a(z[0])]
-			    ^ cast_sbox6[U8c(z[0])] ^ cast_sbox7[U8b(z[0])]
-			    ^ cast_sbox8[U8d(z[0])] ^
-			    cast_sbox8[U8c(x[2])];
-			t[2] = z[2] = x[3] ^ cast_sbox5[U8d(z[1])]
-			    ^ cast_sbox6[U8c(z[1])] ^ cast_sbox7[U8b(z[1])]
-			    ^ cast_sbox8[U8a(z[1])] ^
-			    cast_sbox5[U8b(x[2])];
+			t[0] = z[0] = x[0] ^ sbox[4][U8b(x[3])]
+			    ^ sbox[5][U8d(x[3])] ^ sbox[6][U8a(x[3])]
+			    ^ sbox[7][U8c(x[3])] ^
+			    sbox[6][U8a(x[2])];
+			t[1] = z[1] = x[2] ^ sbox[4][U8a(z[0])]
+			    ^ sbox[5][U8c(z[0])] ^ sbox[6][U8b(z[0])]
+			    ^ sbox[7][U8d(z[0])] ^
+			    sbox[7][U8c(x[2])];
+			t[2] = z[2] = x[3] ^ sbox[4][U8d(z[1])]
+			    ^ sbox[5][U8c(z[1])] ^ sbox[6][U8b(z[1])]
+			    ^ sbox[7][U8a(z[1])] ^
+			    sbox[4][U8b(x[2])];
 			t[3] = z[3] =
-			    x[1] ^ cast_sbox5[U8c(z[2])] ^
-			    cast_sbox6[U8b(z[2])] ^ cast_sbox7[U8d(z[2])]
-			    ^ cast_sbox8[U8a(z[2])] ^
-			    cast_sbox6[U8d(x[2])];
+			    x[1] ^ sbox[4][U8c(z[2])] ^
+			    sbox[5][U8b(z[2])] ^ sbox[6][U8d(z[2])]
+			    ^ sbox[7][U8a(z[2])] ^
+			    sbox[5][U8d(x[2])];
 			break;
 		case 4:
-			t[0] = x[0] = z[2] ^ cast_sbox5[U8b(z[1])]
-			    ^ cast_sbox6[U8d(z[1])] ^ cast_sbox7[U8a(z[1])]
-			    ^ cast_sbox8[U8c(z[1])] ^
-			    cast_sbox7[U8a(z[0])];
-			t[1] = x[1] = z[0] ^ cast_sbox5[U8a(x[0])]
-			    ^ cast_sbox6[U8c(x[0])] ^ cast_sbox7[U8b(x[0])]
-			    ^ cast_sbox8[U8d(x[0])] ^
-			    cast_sbox8[U8c(z[0])];
-			t[2] = x[2] = z[1] ^ cast_sbox5[U8d(x[1])]
-			    ^ cast_sbox6[U8c(x[1])] ^ cast_sbox7[U8b(x[1])]
-			    ^ cast_sbox8[U8a(x[1])] ^
-			    cast_sbox5[U8b(z[0])];
-			t[3] = x[3] = z[3] ^ cast_sbox5[U8c(x[2])]
-			    ^ cast_sbox6[U8b(x[2])] ^ cast_sbox7[U8d(x[2])]
-			    ^ cast_sbox8[U8a(x[2])] ^
-			    cast_sbox6[U8d(z[0])];
+			t[0] = x[0] = z[2] ^ sbox[4][U8b(z[1])]
+			    ^ sbox[5][U8d(z[1])] ^ sbox[6][U8a(z[1])]
+			    ^ sbox[7][U8c(z[1])] ^
+			    sbox[6][U8a(z[0])];
+			t[1] = x[1] = z[0] ^ sbox[4][U8a(x[0])]
+			    ^ sbox[5][U8c(x[0])] ^ sbox[6][U8b(x[0])]
+			    ^ sbox[7][U8d(x[0])] ^
+			    sbox[7][U8c(z[0])];
+			t[2] = x[2] = z[1] ^ sbox[4][U8d(x[1])]
+			    ^ sbox[5][U8c(x[1])] ^ sbox[6][U8b(x[1])]
+			    ^ sbox[7][U8a(x[1])] ^
+			    sbox[4][U8b(z[0])];
+			t[3] = x[3] = z[3] ^ sbox[4][U8c(x[2])]
+			    ^ sbox[5][U8b(x[2])] ^ sbox[6][U8d(x[2])]
+			    ^ sbox[7][U8a(x[2])] ^
+			    sbox[5][U8d(z[0])];
 			break;
 		}
 		switch (i & 12) {
 		case 0:
 		case 12:
 			xkey[i + 0] =
-			    cast_sbox5[U8a(t[2])] ^ cast_sbox6[U8b(t[2])]
-			    ^ cast_sbox7[U8d(t[1])] ^
-			    cast_sbox8[U8c(t[1])];
+			    sbox[4][U8a(t[2])] ^ sbox[5][U8b(t[2])]
+			    ^ sbox[6][U8d(t[1])] ^
+			    sbox[7][U8c(t[1])];
 			xkey[i + 1] =
-			    cast_sbox5[U8c(t[2])] ^ cast_sbox6[U8d(t[2])]
-			    ^ cast_sbox7[U8b(t[1])] ^
-			    cast_sbox8[U8a(t[1])];
+			    sbox[4][U8c(t[2])] ^ sbox[5][U8d(t[2])]
+			    ^ sbox[6][U8b(t[1])] ^
+			    sbox[7][U8a(t[1])];
 			xkey[i + 2] =
-			    cast_sbox5[U8a(t[3])] ^ cast_sbox6[U8b(t[3])]
-			    ^ cast_sbox7[U8d(t[0])] ^
-			    cast_sbox8[U8c(t[0])];
+			    sbox[4][U8a(t[3])] ^ sbox[5][U8b(t[3])]
+			    ^ sbox[6][U8d(t[0])] ^
+			    sbox[7][U8c(t[0])];
 			xkey[i + 3] =
-			    cast_sbox5[U8c(t[3])] ^ cast_sbox6[U8d(t[3])]
-			    ^ cast_sbox7[U8b(t[0])] ^
-			    cast_sbox8[U8a(t[0])];
+			    sbox[4][U8c(t[3])] ^ sbox[5][U8d(t[3])]
+			    ^ sbox[6][U8b(t[0])] ^
+			    sbox[7][U8a(t[0])];
 			break;
 		case 4:
 		case 8:
 			xkey[i + 0] =
-			    cast_sbox5[U8d(t[0])] ^ cast_sbox6[U8c(t[0])]
-			    ^ cast_sbox7[U8a(t[3])] ^
-			    cast_sbox8[U8b(t[3])];
+			    sbox[4][U8d(t[0])] ^ sbox[5][U8c(t[0])]
+			    ^ sbox[6][U8a(t[3])] ^
+			    sbox[7][U8b(t[3])];
 			xkey[i + 1] =
-			    cast_sbox5[U8b(t[0])] ^ cast_sbox6[U8a(t[0])]
-			    ^ cast_sbox7[U8c(t[3])] ^
-			    cast_sbox8[U8d(t[3])];
+			    sbox[4][U8b(t[0])] ^ sbox[5][U8a(t[0])]
+			    ^ sbox[6][U8c(t[3])] ^
+			    sbox[7][U8d(t[3])];
 			xkey[i + 2] =
-			    cast_sbox5[U8d(t[1])] ^ cast_sbox6[U8c(t[1])]
-			    ^ cast_sbox7[U8a(t[2])] ^
-			    cast_sbox8[U8b(t[2])];
+			    sbox[4][U8d(t[1])] ^ sbox[5][U8c(t[1])]
+			    ^ sbox[6][U8a(t[2])] ^
+			    sbox[7][U8b(t[2])];
 			xkey[i + 3] =
-			    cast_sbox5[U8b(t[1])] ^ cast_sbox6[U8a(t[1])]
-			    ^ cast_sbox7[U8c(t[2])] ^
-			    cast_sbox8[U8d(t[2])];
+			    sbox[4][U8b(t[1])] ^ sbox[5][U8a(t[1])]
+			    ^ sbox[6][U8c(t[2])] ^
+			    sbox[7][U8d(t[2])];
 			break;
 		}
 		switch (i & 12) {
 		case 0:
-			xkey[i + 0] ^= cast_sbox5[U8c(z[0])];
-			xkey[i + 1] ^= cast_sbox6[U8c(z[1])];
-			xkey[i + 2] ^= cast_sbox7[U8b(z[2])];
-			xkey[i + 3] ^= cast_sbox8[U8a(z[3])];
+			xkey[i + 0] ^= sbox[4][U8c(z[0])];
+			xkey[i + 1] ^= sbox[5][U8c(z[1])];
+			xkey[i + 2] ^= sbox[6][U8b(z[2])];
+			xkey[i + 3] ^= sbox[7][U8a(z[3])];
 			break;
 		case 4:
-			xkey[i + 0] ^= cast_sbox5[U8a(x[2])];
-			xkey[i + 1] ^= cast_sbox6[U8b(x[3])];
-			xkey[i + 2] ^= cast_sbox7[U8d(x[0])];
-			xkey[i + 3] ^= cast_sbox8[U8d(x[1])];
+			xkey[i + 0] ^= sbox[4][U8a(x[2])];
+			xkey[i + 1] ^= sbox[5][U8b(x[3])];
+			xkey[i + 2] ^= sbox[6][U8d(x[0])];
+			xkey[i + 3] ^= sbox[7][U8d(x[1])];
 			break;
 		case 8:
-			xkey[i + 0] ^= cast_sbox5[U8b(z[2])];
-			xkey[i + 1] ^= cast_sbox6[U8a(z[3])];
-			xkey[i + 2] ^= cast_sbox7[U8c(z[0])];
-			xkey[i + 3] ^= cast_sbox8[U8c(z[1])];
+			xkey[i + 0] ^= sbox[4][U8b(z[2])];
+			xkey[i + 1] ^= sbox[5][U8a(z[3])];
+			xkey[i + 2] ^= sbox[6][U8c(z[0])];
+			xkey[i + 3] ^= sbox[7][U8c(z[1])];
 			break;
 		case 12:
-			xkey[i + 0] ^= cast_sbox5[U8d(x[0])];
-			xkey[i + 1] ^= cast_sbox6[U8d(x[1])];
-			xkey[i + 2] ^= cast_sbox7[U8a(x[2])];
-			xkey[i + 3] ^= cast_sbox8[U8b(x[3])];
+			xkey[i + 0] ^= sbox[4][U8d(x[0])];
+			xkey[i + 1] ^= sbox[5][U8d(x[1])];
+			xkey[i + 2] ^= sbox[6][U8a(x[2])];
+			xkey[i + 3] ^= sbox[7][U8b(x[3])];
 			break;
 		}
 		if (i >= 16) {
@@ -274,7 +274,7 @@ void Cast128::reset() {
 
 }
 
-const unsigned int Cast128::cast_sbox1[256] = {
+const unsigned int Cast128::sbox[8][256] = {{
   0x30FB40D4, 0x9FA0FF0B, 0x6BECCD2F, 0x3F258C7A,
   0x1E213F2F, 0x9C004DD3, 0x6003E540, 0xCF9FC949,
   0xBFD4AF27, 0x88BBBDB5, 0xE2034090, 0x98D09675,
@@ -339,9 +339,7 @@ const unsigned int Cast128::cast_sbox1[256] = {
   0x962BDA1C, 0xE1E696FF, 0xB141AB08, 0x7CCA89B9,
   0x1A69E783, 0x02CC4843, 0xA2F7C579, 0x429EF47D,
   0x427B169C, 0x5AC9F049, 0xDD8F0F00, 0x5C8165BF
-};
-
-const unsigned int Cast128::cast_sbox2[256] = {
+}, {
   0x1F201094, 0xEF0BA75B, 0x69E3CF7E, 0x393F4380,
   0xFE61CF7A, 0xEEC5207A, 0x55889C94, 0x72FC0651,
   0xADA7EF79, 0x4E1D7235, 0xD55A63CE, 0xDE0436BA,
@@ -406,9 +404,7 @@ const unsigned int Cast128::cast_sbox2[256] = {
   0x649DA589, 0xA345415E, 0x5C038323, 0x3E5D3BB9,
   0x43D79572, 0x7E6DD07C, 0x06DFDF1E, 0x6C6CC4EF,
   0x7160A539, 0x73BFBE70, 0x83877605, 0x4523ECF1
-};
-
-const unsigned int Cast128::cast_sbox3[256] = {
+}, {
   0x8DEFC240, 0x25FA5D9F, 0xEB903DBF, 0xE810C907,
   0x47607FFF, 0x369FE44B, 0x8C1FC644, 0xAECECA90,
   0xBEB1F9BF, 0xEEFBCAEA, 0xE8CF1950, 0x51DF07AE,
@@ -473,9 +469,7 @@ const unsigned int Cast128::cast_sbox3[256] = {
   0x642B1E31, 0x9C305A00, 0x52BCE688, 0x1B03588A,
   0xF7BAEFD5, 0x4142ED9C, 0xA4315C11, 0x83323EC5,
   0xDFEF4636, 0xA133C501, 0xE9D3531C, 0xEE353783
-};
-
-const unsigned int Cast128::cast_sbox4[256] = {
+}, {
   0x9DB30420, 0x1FB6E9DE, 0xA7BE7BEF, 0xD273A298,
   0x4A4F7BDB, 0x64AD8C57, 0x85510443, 0xFA020ED1,
   0x7E287AFF, 0xE60FB663, 0x095F35A1, 0x79EBF120,
@@ -540,9 +534,7 @@ const unsigned int Cast128::cast_sbox4[256] = {
   0x41823979, 0x932BCDF6, 0xB657C34D, 0x4EDFD282,
   0x7AE5290C, 0x3CB9536B, 0x851E20FE, 0x9833557E,
   0x13ECF0B0, 0xD3FFB372, 0x3F85C5C1, 0x0AEF7ED2
-};
-
-const unsigned int Cast128::cast_sbox5[256] = {
+}, {
   0x7EC90C04, 0x2C6E74B9, 0x9B0E66DF, 0xA6337911,
   0xB86A7FFF, 0x1DD358F5, 0x44DD9D44, 0x1731167F,
   0x08FBF1FA, 0xE7F511CC, 0xD2051B00, 0x735ABA00,
@@ -607,9 +599,7 @@ const unsigned int Cast128::cast_sbox5[256] = {
   0xF9E0659A, 0xEEB9491D, 0x34010718, 0xBB30CAB8,
   0xE822FE15, 0x88570983, 0x750E6249, 0xDA627E55,
   0x5E76FFA8, 0xB1534546, 0x6D47DE08, 0xEFE9E7D4
-};
-
-const unsigned int Cast128::cast_sbox6[256] = {
+}, {
   0xF6FA8F9D, 0x2CAC6CE1, 0x4CA34867, 0xE2337F7C,
   0x95DB08E7, 0x016843B4, 0xECED5CBC, 0x325553AC,
   0xBF9F0960, 0xDFA1E2ED, 0x83F0579D, 0x63ED86B9,
@@ -674,9 +664,7 @@ const unsigned int Cast128::cast_sbox6[256] = {
   0xD36B4CF1, 0xF544EDEB, 0xB0E93524, 0xBEBB8FBD,
   0xA2D762CF, 0x49C92F54, 0x38B5F331, 0x7128A454,
   0x48392905, 0xA65B1DB8, 0x851C97BD, 0xD675CF2F
-};
-
-const unsigned int Cast128::cast_sbox7[256] = {
+}, {
   0x85E04019, 0x332BF567, 0x662DBFFF, 0xCFC65693,
   0x2A8D7F6F, 0xAB9BC912, 0xDE6008A1, 0x2028DA1F,
   0x0227BCE7, 0x4D642916, 0x18FAC300, 0x50F18B82,
@@ -741,9 +729,7 @@ const unsigned int Cast128::cast_sbox7[256] = {
   0x3FFA50BC, 0x3D40F021, 0xC3C0BDAE, 0x4958C24C,
   0x518F36B2, 0x84B1D370, 0x0FEDCE83, 0x878DDADA,
   0xF2A279C7, 0x94E01BE8, 0x90716F4B, 0x954B8AA3
-};
-
-const unsigned int Cast128::cast_sbox8[256] = {
+}, {
   0xE216300D, 0xBBDDFFFC, 0xA7EBDABD, 0x35648095,
   0x7789F8B7, 0xE6C1121B, 0x0E241600, 0x052CE8B5,
   0x11A9CFB0, 0xE5952F11, 0xECE7990A, 0x9386D174,
@@ -808,7 +794,7 @@ const unsigned int Cast128::cast_sbox8[256] = {
   0x589E8D82, 0x0D2059D1, 0xA466BB1E, 0xF8DA0A82,
   0x04F19130, 0xBA6E4EC0, 0x99265164, 0x1EE7230D,
   0x50B2AD80, 0xEAEE6801, 0x8DB2A283, 0xEA8BF59E
-};
+}};
 
 };
 
