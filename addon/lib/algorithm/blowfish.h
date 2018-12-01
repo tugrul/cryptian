@@ -20,6 +20,10 @@ private:
     const unsigned short BF_N = 16;
     const unsigned short KEYBYTES = 8;
 
+    static const unsigned int ks[4][256];
+    static const unsigned int pi[18];
+
+
     void enblf_noswap(unsigned int *);
 
     inline unsigned int F(unsigned int x) {
