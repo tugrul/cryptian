@@ -4,7 +4,7 @@
   "description": "Crypto suite",
   "main": "lib/index-back.js",
   "scripts": {
-    "test": "mocha --recursive",
+    "test": "mocha --recursive --require @babel/register",
     "compile-js": "babel src --out-dir lib"
   },
   "keywords": [
@@ -28,6 +28,7 @@
     "@babel/cli": "^7.2.3",
     "@babel/core": "^7.2.2",
     "@babel/preset-env": "^7.3.1",
+    "@babel/register": "^7.0.0",
     "mocha": "^5.1.1",
     "stream-buffers": "^3.0.2"
   },

@@ -1,4 +1,10 @@
 language: node_js
+compiler:
+  - clang
+  - gcc
+os:
+  - linux
+  - osx
 node_js:
   - '10'
   - '9'
@@ -9,10 +15,19 @@ node_js:
   - '4'
   - '3'
   - '0.12'
-sudo: true
+sudo: false
+addons:
+  apt:
+    sources:
+      - ubuntu-toolchain-r-test
+    packages:
+      - g++-4.9
 before_install:
-  - sudo add-apt-repository ppa:ubuntu-toolchain-r/test -y
-  - sudo apt-get update -qq
-  - sudo apt-get install -qq g++-4.8
-  - export CXX="g++-4.8" CC="gcc-4.8"
-script: npm install . && npm test
+  - if [ "$CXX" = "g++" -a "$TRAVIS_OS_NAME" = "linux" ]; then export CXX="g++-4.9" CC="gcc-4.9" AR="gcc-ar-4.9" RANLIB="gcc-ranlib-4.9" NM="gcc-nm-4.9" ; fi
+  - if [ "$CXX" = "clang++" ]; then export NPMOPT=--clang=1 ; fi
+  - export CFLAGS="$CFLAGS -O3 --coverage" LDFLAGS="$LDFLAGS --coverage"
+  - echo "CFLAGS=\"$CFLAGS\" LDFLAGS=\"$LDFLAGS\""
+install:
+  - npm install .
+script:
+  - npm test
