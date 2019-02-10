@@ -2,9 +2,10 @@
   "name": "cryptian",
   "version": "0.0.1",
   "description": "Crypto suite",
-  "main": "index-back.js",
+  "main": "lib/index-back.js",
   "scripts": {
-    "test": "mocha --recursive"
+    "test": "mocha --recursive",
+    "compile-js": "babel src --out-dir lib"
   },
   "keywords": [
     "crypto",
@@ -24,6 +25,9 @@
     "nan": "^2.10.0"
   },
   "devDependencies": {
+    "@babel/cli": "^7.2.3",
+    "@babel/core": "^7.2.2",
+    "@babel/preset-env": "^7.3.1",
     "mocha": "^5.1.1",
     "stream-buffers": "^3.0.2"
   },
