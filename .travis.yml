@@ -5,16 +5,13 @@ compiler:
 os:
   - linux
   - osx
+  - windows
 node_js:
   - '10'
   - '9'
   - '8'
   - '7'
   - '6'
-  - '5'
-  - '4'
-  - '3'
-  - '0.12'
 sudo: false
 addons:
   apt:
