@@ -26,7 +26,7 @@ std::vector<std::size_t> Blowfish::getKeySizes() {
 
 std::vector<char> Blowfish::encrypt(const std::vector<char> plaintext) {
 
-    block ciphertext = {.ui = {0, 0}};
+    block ciphertext = {};
 
     std::copy_n(plaintext.begin(), 8, ciphertext.c);
 
@@ -53,7 +53,7 @@ std::vector<char> Blowfish::encrypt(const std::vector<char> plaintext) {
 
 std::vector<char> Blowfish::decrypt(const std::vector<char> ciphertext) {
 
-    block plaintext = {.ui = {0, 0}};
+    block plaintext = {};
 
     std::copy_n(ciphertext.begin(), 8, plaintext.c);
 

@@ -26,8 +26,8 @@ std::vector<char> Des::encrypt(const std::vector<char> plaintext) {
     register unsigned int left = 0, right = 0;
 	register char *knp;
 
-    block work = {.ui = {0, 0}};
-    block ciphertext = {.ui = {0, 0}};
+    block work = {};
+    block ciphertext = {};
 
     std::copy_n(plaintext.begin(), 8, ciphertext.c);
 
@@ -89,8 +89,8 @@ std::vector<char> Des::decrypt(const std::vector<char> ciphertext) {
     register unsigned int left = 0, right = 0;
 	register char *knp;
 
-    block work = {.ui = {0, 0}};
-    block plaintext = {.ui = {0, 0}};
+    block work = {};
+    block plaintext = {};
 
     std::copy_n(ciphertext.begin(), 8, plaintext.c);
 

@@ -26,7 +26,7 @@ std::vector<char> Cast256::encrypt(const std::vector<char> plaintext) {
 
     unsigned int t, u;
 
-    block ciphertext = {.ui = {0, 0, 0, 0}};
+    block ciphertext = {};
 
     copy_n(plaintext.begin(), plaintext.size() > 16 ? 16 : plaintext.size(), ciphertext.c);
 
@@ -58,7 +58,7 @@ std::vector<char> Cast256::decrypt(const std::vector<char> ciphertext) {
 
     unsigned int t, u;
 
-    block plaintext = {.ui = {0, 0, 0, 0}};
+    block plaintext = {};
 
     copy_n(ciphertext.begin(), ciphertext.size() > 16 ? 16 : ciphertext.size(), plaintext.c);
 

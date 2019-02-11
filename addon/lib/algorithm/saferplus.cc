@@ -24,7 +24,7 @@ std::vector<std::size_t> Saferplus::getKeySizes() {
 
 std::vector<char> Saferplus::encrypt(const std::vector<char> plaintext) {
 
-    block ciphertext = {.ui = {0, 0, 0, 0}};
+    block ciphertext = {};
     unsigned char *kp;
     size_t keySize = _key.size();
 
@@ -69,7 +69,7 @@ std::vector<char> Saferplus::encrypt(const std::vector<char> plaintext) {
 
 std::vector<char> Saferplus::decrypt(const std::vector<char> ciphertext) {
 
-    block plaintext = {.ui = {0, 0, 0, 0}};
+    block plaintext = {};
     unsigned char *kp;
     size_t keySize = _key.size();
 

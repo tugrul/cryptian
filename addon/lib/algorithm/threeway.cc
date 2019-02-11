@@ -24,7 +24,7 @@ std::vector<std::size_t> Threeway::getKeySizes() {
 
 void Threeway::reset() {
 
-    key = {.ui = {0,0,0}};
+    key = {};
     std::copy_n(_key.begin(), 12, key.c);
 
     for (size_t i = 0; i < 3; i++) {
@@ -37,7 +37,7 @@ std::vector<char> Threeway::encrypt(const std::vector<char> plaintext) {
 
 	unsigned int rcon[NMBR + 1];
 
-    block ciphertext = {.ui = {0,0,0}};
+    block ciphertext = {};
 
     std::copy_n(plaintext.begin(), 12, ciphertext.c);
 
@@ -71,8 +71,8 @@ std::vector<char> Threeway::decrypt(const std::vector<char> ciphertext) {
 
     unsigned int rcon[NMBR + 1]; // the `inverse' round constants
 
-    block plaintext = {.ui = {0,0,0}};
-    block _key = {.ui = {0,0,0}};
+    block plaintext = {};
+    block _key = {};
 
     std::copy_n(ciphertext.begin(), 12, plaintext.c);
     std::copy_n(key.c, 12, _key.c);
@@ -216,10 +216,10 @@ void Threeway::rndcon_gen(unsigned int strt, unsigned int* rtab) {
     // generates the round constants
 
 	for (size_t i = 0; i <= NMBR; i++) {
-        
+
 		rtab[i] = strt;
 		strt <<= 1;
-        
+
 		if (strt & 0x10000) {
 			strt ^= 0x11011;
         }

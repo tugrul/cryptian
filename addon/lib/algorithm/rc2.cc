@@ -25,7 +25,7 @@ std::vector<std::size_t> Rc2::getKeySizes() {
 
 std::vector<char> Rc2::encrypt(const std::vector<char> plaintext) {
 
-    block ciphertext = {.ui = {0, 0}};
+    block ciphertext = {};
 
     std::copy_n(plaintext.begin(), plaintext.size() > 8 ? 8 : plaintext.size(), ciphertext.uc);
 
@@ -73,7 +73,7 @@ std::vector<char> Rc2::encrypt(const std::vector<char> plaintext) {
 
 std::vector<char> Rc2::decrypt(const std::vector<char> ciphertext) {
 
-    block plaintext = {.ui = {0, 0}};
+    block plaintext = {};
 
     std::copy_n(ciphertext.begin(), ciphertext.size() > 8 ? 8 : ciphertext.size(), plaintext.uc);
 

@@ -29,6 +29,7 @@
                 "addon/lib/mode/ofb.cc",
                 "addon/src/node/cryptian.cc"
             ],
+            "cflags": ["-std=c++11"],
             "include_dirs": [
                 "<!(node -e \"require('nan')\")",
                 "addon/lib/"

@@ -58,7 +58,7 @@ std::vector<std::size_t> Loki97::getKeySizes() {
 
 std::vector<char> Loki97::encrypt(const std::vector<char> plaintext) {
 
-    block blk = {.ui = {0, 0, 0, 0}};
+    block blk = {};
 
     std::copy_n(plaintext.begin(), plaintext.size() > 16 ? 16 : plaintext.size(), blk.c);
 
@@ -99,7 +99,7 @@ std::vector<char> Loki97::decrypt(const std::vector<char> ciphertext) {
 
     unsigned int xs;
 
-    block blk = {.ui = {0, 0, 0, 0}};
+    block blk = {};
 
     std::copy_n(ciphertext.begin(), ciphertext.size() > 16 ? 16 : ciphertext.size(), blk.c);
 
