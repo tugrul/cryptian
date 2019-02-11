@@ -192,8 +192,8 @@ void Safer::reset() {
 
 
 	unsigned int j;
-	unsigned char ka[SAFER_BLOCK_LEN + 1];
-	unsigned char kb[SAFER_BLOCK_LEN + 1];
+	unsigned char ka[9];
+	unsigned char kb[9];
     unsigned char *key = local_key;
     unsigned char key_buffer[16];
 

@@ -12,18 +12,6 @@ node_js:
   - '8'
   - '7'
   - '6'
-matrix:
-  include:
-    - os: linux
-      addons:
-        apt:
-          sources:
-            - ubuntu-toolchain-r-test
-          packages:
-            - g++-4.9
-      env:
-        - CC="gcc-4.9"
-        - CXX="g++-4.9"
 install:
   - npm install
 script:

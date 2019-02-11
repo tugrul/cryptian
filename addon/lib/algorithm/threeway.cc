@@ -35,7 +35,7 @@ void Threeway::reset() {
 
 std::vector<char> Threeway::encrypt(const std::vector<char> plaintext) {
 
-	unsigned int rcon[NMBR + 1];
+	unsigned int rcon[12];
 
     block ciphertext = {};
 
@@ -69,7 +69,7 @@ std::vector<char> Threeway::encrypt(const std::vector<char> plaintext) {
 
 std::vector<char> Threeway::decrypt(const std::vector<char> ciphertext) {
 
-    unsigned int rcon[NMBR + 1]; // the `inverse' round constants
+    unsigned int rcon[12]; // the `inverse' round constants
 
     block plaintext = {};
     block _key = {};
