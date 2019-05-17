@@ -22,22 +22,21 @@ Pkcs5.prototype.pad = function (chunk) {
 
 Pkcs5.prototype.unpad = function (chunk) {
 
-    let length = chunk.length;
+    const paddingByte = chunk[chunk.length - 1];
 
-    while (length--) {
-
-        let size = chunk.length - length;
-
-        if ((chunk[length] === chunk[length - 1]) && (size < this._blockSize)) {
-            continue;
-        }
-
-        if (chunk[length] === size) {
-            return chunk.slice(0, length);
-        }
-
+    if (paddingByte > this._blockSize) {
         throw new Error('Invalid padding byte by padding size');
     }
+    
+    for (let i = 1; i < paddingByte; i++) {
+        
+        if (chunk[chunk.length - i] !== paddingByte) {
+            throw new Error('Padding byte array not same');
+        }
+        
+    }
+    
+    return chunk.slice(0, chunk.length - paddingByte);
 
 };
 
