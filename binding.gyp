@@ -33,6 +33,9 @@
             "include_dirs": [
                 "<!(node -e \"require('nan')\")",
                 "addon/lib/"
+            ],
+            "conditions": [
+                ['OS=="mac"', {"cflags": ["-stdlib=libc++"]}]
             ]
         }
     ]
