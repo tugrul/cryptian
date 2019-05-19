@@ -35,7 +35,7 @@
                 "addon/lib/"
             ],
             "conditions": [
-                ['OS=="mac"', {"cflags": ["-stdlib=libc++"]}]
+                ['OS=="mac"', {"cflags_cc": ["-stdlib=libc++"]}]
             ]
         }
     ]
