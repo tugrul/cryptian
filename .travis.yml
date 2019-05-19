@@ -16,3 +16,5 @@ install:
   - npm install
 script:
   - npm test
+env:
+  - V=1 # node-gyp verbose build
