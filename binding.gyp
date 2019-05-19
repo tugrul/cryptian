@@ -29,14 +29,15 @@
                 "addon/lib/mode/ofb.cc",
                 "addon/src/node/cryptian.cc"
             ],
-            "cflags": ["-std=c++11"],
+            "cflags_cc": ["-std=c++11"],
             "include_dirs": [
                 "<!(node -e \"require('nan')\")",
                 "addon/lib/"
             ],
-            "conditions": [
-                ['OS=="mac"', {"cflags_cc": ["-stdlib=libc++"]}]
-            ]
+            "xcode_settings": {
+                'CLANG_CXX_LANGUAGE_STANDARD': 'c++11',
+                'CLANG_CXX_LIBRARY': 'libc++'
+            }
         }
     ]
 }
