@@ -25,7 +25,7 @@ private:
 
     inline void M(unsigned char index1, unsigned char index2)
     {
-    	register unsigned int sum = key.ui[index1] + key.ui[index2];
+    	unsigned int sum = key.ui[index1] + key.ui[index2];
     	key.ui[index1] = (((sum) >> 8) & 0x00ffffff) ^ t[(sum) & 0xff];
     }
 

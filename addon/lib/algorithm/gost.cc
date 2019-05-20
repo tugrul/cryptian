@@ -37,7 +37,7 @@ std::vector<std::size_t> Gost::getKeySizes() {
 
 std::vector<char> Gost::encrypt(const std::vector<char> plaintext) {
 
-    register unsigned int n1, n2;
+    unsigned int n1, n2;
 
     block ciphertext = {};
 
@@ -91,7 +91,7 @@ std::vector<char> Gost::encrypt(const std::vector<char> plaintext) {
 
 std::vector<char> Gost::decrypt(const std::vector<char> ciphertext) {
 
-    register unsigned int n1, n2;
+    unsigned int n1, n2;
 
     block plaintext = {};
 

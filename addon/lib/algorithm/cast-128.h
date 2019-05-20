@@ -9,9 +9,9 @@ namespace algorithm {
 
 class Cast128 : public AlgorithmBlock {
 private:
-    const unsigned int CAST_MIN_KEYSIZE = 5;
-    const unsigned int CAST_MAX_KEYSIZE = 16;
-    const unsigned int CAST_BLOCKSIZE = 8;
+    //const unsigned int CAST_MIN_KEYSIZE = 5;
+    //const unsigned int CAST_MAX_KEYSIZE = 16;
+    //const unsigned int CAST_BLOCKSIZE = 8;
 
     const unsigned int CAST_SMALL_KEY = 10;
     const unsigned int CAST_SMALL_ROUNDS = 12;

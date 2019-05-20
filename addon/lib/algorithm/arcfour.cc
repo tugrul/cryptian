@@ -26,7 +26,7 @@ std::vector<char> Arcfour::encrypt(const std::vector<char> plaintext) {
 
     std::vector<char> ciphertext = plaintext;
 
-    register int i = I, j = J;
+    int i = I, j = J;
 
     for (auto &item : ciphertext) {
         i++;
@@ -55,11 +55,11 @@ void Arcfour::reset() {
     I = 0;
     J = 0;
 
-    for (register size_t i = 0; i < 256; i++) {
+    for (size_t i = 0; i < 256; i++) {
         state[i] = i;
     }
 
-    for (register size_t i = 0, j = 0; i < 256; i++) {
+    for (size_t i = 0, j = 0; i < 256; i++) {
 
         if (_key.size() > 0) {
             j += state[i] + _key[i % _key.size()];

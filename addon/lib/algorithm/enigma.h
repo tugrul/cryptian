@@ -8,7 +8,7 @@ namespace algorithm {
 
 class Enigma : public AlgorithmStream {
 private:
-    const unsigned int E_ECHO = 010;
+    // const unsigned int E_ECHO = 010;
     const int ROTORSZ = 256;
     const unsigned int MASK = 0377;
 

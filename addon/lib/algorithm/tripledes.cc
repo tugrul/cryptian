@@ -23,8 +23,8 @@ std::vector<std::size_t> Tripledes::getKeySizes() {
 
 std::vector<char> Tripledes::encrypt(const std::vector<char> plaintext) {
 
-    register unsigned int left = 0, right = 0;
-	register char *knp;
+    unsigned int left = 0, right = 0;
+	char *knp;
 
     block work = {};
     block ciphertext = {};
@@ -153,8 +153,8 @@ std::vector<char> Tripledes::encrypt(const std::vector<char> plaintext) {
 
 std::vector<char> Tripledes::decrypt(const std::vector<char> ciphertext) {
 
-    register unsigned int left = 0, right = 0;
-	register char *knp;
+    unsigned int left = 0, right = 0;
+	char *knp;
 
     block work = {};
     block plaintext = {};
@@ -286,7 +286,7 @@ void Tripledes::reset() {
 
     char pc1m[56];		// place to modify pc1 into
 	char pcr[56];		// place to rotate pc1 into
-	register int i, j, l;
+	int i, j, l;
 	int m;
 
     // Clear key schedule
@@ -369,7 +369,7 @@ void Tripledes::spinit(unsigned int (&sp)[8][64]) {
 
 void Tripledes::perminit(char (&perm)[16][16][8], const char (&pp)[64]) {
 
-	register int l, j, k;
+	int l, j, k;
 	int i, m;
 
 	/* Clear the permutation array */
@@ -391,9 +391,9 @@ void Tripledes::perminit(char (&perm)[16][16][8], const char (&pp)[64]) {
 /* Permute inblock with perm */
 void Tripledes::permute(const char (&perm)[16][16][8], block *inblock, block *outblock) {
 
-	register char *ib, *ob;	/* ptr to input or output block */
-	register const char *p, *q;
-	register int j;
+	char *ib, *ob;	/* ptr to input or output block */
+	const char *p, *q;
+	int j;
 
 	/* Clear output block */
 	std::fill(outblock->c, outblock->c + 8, 0);
@@ -416,11 +416,11 @@ void Tripledes::permute(const char (&perm)[16][16][8], block *inblock, block *ou
 }
 
 /* The nonlinear function f(r,k), the heart of DES */
-unsigned int Tripledes::f(int pos, register unsigned int r, register char *subkey)
+unsigned int Tripledes::f(int pos, unsigned int r, char *subkey)
 {
-	register unsigned int *spp;
-	register unsigned int rval, rt;
-	register int er;
+	unsigned int *spp;
+	unsigned int rval, rt;
+	int er;
 
 	/* Run E(R) ^ K through the combined S & P boxes.
 	 * This code takes advantage of a convenient regularity in

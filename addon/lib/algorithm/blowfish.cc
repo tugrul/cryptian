@@ -33,7 +33,7 @@ std::vector<char> Blowfish::encrypt(const std::vector<char> plaintext) {
     ciphertext.ui[0] = byteswapLE(ciphertext.ui[0]);
     ciphertext.ui[1] = byteswapLE(ciphertext.ui[1]);
 
-	for (register size_t i = 0; i < BF_N; ++i) {
+	for (size_t i = 0; i < BF_N; ++i) {
 		ciphertext.ui[0] ^= P[i];
 		ciphertext.ui[1] ^= F(ciphertext.ui[0]);
 
@@ -62,7 +62,7 @@ std::vector<char> Blowfish::decrypt(const std::vector<char> ciphertext) {
     plaintext.ui[1] = byteswapLE(plaintext.ui[1]);
 
 
-	for (register size_t i = BF_N + 1; i > 1; --i) {
+	for (size_t i = BF_N + 1; i > 1; --i) {
         plaintext.ui[0] ^= P[i];
 		plaintext.ui[1] ^= F(plaintext.ui[0]);
 

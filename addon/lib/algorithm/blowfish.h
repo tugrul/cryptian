@@ -16,9 +16,9 @@ private:
     unsigned int S[4][256];
     unsigned int P[18];
 
-    const unsigned short MAXKEYBYTES = 56;
+    // const unsigned short MAXKEYBYTES = 56;
     const unsigned short BF_N = 16;
-    const unsigned short KEYBYTES = 8;
+    // const unsigned short KEYBYTES = 8;
 
     static const unsigned int ks[4][256];
     static const unsigned int pi[18];
