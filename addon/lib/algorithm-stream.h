@@ -17,7 +17,7 @@ public:
     void setIv(const std::vector<char> iv) {
 
         if (_iv.size() != iv.size() || std::equal(iv.begin(), iv.end(), _iv.begin())) {
-            _iv = _iv;
+            _iv = iv;
             reset();
         }
 
