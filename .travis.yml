@@ -12,6 +12,8 @@ node_js:
   - '8'
   - '7'
   - '6'
+before_install:
+  - if [ "$TRAVIS_OS_NAME" = "windows" ]; then choco install vcbuildtools && PowerShell -Command 'Install-WindowsFeature Net-Framework-Core' ; fi
 install:
   - npm install
 script:
