@@ -11,13 +11,13 @@ namespace cryptian {
 template <typename T>
 class AlgorithmBase : public node::ObjectWrap {
 public:
-    static Handle<FunctionTemplate> getFunctionTemplate(std::string functionName) {
+    static Local<FunctionTemplate> getFunctionTemplate(std::string functionName) {
 
         Local<FunctionTemplate> tpl = Nan::New<FunctionTemplate>(Forbidden);
         tpl->SetClassName(Nan::New(functionName).ToLocalChecked());
 
         functionTemplate.Reset(tpl);
-        constructor.Reset(tpl->GetFunction());
+        constructor.Reset(Nan::GetFunction(tpl).ToLocalChecked());
 
         return tpl;
     }
@@ -39,7 +39,7 @@ protected:
         delete[] buffer;
     }
 
-    static std::vector<char> convertToVector(Handle<Value> val) {
+    static std::vector<char> convertToVector(Local<Value> val) {
 
         if (val->IsString()) {
 
@@ -156,7 +156,7 @@ protected:
 
         AlgorithmBase<T>* container = ObjectWrap::Unwrap<AlgorithmBase<T>>(info.This());
 
-        container->algorithm->setEndianCompat(info[0]->Equals(Nan::New<Boolean>(true)));
+        container->algorithm->setEndianCompat(Nan::Equals(info[0], Nan::True()).FromJust());
 
         return info.GetReturnValue().Set(info.This());
     }
@@ -168,7 +168,7 @@ class AlgorithmBlock : public AlgorithmBase<T> {
     friend class Mode;
 public:
 
-    static Handle<FunctionTemplate> getFunctionTemplate(std::string functionName, Local<FunctionTemplate> parent) {
+    static Local<FunctionTemplate> getFunctionTemplate(std::string functionName, Local<FunctionTemplate> parent) {
 
         Local<FunctionTemplate> tpl = Nan::New<FunctionTemplate>(New);
         tpl->SetClassName(Nan::New(functionName).ToLocalChecked());
@@ -190,7 +190,7 @@ public:
         Nan::SetPrototypeMethod(tpl, "getBlockSize", GetBlockSize);
 
         AlgorithmBase<T>::functionTemplate.Reset(tpl);
-        AlgorithmBase<T>::constructor.Reset(tpl->GetFunction());
+        AlgorithmBase<T>::constructor.Reset(Nan::GetFunction(tpl).ToLocalChecked());
 
         return tpl;
     }
@@ -226,7 +226,7 @@ template <typename T>
 class AlgorithmStream : public AlgorithmBase<T> {
 public:
 
-    static Handle<FunctionTemplate> getFunctionTemplate(std::string functionName, Local<FunctionTemplate> parent) {
+    static Local<FunctionTemplate> getFunctionTemplate(std::string functionName, Local<FunctionTemplate> parent) {
 
         Local<FunctionTemplate> tpl = Nan::New<FunctionTemplate>(New);
         tpl->SetClassName(Nan::New(functionName).ToLocalChecked());
@@ -248,7 +248,7 @@ public:
         Nan::SetPrototypeMethod(tpl, "getIvSize", GetIvSize);
 
         AlgorithmBase<T>::functionTemplate.Reset(tpl);
-        AlgorithmBase<T>::constructor.Reset(tpl->GetFunction());
+        AlgorithmBase<T>::constructor.Reset(Nan::GetFunction(tpl).ToLocalChecked());
 
         return tpl;
     }

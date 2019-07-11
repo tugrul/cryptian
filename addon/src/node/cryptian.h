@@ -5,5 +5,5 @@
 #include <mode-suite.h>
 #include "mode.h"
 
-static void Init(v8::Handle<v8::Object>);
+static void Init(v8::Local<v8::Object>);
 

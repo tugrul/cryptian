@@ -1,6 +1,6 @@
 {
   "name": "cryptian",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Crypto suite",
   "main": "lib/index-back.js",
   "scripts": {
@@ -22,7 +22,7 @@
   "license": "MIT",
   "dependencies": {
     "bindings": "^1.3.0",
-    "nan": "^2.10.0"
+    "nan": "^2.14.0"
   },
   "devDependencies": {
     "@babel/cli": "^7.2.3",

@@ -20,12 +20,12 @@ protected:
     }
     
 public:
-    static Handle<FunctionTemplate> getFunctionTemplate() {
+    static Local<FunctionTemplate> getFunctionTemplate() {
 
         Local<FunctionTemplate> tpl = Nan::New<FunctionTemplate>(New);
         tpl->SetClassName(Nan::New("Mode").ToLocalChecked());
 
-        constructor.Reset(tpl->GetFunction());
+        constructor.Reset(Nan::GetFunction(tpl).ToLocalChecked());
 
         return tpl;
     }
@@ -52,7 +52,7 @@ protected:
         delete[] buffer;
     }
 
-    static std::vector<char> convertToVector(Handle<Value> val) {
+    static std::vector<char> convertToVector(Local<Value> val) {
 
         if (val->IsString()) {
 
@@ -93,7 +93,7 @@ protected:
         }
 
         AlgorithmBlock<algorithm::AlgorithmBlock>* algorithm =
-        node::ObjectWrap::Unwrap<AlgorithmBlock<algorithm::AlgorithmBlock>>(info[0]->ToObject());
+        node::ObjectWrap::Unwrap<AlgorithmBlock<algorithm::AlgorithmBlock>>(Nan::To<v8::Object>(info[0]).ToLocalChecked());
 
         Mode<T>* container = new Mode<T>(algorithm->algorithm, convertToVector(info[1]));
 
@@ -143,7 +143,7 @@ protected:
 
 public:
 
-    static Handle<FunctionTemplate> getFunctionTemplate(std::string className, Local<FunctionTemplate> parent) {
+    static Local<FunctionTemplate> getFunctionTemplate(std::string className, Local<FunctionTemplate> parent) {
 
         Local<FunctionTemplate> tpl = Nan::New<FunctionTemplate>(New);
         tpl->SetClassName(Nan::New(className).ToLocalChecked());
@@ -154,7 +154,7 @@ public:
         Nan::SetPrototypeMethod(tpl, "isPaddingRequired", IsPaddingRequired);
         Nan::SetPrototypeMethod(tpl, "getBlockSize", GetBlockSize);
 
-        constructor.Reset(tpl->GetFunction());
+        constructor.Reset(Nan::GetFunction(tpl).ToLocalChecked());
 
         return tpl;
     }
