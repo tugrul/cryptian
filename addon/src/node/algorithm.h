@@ -87,7 +87,7 @@ protected:
         Local<Array> array = Nan::New<Array>(keySizes.size());
 
         for (size_t i = 0; i < keySizes.size(); i++) {
-            array->Set(i, Nan::New<Number>(keySizes[i]));
+            Nan::Set(array, i, Nan::New<Number>(keySizes[i]));
         }
 
         return info.GetReturnValue().Set(array);

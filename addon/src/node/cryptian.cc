@@ -1,18 +1,18 @@
 
 #include "cryptian.h"
 
-#define EXPORT_ALGORITHM_BLOCK(name) algorithm->Set(Nan::New(#name).ToLocalChecked(), \
+#define EXPORT_ALGORITHM_BLOCK(name) Nan::Set(algorithm, Nan::New(#name).ToLocalChecked(), \
     Nan::GetFunction(cryptian::AlgorithmBlock<cryptian::algorithm::name>::getFunctionTemplate(#name, algorithmBlock)).ToLocalChecked());
 
-#define EXPORT_ALGORITHM_STREAM(name) algorithm->Set(Nan::New(#name).ToLocalChecked(), \
+#define EXPORT_ALGORITHM_STREAM(name) Nan::Set(algorithm, Nan::New(#name).ToLocalChecked(), \
     Nan::GetFunction(cryptian::AlgorithmStream<cryptian::algorithm::name>::getFunctionTemplate(#name, algorithmStream)).ToLocalChecked());
 
 #define EXPORT_MODE(name) v8::Local<v8::Object> name = Nan::New<v8::Object>();\
-    name->Set(Nan::New("Cipher").ToLocalChecked(), \
+    Nan::Set(name, Nan::New("Cipher").ToLocalChecked(), \
     Nan::GetFunction(cryptian::Mode<cryptian::mode::name::Cipher>::getFunctionTemplate("Cipher", modeBase)).ToLocalChecked()); \
-    name->Set(Nan::New("Decipher").ToLocalChecked(), \
+    Nan::Set(name, Nan::New("Decipher").ToLocalChecked(), \
     Nan::GetFunction(cryptian::Mode<cryptian::mode::name::Decipher>::getFunctionTemplate("Decipher", modeBase)).ToLocalChecked()); \
-    mode->Set(Nan::New(#name).ToLocalChecked(), name);
+    Nan::Set(mode, Nan::New(#name).ToLocalChecked(), name);
 
 template <typename T>
 Nan::Persistent<FunctionTemplate> cryptian::AlgorithmBase<T>::functionTemplate;
