@@ -107,7 +107,7 @@ public:
 
     void setKey(const std::vector<char> key) {
 
-        if (_key.size() != key.size() || std::equal(key.begin(), key.end(), _key.begin())) {
+        if (_key.size() != key.size() || !std::equal(key.begin(), key.end(), _key.begin())) {
             _key = key;
             reset();
         }
