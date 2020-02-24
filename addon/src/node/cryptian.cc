@@ -74,13 +74,13 @@ static void Init(v8::Local<v8::Object> exports) {
     EXPORT_MODE(ofb)
 
 
-    exports->Set(Nan::New("algorithm").ToLocalChecked(), algorithm);
-    exports->Set(Nan::New("mode").ToLocalChecked(), mode);
+    Nan::Set(exports, Nan::New("algorithm").ToLocalChecked(), algorithm);
+    Nan::Set(exports, Nan::New("mode").ToLocalChecked(), mode);
 
-    exports->Set(Nan::New("AlgorithmBlock").ToLocalChecked(), Nan::GetFunction(algorithmBlock).ToLocalChecked());
-    exports->Set(Nan::New("AlgorithmStream").ToLocalChecked(), Nan::GetFunction(algorithmStream).ToLocalChecked());
+    Nan::Set(exports, Nan::New("AlgorithmBlock").ToLocalChecked(), Nan::GetFunction(algorithmBlock).ToLocalChecked());
+    Nan::Set(exports, Nan::New("AlgorithmStream").ToLocalChecked(), Nan::GetFunction(algorithmStream).ToLocalChecked());
     
-    exports->Set(Nan::New("Mode").ToLocalChecked(), Nan::GetFunction(modeBase).ToLocalChecked());
+    Nan::Set(exports, Nan::New("Mode").ToLocalChecked(), Nan::GetFunction(modeBase).ToLocalChecked());
 }
 
 NODE_MODULE(cryptian, Init)
