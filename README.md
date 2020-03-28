@@ -1,6 +1,5 @@
-
-
 # cryptian [![Build Status](https://travis-ci.org/tugrul/cryptian.svg)](https://travis-ci.org/tugrul/cryptian)
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Ftugrul%2Fcryptian.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2Ftugrul%2Fcryptian?ref=badge_shield)
 
 MCrypt compatible crypto wrapper for Node.js
 
@@ -182,3 +181,7 @@ assert(unpadded.equals(padder.unpad(padded)));
 
 
 
+
+
+## License
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Ftugrul%2Fcryptian.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2Ftugrul%2Fcryptian?ref=badge_large)
