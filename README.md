@@ -88,7 +88,7 @@ const assert = require('assert');
 const {algorithm} = require('cryptian');
 const des = new algorithm.Des();
 
-set.setKey(Buffer.from('0a0c0e1012141618', 'hex'));
+des.setKey(Buffer.from('0a0c0e1012141618', 'hex'));
 
 const ciphertext = Buffer.from('a1502d70ba1320c8', 'hex');
 const plaintext  = Buffer.from('0001020304050607', 'hex');
