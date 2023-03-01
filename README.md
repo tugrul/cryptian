@@ -1,4 +1,4 @@
-# cryptian ![Build & Test](https://github.com/tugrul/cryptian/actions/workflows/build-test.yml/badge.svg) [![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Ftugrul%2Fcryptian.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2Ftugrul%2Fcryptian?ref=badge_shield)
+# cryptian [![Build & Test](https://github.com/tugrul/cryptian/actions/workflows/build-test.yml/badge.svg)](https://github.com/tugrul/cryptian/actions/workflows/build-test.yml) [![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Ftugrul%2Fcryptian.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2Ftugrul%2Fcryptian?ref=badge_shield)
 
 MCrypt compatible crypto wrapper for Node.js
 
