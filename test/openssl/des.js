@@ -11,7 +11,10 @@ const assert = require('assert');
 
 const streamBuffers = require('stream-buffers');
 
-(typeof algorithm.Des === 'function' ? describe : describe.skip)
+const version = /^(\d+)\./.exec(process.versions.openssl);
+const opensslDesSupportAvailable = parseInt(version[1]) < 3;
+
+(typeof algorithm.Des === 'function' && opensslDesSupportAvailable ? describe : describe.skip)
 ('des with openssl des compat', () => {
 
     const modes = [
