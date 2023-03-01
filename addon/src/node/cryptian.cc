@@ -27,7 +27,7 @@ Nan::Persistent<Function> cryptian::Mode<T>::constructor;
 Nan::Persistent<Function> cryptian::ModeBase::constructor;
 
 
-static void Init(v8::Local<v8::Object> exports) {
+NAN_MODULE_INIT(Init) {
     Nan::HandleScope scope;
 
     v8::Local<v8::Object> algorithm = Nan::New<v8::Object>();
@@ -74,13 +74,13 @@ static void Init(v8::Local<v8::Object> exports) {
     EXPORT_MODE(ofb)
 
 
-    Nan::Set(exports, Nan::New("algorithm").ToLocalChecked(), algorithm);
-    Nan::Set(exports, Nan::New("mode").ToLocalChecked(), mode);
+    Nan::Set(target, Nan::New("algorithm").ToLocalChecked(), algorithm);
+    Nan::Set(target, Nan::New("mode").ToLocalChecked(), mode);
 
-    Nan::Set(exports, Nan::New("AlgorithmBlock").ToLocalChecked(), Nan::GetFunction(algorithmBlock).ToLocalChecked());
-    Nan::Set(exports, Nan::New("AlgorithmStream").ToLocalChecked(), Nan::GetFunction(algorithmStream).ToLocalChecked());
+    Nan::Set(target, Nan::New("AlgorithmBlock").ToLocalChecked(), Nan::GetFunction(algorithmBlock).ToLocalChecked());
+    Nan::Set(target, Nan::New("AlgorithmStream").ToLocalChecked(), Nan::GetFunction(algorithmStream).ToLocalChecked());
     
-    Nan::Set(exports, Nan::New("Mode").ToLocalChecked(), Nan::GetFunction(modeBase).ToLocalChecked());
+    Nan::Set(target, Nan::New("Mode").ToLocalChecked(), Nan::GetFunction(modeBase).ToLocalChecked());
 }
 
 NODE_MODULE(cryptian, Init)
