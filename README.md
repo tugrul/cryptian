@@ -24,7 +24,7 @@ Check out the *test* folder to find out the different ways to use it.
 
 ```javascript
 const fs = require('fs');
-const {algorithm, mode, padding, createEncryptStream} = require('cryptian');
+const {default: {algorithm, mode}, padding, createEncryptStream} = require('cryptian');
 
 const key = Buffer.from('0a0c0e1012141618', 'hex');
 const iv = Buffer.from('ca40f5af0b1aeea2', 'hex');
@@ -43,7 +43,7 @@ fs.createReadStream('test.png')
 
 ```javascript
 const fs = require('fs');
-const {algorithm, mode, padding, createDecryptStream} = require('cryptian');
+const {default: {algorithm, mode}, padding, createDecryptStream} = require('cryptian');
 
 const key = Buffer.from('0a0c0e1012141618', 'hex');
 const iv = Buffer.from('ca40f5af0b1aeea2', 'hex');
@@ -85,7 +85,7 @@ All the following crypto algorithms ported from libmcrypt
 
 ```javascript
 const assert = require('assert');
-const {algorithm} = require('cryptian');
+const {default: {algorithm}} = require('cryptian');
 const des = new algorithm.Des();
 
 des.setKey(Buffer.from('0a0c0e1012141618', 'hex'));
@@ -107,7 +107,7 @@ assert(plaintext.equals(des.decrypt(ciphertext)), 'decrypted ciphertext should e
 
 ```javascript
 const assert = require('assert');
-const {algorithm} = require('cryptian');
+const {default: {algorithm}} = require('cryptian');
 
 const enigma = new algorithm.Enigma();
 
@@ -136,7 +136,7 @@ All the following block cipher mode algorithms ported from libmcrypt
 
 ```javascript
 const assert = require('assert');
-const {algorithm, mode} = require('cryptian');
+const {default: {algorithm, mode}} = require('cryptian');
 
 const plaintext  = Buffer.from('88cc3d134aee5660f7623cf475fe9df20f773180bd70b0ef2aae00910ba087a1', 'hex');
 const ciphertext = Buffer.from('ace98b99e6803c445b8bb76d937ea1b654fc86ed2e0e11597e52867c25ae96f8', 'hex');
@@ -177,10 +177,6 @@ const unpadded = Buffer.from('0575ba559d', 'hex');
 assert(padded.equals(padder.pad(unpadded)));
 assert(unpadded.equals(padder.unpad(padded)));
 ```
-
-
-
-
 
 ## License
 [![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Ftugrul%2Fcryptian.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2Ftugrul%2Fcryptian?ref=badge_large)
