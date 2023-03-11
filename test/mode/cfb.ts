@@ -7,8 +7,7 @@ import cryptian from '../..';
 const {algorithm: {Dummy}, mode: {cfb}} = cryptian;
 
 
-(typeof cfb === 'object' ? describe : describe.skip)
-('cfb', () => {
+(typeof cfb === 'object' ? describe : describe.skip) ('cfb', () => {
 
 
     const plaintext  = Buffer.from('88cc3d134aee5660f7623cf475fe9df20f773180bd70b0ef2aae00910ba087a1', 'hex');

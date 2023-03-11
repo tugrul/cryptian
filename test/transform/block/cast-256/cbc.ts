@@ -1,6 +1,6 @@
 
 
-import {expect, jest, test} from '@jest/globals';
+import {expect} from '@jest/globals';
 
 import { default as cryptian, 
     padding, createEncryptStream, createDecryptStream } from "../../../..";
@@ -11,8 +11,7 @@ import assert from 'assert';
 
 import streamBuffers from 'stream-buffers';
 
-(typeof algorithm.Cast256 === 'function' && typeof mode.cbc === 'object' ? describe : describe.skip)
-('cast-256 transform cbc mode', () => {
+(typeof algorithm.Cast256 === 'function' && typeof mode.cbc === 'object' ? describe : describe.skip) ('cast-256 transform cbc mode', () => {
 
 
     const key = Buffer.alloc(32, 0);
@@ -76,8 +75,7 @@ import streamBuffers from 'stream-buffers';
             const ciphertext = Buffer.from(target.ciphertext, 'hex');
 
 
-            (target.skipEncrypt ? xit : it)
-            ('should encrypt', () => {
+            (target.skipEncrypt ? xit : it) ('should encrypt', () => {
             
                 const cast256 = new algorithm.Cast256();
                 cast256.setKey(key);
@@ -144,7 +142,7 @@ import streamBuffers from 'stream-buffers';
             const cipher = new mode.cbc.Cipher(cast256, iv);
             
             assert.throws(() => {
-                const transform = createEncryptStream(cipher, padding.Pkcs5);
+                createEncryptStream(cipher, padding.Pkcs5);
             }, Error, 'PKCS5 allows only 8 bytes block size');
             
         });
@@ -157,7 +155,7 @@ import streamBuffers from 'stream-buffers';
             const decipher = new mode.cbc.Decipher(cast256, iv);
             
             assert.throws(() => {
-                const transform = createDecryptStream(decipher, padding.Pkcs5);
+                createDecryptStream(decipher, padding.Pkcs5);
             }, Error, 'PKCS5 allows only 8 bytes block size');
             
         });

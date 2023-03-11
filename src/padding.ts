@@ -10,11 +10,11 @@ export default class Padding {
         this._blockSize = blockSize;
     }
 
-    pad (chunk: Buffer) : Buffer {
+    pad (chunk: Buffer) : Buffer { // eslint-disable-line @typescript-eslint/no-unused-vars
         throw new NotImplementedError('pad function should be implemented');
     }
 
-    unpad (chunk: Buffer) : Buffer {
+    unpad (chunk: Buffer) : Buffer { // eslint-disable-line @typescript-eslint/no-unused-vars
         throw new NotImplementedError('unpad function should be implemented');
     }
 }

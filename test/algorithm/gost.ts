@@ -5,8 +5,7 @@ import cryptian from '../..';
 
 const {Gost} = cryptian.algorithm;
 
-(typeof Gost === 'function'? describe : describe.skip)
-('gost', () => {
+(typeof Gost === 'function'? describe : describe.skip) ('gost', () => {
 
     const key = Buffer.alloc(32, 0);
 

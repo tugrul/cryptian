@@ -5,8 +5,7 @@ import cryptian from '../..';
 
 const {Wake} = cryptian.algorithm;
 
-(typeof Wake === 'function'? describe : describe.skip)
-('wake', () => {
+(typeof Wake === 'function'? describe : describe.skip) ('wake', () => {
 
     const key = Buffer.alloc(32, 0);
 

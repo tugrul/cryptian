@@ -24,7 +24,6 @@ describe('iso-10126', () => {
             it('should pad ' + sample.size + ' bytes', () => {
 
                 const padder = new padding.Iso10126(8);
-                const padded = Buffer.from(sample.padded, 'hex');
                 const unpadded = Buffer.from(sample.unpadded, 'hex');
 
                 const target = padder.pad(unpadded);

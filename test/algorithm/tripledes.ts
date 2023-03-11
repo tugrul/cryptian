@@ -5,8 +5,7 @@ import cryptian from '../..';
 
 const {Tripledes} = cryptian.algorithm;
 
-(typeof Tripledes === 'function' ? describe : describe.skip)
-('tripledes', () => {
+(typeof Tripledes === 'function' ? describe : describe.skip) ('tripledes', () => {
 
     const key = Buffer.alloc(24, 0);
 

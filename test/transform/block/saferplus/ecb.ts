@@ -1,7 +1,5 @@
 
-
-
-import {expect, jest, test} from '@jest/globals';
+import {expect} from '@jest/globals';
 
 import { default as cryptian, 
     padding, createEncryptStream, createDecryptStream } from "../../../..";
@@ -12,8 +10,7 @@ import assert from 'assert';
 
 import streamBuffers from 'stream-buffers';
 
-(typeof algorithm.Saferplus === 'function' && typeof mode.ecb === 'object' ? describe : describe.skip)
-('saferplus transform ecb mode', () => {
+(typeof algorithm.Saferplus === 'function' && typeof mode.ecb === 'object' ? describe : describe.skip) ('saferplus transform ecb mode', () => {
 
 
     const key = Buffer.alloc(32, 0);
@@ -76,8 +73,7 @@ import streamBuffers from 'stream-buffers';
             const ciphertext = Buffer.from(target.ciphertext, 'hex');
 
 
-            (target.skipEncrypt ? xit : it)
-            ('should encrypt', () => {
+            (target.skipEncrypt ? xit : it) ('should encrypt', () => {
             
                 const saferplus = new algorithm.Saferplus();
                 saferplus.setKey(key);
@@ -143,7 +139,7 @@ import streamBuffers from 'stream-buffers';
             const cipher = new mode.ecb.Cipher(saferplus, iv);
             
             assert.throws(() => {
-                const transform = createEncryptStream(cipher, padding.Pkcs5);
+                createEncryptStream(cipher, padding.Pkcs5);
             }, Error, 'PKCS5 allows only 8 bytes block size');
             
         });
@@ -156,7 +152,7 @@ import streamBuffers from 'stream-buffers';
             const decipher = new mode.ecb.Decipher(saferplus, iv);
             
             assert.throws(() => {
-                const transform = createDecryptStream(decipher, padding.Pkcs5);
+                createDecryptStream(decipher, padding.Pkcs5);
             }, Error, 'PKCS5 allows only 8 bytes block size');
             
         });

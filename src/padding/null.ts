@@ -16,7 +16,7 @@ export default class Null extends Padding {
 
         while (length--) {
 
-            let size = chunk.length - length;
+            const size = chunk.length - length;
 
             if ((chunk[length] === 0) && (size <= this._blockSize)) {
                 continue;

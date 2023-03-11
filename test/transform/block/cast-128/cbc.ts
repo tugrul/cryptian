@@ -1,6 +1,6 @@
 
 
-import {expect, jest, test} from '@jest/globals';
+import {expect} from '@jest/globals';
 
 import { default as cryptian, 
     padding, createEncryptStream, createDecryptStream } from "../../../..";
@@ -11,8 +11,7 @@ import assert from 'assert';
 
 import streamBuffers from 'stream-buffers';
 
-(typeof algorithm.Cast128 === 'function' && typeof mode.cbc === 'object' ? describe : describe.skip)
-('cast-128 transform cbc mode', () => {
+(typeof algorithm.Cast128 === 'function' && typeof mode.cbc === 'object' ? describe : describe.skip) ('cast-128 transform cbc mode', () => {
 
 
     const key = Buffer.alloc(16, 0);
@@ -81,8 +80,7 @@ import streamBuffers from 'stream-buffers';
             const ciphertext = Buffer.from(target.ciphertext, 'hex');
 
 
-            (target.skipEncrypt ? xit : it)
-            ('should encrypt', () => {
+            (target.skipEncrypt ? xit : it) ('should encrypt', () => {
             
                 const cast128 = new algorithm.Cast128();
                 cast128.setKey(key);

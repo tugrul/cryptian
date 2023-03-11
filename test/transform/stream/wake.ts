@@ -1,5 +1,5 @@
 
-import {expect, jest, test} from '@jest/globals';
+import {expect} from '@jest/globals';
 
 import { default as cryptian, 
     createEncryptStream, createDecryptStream } from "../../..";
@@ -10,8 +10,7 @@ import assert from 'assert';
 
 import streamBuffers from 'stream-buffers';
 
-(typeof algorithm.Wake === 'function' ? describe : describe.skip)
-('wake transform', () => {
+(typeof algorithm.Wake === 'function' ? describe : describe.skip) ('wake transform', () => {
 
     const key = Buffer.alloc(32, 0);
 

@@ -5,8 +5,7 @@ import cryptian from '../..';
 
 const {Des} = cryptian.algorithm;
 
-(typeof Des === 'function'? describe : describe.skip)
-('des', () => {
+(typeof Des === 'function'? describe : describe.skip) ('des', () => {
 
     const key = Buffer.alloc(8, 0);
 

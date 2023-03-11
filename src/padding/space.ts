@@ -15,7 +15,7 @@ export default class Space extends Padding {
     
         while (length--) {
     
-            let size = chunk.length - length;
+            const size = chunk.length - length;
     
             if ((chunk[length] === 0x20) && (size <= this._blockSize)) {
                 continue;

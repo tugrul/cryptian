@@ -1,7 +1,7 @@
 
 
 
-import {expect, jest, test} from '@jest/globals';
+import {expect} from '@jest/globals';
 
 import { default as cryptian, 
     padding, createEncryptStream, createDecryptStream } from "../../../..";
@@ -12,8 +12,7 @@ import assert from 'assert';
 
 import streamBuffers from 'stream-buffers';
 
-(typeof algorithm.Safer === 'function' && typeof mode.cbc === 'object' ? describe : describe.skip)
-('safer-128 transform cbc mode', () => {
+(typeof algorithm.Safer === 'function' && typeof mode.cbc === 'object' ? describe : describe.skip) ('safer-128 transform cbc mode', () => {
 
     const key = Buffer.alloc(16, 0);
 
@@ -81,8 +80,7 @@ import streamBuffers from 'stream-buffers';
             const ciphertext = Buffer.from(target.ciphertext, 'hex');
 
 
-            (target.skipEncrypt ? xit : it)
-            ('should encrypt', () => {
+            (target.skipEncrypt ? xit : it) ('should encrypt', () => {
             
                 const safer = new algorithm.Safer();
                 safer.setKey(key);

@@ -1,10 +1,10 @@
 
 
-import {expect, jest, test} from '@jest/globals';
+import {expect} from '@jest/globals';
 
 import assert from 'assert';
 import {default as cryptian, 
-    createEncryptStream, createDecryptStream, padding, ModeList} from '../..';
+    padding, createEncryptStream, createDecryptStream, ModeList} from '../..';
 
 const {algorithm, mode} = cryptian;
 
@@ -14,8 +14,7 @@ import { randomBytes, createDecipheriv, createCipheriv, getCiphers } from 'crypt
 import streamBuffers from 'stream-buffers';
 
 
-(typeof algorithm.Des === 'function' ? describe : describe.skip)
-('des with openssl des compat', () => {
+(typeof algorithm.Des === 'function' ? describe : describe.skip) ('des with openssl des compat', () => {
 
     const modes: Array<{name: ModeList, openssl: string, skipIv?: boolean}> = [
         { name: ModeList.Cbc, openssl: 'des-cbc' },
@@ -32,8 +31,7 @@ import streamBuffers from 'stream-buffers';
         
         const targetMode = mode[name];
 
-        (typeof targetMode === 'object' && ciphers.includes(name) ? describe : describe.skip)
-        (name + ' mode pkcs7 padding', () => {
+        (typeof targetMode === 'object' && ciphers.includes(name) ? describe : describe.skip) (name + ' mode pkcs7 padding', () => {
             
             it('encrypt cryptian to decrypt openssl', () => {
                 

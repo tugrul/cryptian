@@ -1,8 +1,8 @@
 
-import {expect, jest, test} from '@jest/globals';
+import {expect} from '@jest/globals';
 
 import { default as cryptian, 
-    padding, createEncryptStream, createDecryptStream } from "../../../..";
+    createEncryptStream, createDecryptStream } from "../../../..";
 
 const {algorithm, mode} = cryptian;
 
@@ -10,8 +10,7 @@ import assert from 'assert';
 
 import streamBuffers from 'stream-buffers';
 
-(typeof algorithm.Rc2 === 'function' && typeof mode.ofb === 'object' ? describe : describe.skip)
-('RC2 transform ofb mode', () => {
+(typeof algorithm.Rc2 === 'function' && typeof mode.ofb === 'object' ? describe : describe.skip) ('RC2 transform ofb mode', () => {
 
     const key = Buffer.alloc(128, 0);
 

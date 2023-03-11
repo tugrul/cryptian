@@ -1,5 +1,5 @@
 
-import {expect, jest, test} from '@jest/globals';
+import {expect} from '@jest/globals';
 
 import { default as cryptian, 
     createEncryptStream, createDecryptStream } from "../../..";
@@ -11,8 +11,7 @@ import assert from 'assert';
 import streamBuffers from 'stream-buffers';
 
 
-(typeof algorithm.Arcfour === 'function' ? describe : describe.skip)
-('arcfour transform', () => {
+(typeof algorithm.Arcfour === 'function' ? describe : describe.skip) ('arcfour transform', () => {
 
     const key = Buffer.alloc(256, 0);
 

@@ -6,8 +6,7 @@ import cryptian from '../..';
 const {Enigma} = cryptian.algorithm;
 
 
-(typeof Enigma === 'function' ? describe : describe.skip)
-('enigma', () => {
+(typeof Enigma === 'function' ? describe : describe.skip) ('enigma', () => {
 
     const key = Buffer.from('enadyotr', 'ascii');
 

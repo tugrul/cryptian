@@ -6,13 +6,9 @@ import type { AlgorithmBlock } from './algorithm/block';
 import type { AlgorithmStream } from './algorithm/stream';
 import type { Mode } from './mode';
 
-import type Padding from './padding';
-
-type ModeCons = new(algorithm: AlgorithmBlock, iv: Buffer|string) => Mode;
-
 export type ModeCipherDecipher = {
-    Cipher: ModeCons,
-    Decipher: ModeCons
+    Cipher: typeof Mode,
+    Decipher: typeof Mode
 }
 
 export enum ModeList {
@@ -61,16 +57,16 @@ export enum PaddingList {
 }
 
 type AlgoList = {
-    [Property in `${BlockAlgorithmList}`]: new() => AlgorithmBlock
+    [Property in `${BlockAlgorithmList}`]: typeof AlgorithmBlock
 } & {
-    [Property in `${StreamAlgorithmList}`]: new() => AlgorithmStream
+    [Property in `${StreamAlgorithmList}`]: typeof AlgorithmStream
 };
 
 
 export type Cryptian = {
-    Mode: new() => Mode,
-    AlgorithmBlock: new() => AlgorithmBlock,
-    AlgorithmStream: new() => AlgorithmStream,
+    Mode: typeof Mode,
+    AlgorithmBlock: typeof AlgorithmBlock,
+    AlgorithmStream: typeof AlgorithmStream,
     mode: {
         [Property in `${ModeList}`]: ModeCipherDecipher
     },
@@ -88,8 +84,6 @@ import Space from "./padding/space";
 import Iso7816 from "./padding/iso-7816";
 import Iso10126 from "./padding/iso-10126";
 import AnsiX923 from "./padding/ansi-x923";
-
-type P = typeof Padding;
 
 export const padding = {
     Null, Pkcs5, Pkcs7, Space, Iso7816, Iso10126, AnsiX923

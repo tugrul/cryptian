@@ -1,5 +1,5 @@
 
-import {expect, jest, test} from '@jest/globals';
+import {expect} from '@jest/globals';
 
 import assert from 'assert';
 import cryptian from '../..';
@@ -9,8 +9,7 @@ const {algorithm: {Dummy}, mode: {ecb}} = cryptian;
 import { randomBytes } from 'crypto';
 
 
-(typeof ecb === 'object' ? describe : describe.skip)
-('ecb', () => {
+(typeof ecb === 'object' ? describe : describe.skip) ('ecb', () => {
 
     const plaintext   = Buffer.from('88cc3d134aee5660f7623cf475fe9df20f773180bd70b0ef2aae00910ba087a1', 'hex');
     const ciphertext  = Buffer.from('88cc3d134aee5660f7623cf475fe9df20f773180bd70b0ef2aae00910ba087a1', 'hex');

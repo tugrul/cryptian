@@ -1,14 +1,10 @@
-
-//const {algorithm} = require('../..');
-
 import assert from 'assert';
 
 import cryptian from '../..';
 
 const {Arcfour} = cryptian.algorithm;
 
-(typeof Arcfour === 'function'? describe : describe.skip)
-('arcfour', () => {
+(typeof Arcfour === 'function'? describe : describe.skip) ('arcfour', () => {
 
     const key = Buffer.alloc(256, 0);
 

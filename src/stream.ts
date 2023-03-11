@@ -51,6 +51,6 @@ export function prepareStream(cryptian: Cryptian, Stream: StreamCons, Block: Blo
     
     };
 
-};
+}
 
 

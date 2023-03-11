@@ -1,9 +1,9 @@
 
 
-import {expect, jest, test} from '@jest/globals';
+import {expect} from '@jest/globals';
 
 import { default as cryptian, 
-    padding, createEncryptStream, createDecryptStream } from "../../../..";
+    createEncryptStream, createDecryptStream } from "../../../..";
 
 const {algorithm, mode} = cryptian;
 
@@ -12,8 +12,7 @@ import assert from 'assert';
 import streamBuffers from 'stream-buffers';
 
 
-(typeof algorithm.Loki97 === 'function' && typeof mode.ofb === 'object' ? describe : describe.skip)
-('loki97 transform ofb mode', () => {
+(typeof algorithm.Loki97 === 'function' && typeof mode.ofb === 'object' ? describe : describe.skip) ('loki97 transform ofb mode', () => {
 
 
     const key = Buffer.alloc(32, 0);

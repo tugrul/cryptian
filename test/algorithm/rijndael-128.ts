@@ -6,8 +6,7 @@ import cryptian from '../..';
 const {Rijndael128} = cryptian.algorithm;
 
 
-(typeof Rijndael128 === 'function'? describe : describe.skip)
-('rijndael-128', () => {
+(typeof Rijndael128 === 'function'? describe : describe.skip) ('rijndael-128', () => {
 
     const key = Buffer.alloc(16, 0); 
     key[0] = 1;

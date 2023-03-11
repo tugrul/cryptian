@@ -6,8 +6,7 @@ import cryptian from '../..';
 
 const {Cast128} = cryptian.algorithm;
 
-(typeof Cast128 === 'function'? describe : describe.skip)
-('cast-128', () => {
+(typeof Cast128 === 'function'? describe : describe.skip) ('cast-128', () => {
 
     const key = Buffer.alloc(16, 0);
 

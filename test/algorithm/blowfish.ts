@@ -1,14 +1,11 @@
 
-const {algorithm} = require('../..');
-
 import assert from 'assert';
 
 import cryptian from '../..';
 
 const {Blowfish} = cryptian.algorithm;
 
-(typeof Blowfish === 'function'? describe : describe.skip)
-('blowfish', () => {
+(typeof Blowfish === 'function'? describe : describe.skip) ('blowfish', () => {
 
     const key = Buffer.alloc(56, 0);
 

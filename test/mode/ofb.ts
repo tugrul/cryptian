@@ -5,8 +5,7 @@ import cryptian from '../..';
 const {algorithm: {Dummy}, mode: {ofb}} = cryptian;
 
 
-(typeof ofb === 'object' ? describe : describe.skip)
-('ofb', () => {
+(typeof ofb === 'object' ? describe : describe.skip) ('ofb', () => {
 
     // ace98b99e6803c44d3d4909e5152b9d6bf7b4582bd70b0ef0aae00910ba087a1
 

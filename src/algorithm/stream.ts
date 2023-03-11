@@ -1,6 +1,6 @@
 
-export interface AlgorithmStream {
-    constructor(): this;
+export declare class AlgorithmStream {
+    constructor();
     setKey(key:string|Buffer): this;
     setIv(key:string|Buffer): this;
     encrypt(plaintext: string|Buffer): Buffer;

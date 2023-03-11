@@ -24,7 +24,7 @@ Check out the *test* folder to find out the different ways to use it.
 
 ```javascript
 const fs = require('fs');
-const {default: {algorithm, mode}, padding, createEncryptStream} = require('cryptian');
+const {default: {algorithm, mode}, createEncryptStream} = require('cryptian');
 
 const key = Buffer.from('0a0c0e1012141618', 'hex');
 const iv = Buffer.from('ca40f5af0b1aeea2', 'hex');

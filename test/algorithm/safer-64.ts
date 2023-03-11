@@ -5,8 +5,7 @@ import cryptian from '../..';
 
 const {Safer} = cryptian.algorithm;
 
-(typeof Safer === 'function'? describe : describe.skip)
-('safer-64', () => {
+(typeof Safer === 'function'? describe : describe.skip) ('safer-64', () => {
 
     const key = Buffer.alloc(8, 0);
 

@@ -4,8 +4,7 @@ import cryptian from '../..';
 
 const {Dummy} = cryptian.algorithm;
 
-(typeof Dummy === 'function'? describe : describe.skip)
-('dummy', () => {
+(typeof Dummy === 'function'? describe : describe.skip) ('dummy', () => {
 
     const ciphertext = Buffer.from('a1502d70ba1320c8', 'hex');
     const plaintext  = Buffer.from('0001020304050607', 'hex');

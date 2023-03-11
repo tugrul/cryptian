@@ -19,7 +19,7 @@ export default class Iso7816 extends Padding {
     
         while (length--) {
     
-            let size = chunk.length - length;
+            const size = chunk.length - length;
     
             if (size > this._blockSize) {
                 throw new Error('Padding size exceeded block size');

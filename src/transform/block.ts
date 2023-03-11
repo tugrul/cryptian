@@ -37,8 +37,8 @@ export class Block extends Transform {
     
         try {
             return callback(null, this._cipher.transform(data.slice(0, align))); 
-        } catch (err: any) {
-            return callback(err);
+        } catch (err) {
+            return callback(err as Error | null | undefined);
         }
     }
 
@@ -51,8 +51,8 @@ export class BlockEncrypt extends Block {
         try {
             this.push(this._cipher.transform(this._pad(this._tail)));
             return callback(null);
-        } catch (err: any) {
-            return callback(err);
+        } catch (err) {
+            return callback(err as Error | null | undefined);
         }
     }
 
@@ -79,8 +79,8 @@ export class BlockDecrypt extends Block {
         try {
             this.push(this._unpad(target));
             return callback(null);
-        } catch (err: any) {
-            return callback(err);
+        } catch (err) {
+            return callback(err as Error | null | undefined);
         }
     }
 

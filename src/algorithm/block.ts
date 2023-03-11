@@ -1,6 +1,6 @@
 
-export interface AlgorithmBlock {
-    constructor(): this;
+export declare class AlgorithmBlock {
+    constructor();
     setKey(key:string|Buffer): this;
     encrypt(plaintext: string|Buffer): Buffer;
     decrypt(ciphertext: string|Buffer): Buffer;

@@ -26,8 +26,8 @@ export class StreamEncrypt extends Stream {
     
         try {
             return callback(null, this._cipher.encrypt(typeof data === 'string' ? Buffer.from(data, encoding) : data));
-        } catch (err: any) {
-            return callback(err);
+        } catch (err) {
+            return callback(err as Error | null | undefined);
         }
         
     }
@@ -38,8 +38,8 @@ export class StreamDecrypt extends Stream {
     
         try {
             return callback(null, this._cipher.decrypt(typeof data === 'string' ? Buffer.from(data, encoding) : data));
-        } catch (err: any) {
-            return callback(err);
+        } catch (err) {
+            return callback(err as Error | null | undefined);
         }
         
     }

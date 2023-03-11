@@ -4,8 +4,7 @@ import assert from "assert";
 import cryptian from '../..';
 
 const {Xtea} = cryptian.algorithm;
-(typeof Xtea === 'function'? describe : describe.skip)
-('xtea', () => {
+(typeof Xtea === 'function'? describe : describe.skip) ('xtea', () => {
 
     const key = Buffer.alloc(16, 0);
 

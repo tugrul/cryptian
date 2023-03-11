@@ -1,6 +1,6 @@
 
 
-import {expect, jest, test} from '@jest/globals';
+import {expect} from '@jest/globals';
 
 import { default as cryptian, 
     padding, createEncryptStream, createDecryptStream } from "../../../..";
@@ -11,8 +11,7 @@ import assert from 'assert';
 
 import streamBuffers from 'stream-buffers';
 
-(typeof algorithm.Rijndael192 === 'function' && typeof mode.ecb === 'object' ? describe : describe.skip)
-('rijndael-192 transform ecb mode', () => {
+(typeof algorithm.Rijndael192 === 'function' && typeof mode.ecb === 'object' ? describe : describe.skip) ('rijndael-192 transform ecb mode', () => {
 
 
     const key = Buffer.alloc(32, 0);
@@ -75,8 +74,7 @@ import streamBuffers from 'stream-buffers';
             const ciphertext = Buffer.from(target.ciphertext, 'hex');
 
 
-            (target.skipEncrypt ? xit : it)
-            ('should encrypt', () => {
+            (target.skipEncrypt ? xit : it) ('should encrypt', () => {
             
                 const rijndael = new algorithm.Rijndael192();
                 rijndael.setKey(key);
@@ -142,7 +140,7 @@ import streamBuffers from 'stream-buffers';
             const cipher = new mode.ecb.Cipher(rijndael, iv);
 
             assert.throws(() => {
-                const transform = createEncryptStream(cipher, padding.Pkcs5);
+                createEncryptStream(cipher, padding.Pkcs5);
             }, Error, 'PKCS5 allows only 8 bytes block size');
             
         });
@@ -155,7 +153,7 @@ import streamBuffers from 'stream-buffers';
             const decipher = new mode.ecb.Decipher(rijndael, iv);
 
             assert.throws(() => {
-                const transform = createDecryptStream(decipher, padding.Pkcs5);
+                createDecryptStream(decipher, padding.Pkcs5);
             }, Error, 'PKCS5 allows only 8 bytes block size');
             
         });

@@ -4,9 +4,7 @@ import cryptian from '../..';
 
 const {algorithm: {Dummy}, mode: {nofb}} = cryptian;
 
-
-(typeof nofb === 'object' ? describe : describe.skip)
-('nofb', () => {
+(typeof nofb === 'object' ? describe : describe.skip) ('nofb', () => {
 
     const plaintext  = Buffer.from('88cc3d134aee5660f7623cf475fe9df20f773180bd70b0ef2aae00910ba087a1', 'hex');
     const ciphertext = Buffer.from('ace98b99e6803c44d3478a7ed990f7d62b52870a111edacb0e8bb61ba7ceed85', 'hex');

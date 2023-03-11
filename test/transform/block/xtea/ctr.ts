@@ -1,8 +1,8 @@
 
-import {expect, jest, test} from '@jest/globals';
+import {expect} from '@jest/globals';
 
 import { default as cryptian, 
-    padding, createEncryptStream, createDecryptStream } from "../../../..";
+    createEncryptStream, createDecryptStream } from "../../../..";
 
 const {algorithm, mode} = cryptian;
 
@@ -10,8 +10,7 @@ import assert from 'assert';
 
 import streamBuffers from 'stream-buffers';
 
-(typeof algorithm.Xtea === 'function' && typeof mode.ctr === 'object' ? describe : describe.skip)
-('xtea transform ctr mode', () => {
+(typeof algorithm.Xtea === 'function' && typeof mode.ctr === 'object' ? describe : describe.skip) ('xtea transform ctr mode', () => {
 
     const key = Buffer.alloc(16, 0);
 
