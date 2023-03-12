@@ -49,7 +49,7 @@ export class BlockEncrypt extends Block {
 
     _flush(callback: TransformCallback) {
         try {
-            this.push(this._cipher.transform(this._pad(this._tail)));
+            this._tail.length > 0 && this.push(this._cipher.transform(this._pad(this._tail)));
             return callback(null);
         } catch (err) {
             return callback(err as Error | null | undefined);
@@ -77,7 +77,7 @@ export class BlockDecrypt extends Block {
         const target = this._cipher.transform(this._tail);
         
         try {
-            this.push(this._unpad(target));
+            this._tail.length > 0 && this.push(this._unpad(target));
             return callback(null);
         } catch (err) {
             return callback(err as Error | null | undefined);
