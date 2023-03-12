@@ -125,6 +125,7 @@ assert(plaintext.equals(enigma.decrypt(ciphertext)), 'decrypted ciphertext shoul
 All the following block cipher mode algorithms ported from libmcrypt
 
 * CBC
+* PCBC
 * CFB (CFB8)
 * CTR
 * ECB

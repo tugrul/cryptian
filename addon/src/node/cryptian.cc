@@ -66,6 +66,7 @@ NAN_MODULE_INIT(Init) {
     EXPORT_ALGORITHM_STREAM(Wake)
 
     EXPORT_MODE(cbc)
+    EXPORT_MODE(pcbc)
     EXPORT_MODE(cfb)
     EXPORT_MODE(ctr)
     EXPORT_MODE(ecb)

@@ -1,5 +1,6 @@
 
 #include "mode/cbc.h"
+#include "mode/pcbc.h"
 #include "mode/cfb.h"
 #include "mode/ctr.h"
 #include "mode/ecb.h"

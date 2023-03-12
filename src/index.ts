@@ -13,6 +13,7 @@ export type ModeCipherDecipher = {
 
 export enum ModeList {
     Cbc = 'cbc',
+    Pcbc = 'pcbc',
     Cfb = 'cfb',
     Ctr = 'ctr',
     Ecb = 'ecb',

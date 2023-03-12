@@ -21,6 +21,7 @@
                 "addon/lib/algorithm/xtea.cc",
                 "addon/lib/algorithm/dummy.cc",
                 "addon/lib/mode/cbc.cc",
+                "addon/lib/mode/pcbc.cc",
                 "addon/lib/mode/cfb.cc",
                 "addon/lib/mode/ctr.cc",
                 "addon/lib/mode/ecb.cc",
