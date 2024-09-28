@@ -20,6 +20,10 @@ export class Block extends Transform {
 
     }
 
+    calculateRemain(length: number, blockSize: number): number {
+        return length % blockSize;
+    }
+
     _transform(data: Buffer, encoding: BufferEncoding, callback: TransformCallback) {
     
         const blockSize = this._cipher.getBlockSize();
@@ -30,26 +34,38 @@ export class Block extends Transform {
 
         data = Buffer.concat([this._tail, data]);
         
-        const remain = blockSize + ((data.length % blockSize) || blockSize);    
-        const align = data.length > remain ? data.length - remain : 0;
-    
-        this._tail = data.slice(align);
+        if (data.length < blockSize) {
+            // The chunk is smaller than the block size, and the algorithm can't handle this case. 
+            // We should pass the current chunk to the next transformation operation to concatenate it 
+            // and attempt processing in the next step.
+            this._tail = data.subarray();
+            return callback();
+        }
+
+        const remain = this.calculateRemain(data.length, blockSize);
+
+        if (remain === 0) {
+            // Perfectly fitting the data size to the block size eliminates the need to pass 
+            // the remaining data to the next transformation.
+            this._tail = Buffer.alloc(0);
+        } else {
+            this._tail = data.subarray(-remain);
+            data = data.subarray(0, -remain);
+        }
     
         try {
-            return callback(null, this._cipher.transform(data.slice(0, align))); 
+            return callback(null, this._cipher.transform(data)); 
         } catch (err) {
             return callback(err as Error | null | undefined);
         }
     }
-
-    
 }
 
 export class BlockEncrypt extends Block {
 
     _flush(callback: TransformCallback) {
         try {
-            this._tail.length > 0 && this.push(this._cipher.transform(this._pad(this._tail)));
+            this.push(this._cipher.transform(this._pad(this._tail)));
             return callback(null);
         } catch (err) {
             return callback(err as Error | null | undefined);
@@ -72,12 +88,27 @@ export class BlockEncrypt extends Block {
 
 export class BlockDecrypt extends Block {
 
+    calculateRemain(length: number, blockSize: number): number {
+        // This is necessary because the stream data length is indefinite, 
+        // and we must ensure that the stream finishes in time. 
+        // We also need to process the last bytes of data separately to remove padding from the decrypted data.
+        return (length % blockSize) || blockSize;
+    }
+
     _flush(callback: TransformCallback) {
-    
+
+        if (this._tail.length === 0) {
+            return callback(new Error('Finishing data cannot be empty'));
+        }
+
+        if ((this._tail.length % this._cipher.getBlockSize()) !== 0) {
+            return callback(new Error('Finishing data not matches the block size'));
+        }
+
         const target = this._cipher.transform(this._tail);
         
         try {
-            this._tail.length > 0 && this.push(this._unpad(target));
+            this.push(this._unpad(target));
             return callback(null);
         } catch (err) {
             return callback(err as Error | null | undefined);
