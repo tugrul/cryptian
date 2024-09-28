@@ -31,6 +31,13 @@ describe('iso-7816', () => {
 
         });
 
+        it('should pad empty buffer', () => {
+            const padder = new padding.Iso7816(8);
+            const padded = padder.pad(Buffer.alloc(0))
+
+            assert(padded.equals(Buffer.from('8000000000000000', 'hex')));
+        });
+
     });
 
 
@@ -47,6 +54,14 @@ describe('iso-7816', () => {
                 assert(unpadded.equals(padder.unpad(padded)));
             });
 
+        });
+
+        it('should unpad only padding data', () => {
+
+            const padder = new padding.Iso7816(8);
+            const unpadded = padder.unpad(Buffer.from('8000000000000000', 'hex'));
+
+            assert(unpadded.length === 0);
         });
 
     });

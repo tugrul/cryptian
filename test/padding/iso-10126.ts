@@ -33,6 +33,13 @@ describe('iso-10126', () => {
 
         });
 
+        it('should pad empty buffer', () => {
+            const padder = new padding.Iso10126(8);
+            const padded = padder.pad(Buffer.alloc(0))
+
+            assert(padded.length === 8 && padded[7] === 8);
+        });
+
     });
 
 
@@ -49,6 +56,14 @@ describe('iso-10126', () => {
                 assert(unpadded.equals(padder.unpad(padded)));
             });
 
+        });
+
+        it('should unpad only padding data', () => {
+
+            const padder = new padding.Iso10126(8);
+            const unpadded = padder.unpad(Buffer.from('1ad227c97c515608', 'hex'));
+
+            assert(unpadded.length === 0);
         });
 
     });

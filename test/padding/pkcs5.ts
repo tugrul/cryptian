@@ -39,6 +39,13 @@ describe('pkcs5', () => {
 
         });
 
+        it('should pad empty buffer', () => {
+            const padder = new padding.Pkcs5(8);
+            const padded = padder.pad(Buffer.alloc(0))
+
+            assert(padded.equals(Buffer.from('0808080808080808', 'hex')));
+        });
+
     });
 
 
@@ -55,6 +62,14 @@ describe('pkcs5', () => {
                 assert(unpadded.equals(padder.unpad(padded)));
             });
 
+        });
+
+        it('should unpad only padding data', () => {
+
+            const padder = new padding.Pkcs5(8);
+            const unpadded = padder.unpad(Buffer.from('0808080808080808', 'hex'));
+
+            assert(unpadded.length === 0);
         });
 
     });

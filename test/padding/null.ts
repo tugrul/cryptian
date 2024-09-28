@@ -32,6 +32,13 @@ describe('null', () => {
 
         });
 
+        it('should pad empty buffer', () => {
+            const padder = new padding.Null(8);
+            const padded = padder.pad(Buffer.alloc(0))
+
+            assert(padded.equals(Buffer.from('0000000000000000', 'hex')));
+        });
+
     });
 
 
@@ -48,6 +55,14 @@ describe('null', () => {
                 assert(unpadded.equals(padder.unpad(padded)));
             });
 
+        });
+
+        it('should unpad only padding data', () => {
+
+            const padder = new padding.Null(8);
+            const unpadded = padder.unpad(Buffer.from('0000000000000000', 'hex'));
+
+            assert(unpadded.length === 0);
         });
 
     });

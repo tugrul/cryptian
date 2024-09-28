@@ -36,6 +36,21 @@ describe('pkcs7', () => {
 
         });
 
+        it('should pad empty buffer of blockSize 8', () => {
+            const padder = new padding.Pkcs7(8);
+            const padded = padder.pad(Buffer.alloc(0))
+
+            assert(padded.equals(Buffer.from('0808080808080808', 'hex')));
+        });
+
+
+        it('should pad empty buffer of blockSize 16', () => {
+            const padder = new padding.Pkcs7(16);
+            const padded = padder.pad(Buffer.alloc(0))
+
+            assert(padded.equals(Buffer.from('10101010101010101010101010101010', 'hex')));
+        });
+
     });
 
 
@@ -52,6 +67,22 @@ describe('pkcs7', () => {
                 assert(unpadded.equals(padder.unpad(padded)));
             });
 
+        });
+
+        it('should unpad only padding data of blockSize 8', () => {
+
+            const padder = new padding.Pkcs7(8);
+            const unpadded = padder.unpad(Buffer.from('0808080808080808', 'hex'));
+
+            assert(unpadded.length === 0);
+        });
+
+        it('should unpad only padding data of blockSize 16', () => {
+
+            const padder = new padding.Pkcs7(16);
+            const unpadded = padder.unpad(Buffer.from('10101010101010101010101010101010', 'hex'));
+
+            assert(unpadded.length === 0);
         });
 
     });
