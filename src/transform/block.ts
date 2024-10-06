@@ -101,8 +101,9 @@ export class BlockDecrypt extends Block {
             return callback(new Error('Finishing data cannot be empty'));
         }
 
-        if ((this._tail.length % this._cipher.getBlockSize()) !== 0) {
-            return callback(new Error('Finishing data not matches the block size'));
+        if ((this._tail.length % this._cipher.getBlockSize()) !== 0 
+            && this._cipher.isPaddingRequired()) {
+            return callback(new Error('Finishing data does not match the block size'));
         }
 
         const target = this._cipher.transform(this._tail);
