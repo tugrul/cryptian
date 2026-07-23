@@ -37,9 +37,30 @@ read that data.
 `mcrypt_encrypt()` silently zero-padded the plaintext up to the block size. It
 is not PKCS#7. Use `padding.Null` to reproduce it.
 
-Null padding is ambiguous: it cannot represent plaintext that legitimately ends
-in a zero byte, and unpadding cannot tell real trailing zeros from padding.
-That ambiguity is inherited from mcrypt. For new data use `padding.Pkcs7`.
+`padding.Null` and `padding.Space` record no length. They append a filler byte
+and nothing else, so unpadding can only strip trailing filler and guess where
+the message ended. Plaintext that legitimately ends in zero bytes or spaces
+cannot be recovered exactly.
+
+This is a property of the schemes themselves, not of libmcrypt or of this
+implementation. libmcrypt had no padding layer at all: PHP zero-padded on the
+way in and never stripped on the way out, leaving callers to trim the result by
+hand. These schemes are kept here because real systems still use them, not
+because they are sound.
+
+Only the caller knows whether trailing zeros or spaces are data or filler, so
+only the caller can resolve the ambiguity. If it matters, record the original
+length alongside the ciphertext, or move to `padding.Pkcs7`, which stores the
+padding length and round trips exactly.
+
+Space padding comes from fixed width record traditions, where a field was
+always full and shorter values were blank filled. Fixed width mainframe records
+and SQL `CHAR` columns behave the same way. Use `padding.Space` when the legacy
+format expected blanks rather than zeros.
+
+Both schemes strip at most one block. Filler is never longer than the block, so
+that bound is correct, and it also limits how much genuine trailing data an
+unpad can consume when the plaintext really did end in filler bytes.
 
 ### mcrypt zero-padded short keys
 
