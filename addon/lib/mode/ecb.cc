@@ -12,6 +12,10 @@ bool Ecb::isPaddingRequired() {
     return true;
 }
 
+bool Ecb::isIvRequired() {
+    return false;
+}
+
 std::vector<char> Ecb::transform(const std::vector<char> chunk) {
 
     const std::size_t blockSize = _algorithm->getBlockSize();

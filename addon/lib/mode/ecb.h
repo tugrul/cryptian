@@ -13,6 +13,7 @@ protected:
 public:
     std::vector<char> transform(const std::vector<char>);
     bool isPaddingRequired();
+    bool isIvRequired();
 };
 
 

@@ -40,6 +40,25 @@ public:
         return false;
     }
 
+    // Modes that keep a feedback/counter register need an initialization
+    // vector exactly as wide as the algorithm block. ECB keeps no state
+    // between blocks and overrides this to accept an empty vector.
+    virtual bool isIvRequired() {
+        return true;
+    }
+
+    // The register is indexed up to the block size while transforming, so an
+    // undersized initialization vector would read and write past the end of
+    // the allocation. Reject it before any transform can run.
+    bool isIvValid(size_t size) {
+
+        if (!isIvRequired() && size == 0) {
+            return true;
+        }
+
+        return size == _algorithm->getBlockSize();
+    }
+
     virtual std::vector<char> transform(const std::vector<char>) = 0;
     virtual bool isPaddingRequired() = 0;
 };

@@ -35,11 +35,10 @@ public:
 template <typename T>
 class Mode: public node::ObjectWrap {
 protected:
-    Mode(algorithm::AlgorithmBlock* algorithm, std::vector<char> iv) {
+    explicit Mode(algorithm::AlgorithmBlock* algorithm) {
 
         mode = new T();
         mode->setAlgorithm(algorithm);
-        mode->setIv(iv);
     }
 
     T* mode;
@@ -95,7 +94,19 @@ protected:
         AlgorithmBlock<algorithm::AlgorithmBlock>* algorithm =
         node::ObjectWrap::Unwrap<AlgorithmBlock<algorithm::AlgorithmBlock>>(Nan::To<v8::Object>(info[0]).ToLocalChecked());
 
-        Mode<T>* container = new Mode<T>(algorithm->algorithm, convertToVector(info[1]));
+        std::vector<char> iv = convertToVector(info[1]);
+
+        Mode<T>* container = new Mode<T>(algorithm->algorithm);
+
+        if (!container->mode->isIvValid(iv.size())) {
+
+            delete container;
+
+            Nan::ThrowError("Iv size should be equal to algorithm block size.");
+            return info.GetReturnValue().Set(Nan::Undefined());
+        }
+
+        container->mode->setIv(iv);
 
         container->Wrap(info.This());
 
