@@ -2,6 +2,25 @@
 
 MCrypt compatible crypto wrapper for Node.js
 
+Provides the ciphers, block cipher modes and paddings that libmcrypt had,
+including the ones OpenSSL never exposed, so data written by PHP `mcrypt` can
+still be read after its removal in PHP 7.2.
+
+**Migrating from PHP?** See [docs/migrating-from-php-mcrypt.md](docs/migrating-from-php-mcrypt.md).
+It maps every mcrypt constant onto this library and covers the three things
+that most often go wrong: `MCRYPT_RIJNDAEL_256` is a 256 bit *block* and is not
+AES-256, `mcrypt_encrypt()` padded with null bytes rather than PKCS#7, and the
+mcrypt mode names do not line up with the OpenSSL ones (`cfb` is 8 bit, `ncfb`
+is the full block variant).
+
+## Intended use
+
+These algorithms exist to read existing data. Most of them are obsolete and
+several are broken. None of the modes here authenticate, so ciphertext can be
+altered without detection. For new work use an AEAD construction such as
+AES-GCM from node's built-in `crypto`, and treat this library as a migration
+tool: decrypt once, re-encrypt with something modern.
+
 ## Install
 
 ### Using NPM
@@ -124,14 +143,20 @@ assert(plaintext.equals(enigma.decrypt(ciphertext)), 'decrypted ciphertext shoul
 
 All the following block cipher mode algorithms ported from libmcrypt
 
-* CBC
-* PCBC
-* CFB (CFB8)
-* CTR
-* ECB
-* NCFB
-* NOFB
-* OFB (OFB8)
+| cryptian | width | PHP mcrypt | OpenSSL |
+| --- | --- | --- | --- |
+| `cbc` | block | `MCRYPT_MODE_CBC` | `aes-128-cbc` |
+| `pcbc` | block | none | none |
+| `cfb` | 8 bit | `MCRYPT_MODE_CFB` | `aes-128-cfb8` |
+| `ncfb` | block | `'ncfb'` | `aes-128-cfb` |
+| `ctr` | block | `'ctr'` | `aes-128-ctr` |
+| `ecb` | block | `MCRYPT_MODE_ECB` | `aes-128-ecb` |
+| `ofb` | 8 bit | `MCRYPT_MODE_OFB` | none |
+| `nofb` | block | `MCRYPT_MODE_NOFB` | `aes-128-ofb` |
+
+Note that OpenSSL's `aes-128-cfb` is the full block variant and corresponds to
+`ncfb`, not `cfb`, and that `aes-128-ofb` corresponds to `nofb`, not `ofb`.
+These pairings are verified in `test/openssl`.
 
 ### Basic Usage
 
