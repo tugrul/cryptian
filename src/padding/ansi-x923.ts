@@ -16,11 +16,20 @@ export default class AnsiX923 extends Padding {
     unpad (chunk: Buffer): Buffer {
 
         const size = chunk[chunk.length - 1];
-    
+
+        // A zero count would leave the chunk untouched while reporting success.
+        if (size === 0) {
+            throw new Error('Invalid block size or last byte not indicating the padding size');
+        }
+
         if (size > this._blockSize) {
             throw new Error('Invalid block size or last byte not indicating the padding size');
         }
-    
+
+        if (size > chunk.length) {
+            throw new Error('Invalid block size or last byte not indicating the padding size');
+        }
+
         const limit = chunk.length - size;
         const padding = chunk.slice(limit);
     
