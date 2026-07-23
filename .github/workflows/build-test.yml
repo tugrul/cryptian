@@ -10,22 +10,34 @@ on:
 jobs:
   build:
 
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
 
     strategy:
+      # One platform failing should not hide the result on the others.
+      fail-fast: false
       matrix:
-        node-version: [14.x, 16.x, 18.x]
-        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
+        # Node 22 is Maintenance LTS, 24 is Active LTS and 26 is Current.
+        # Everything earlier is end of life and no longer receives patches.
+        node-version: [22.x, 24.x, 26.x]
+        # The addon is compiled on the user machine, so the compiler differs
+        # per platform. Windows in particular was the reason this project
+        # exists and is the most likely place for a build to break.
+        os: [ubuntu-latest, windows-latest, macos-latest]
+
+    name: node ${{ matrix.node-version }} on ${{ matrix.os }}
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v6
     - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v3
+      uses: actions/setup-node@v6
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
-    - run: npm ci
+    - name: Install dependencies and compile the addon
+      run: npm ci
     - name: Run ESLint
       run: npm run lint
-    - run: npm run build --if-present
-    - run: npm test
+    - name: Compile TypeScript
+      run: npm run build --if-present
+    - name: Run tests
+      run: npm test
