@@ -21,7 +21,7 @@ import streamBuffers from 'stream-buffers';
         { name: ModeList.Ecb, openssl: 'des-ecb', skipIv: true },
         { name: ModeList.Cfb, openssl: 'des-cfb8' },
         { name: ModeList.Ncfb, openssl: 'des-cfb' },
-        { name: ModeList.Ofb, openssl: 'des-ofb' }
+        { name: ModeList.Nofb, openssl: 'des-ofb' }
     ];
 
     // list of available ciphers
@@ -31,7 +31,7 @@ import streamBuffers from 'stream-buffers';
         
         const targetMode = mode[name];
 
-        (typeof targetMode === 'object' && ciphers.includes(name) ? describe : describe.skip) (name + ' mode pkcs7 padding', () => {
+        (typeof targetMode === 'object' && ciphers.includes(openssl) ? describe : describe.skip) (name + ' mode pkcs7 padding', () => {
             
             it('encrypt cryptian to decrypt openssl', () => {
                 

@@ -10,21 +10,21 @@ import { randomBytes, createDecipheriv, createCipheriv, getCiphers } from 'crypt
 
 import streamBuffers from 'stream-buffers';
 
-// Rijndael with a 128 bit block is AES, so every mode here has an OpenSSL
-// counterpart to check against. Note that cryptian follows the mcrypt naming:
+// Tripledes maps onto the OpenSSL des-ede3 family. Single DES is not in the
+// OpenSSL 3 default provider, so des.ts skips on modern Node and this file is
+// what actually exercises interop for an eight byte block. Note that cryptian follows the mcrypt naming:
 // cfb is the 8 bit variant and ncfb is the full block one, while ofb is the
 // 8 bit variant and nofb is the full block one. OpenSSL exposes no 8 bit OFB,
 // so cryptian ofb has no counterpart and is covered by the mcrypt vectors in
 // test/transform instead.
-(typeof algorithm.Rijndael128 === 'function' ? describe : describe.skip) ('rijndael-128 with openssl aes-128 compat', () => {
+(typeof algorithm.Tripledes === 'function' ? describe : describe.skip) ('tripledes with openssl des-ede3 compat', () => {
 
     const modes: Array<{name: ModeList, openssl: string, skipIv?: boolean}> = [
-        { name: ModeList.Cbc, openssl: 'aes-128-cbc' },
-        { name: ModeList.Ecb, openssl: 'aes-128-ecb', skipIv: true },
-        { name: ModeList.Cfb, openssl: 'aes-128-cfb8' },
-        { name: ModeList.Ncfb, openssl: 'aes-128-cfb' },
-        { name: ModeList.Ctr, openssl: 'aes-128-ctr' },
-        { name: ModeList.Nofb, openssl: 'aes-128-ofb' }
+        { name: ModeList.Cbc, openssl: 'des-ede3-cbc' },
+        { name: ModeList.Ecb, openssl: 'des-ede3-ecb', skipIv: true },
+        { name: ModeList.Cfb, openssl: 'des-ede3-cfb8' },
+        { name: ModeList.Ncfb, openssl: 'des-ede3-cfb' },
+        { name: ModeList.Nofb, openssl: 'des-ede3-ofb' }
     ];
 
     // list of available ciphers
@@ -41,13 +41,13 @@ import streamBuffers from 'stream-buffers';
 
             it('encrypt cryptian to decrypt openssl', async () => {
 
-                const iv  = skipIv ? Buffer.alloc(0) : randomBytes(16);
-                const key = randomBytes(16);
+                const iv  = skipIv ? Buffer.alloc(0) : randomBytes(8);
+                const key = randomBytes(24);
                 const plaintext = randomBytes(50);
 
-                const rijndael = new algorithm.Rijndael128();
-                rijndael.setKey(key);
-                const cipher = new targetMode.Cipher(rijndael, iv);
+                const tripledes = new algorithm.Tripledes();
+                tripledes.setKey(key);
+                const cipher = new targetMode.Cipher(tripledes, iv);
 
                 const encryptTransform = createEncryptStream(cipher, padding.Pkcs7);
                 const decryptTransform = encryptTransform.pipe(createDecipheriv(openssl, key, skipIv ? null : iv));
@@ -78,13 +78,13 @@ import streamBuffers from 'stream-buffers';
 
             it('encrypt openssl to decrypt cryptian', async () => {
 
-                const iv  = skipIv ? Buffer.alloc(0) : randomBytes(16);
-                const key = randomBytes(16);
+                const iv  = skipIv ? Buffer.alloc(0) : randomBytes(8);
+                const key = randomBytes(24);
                 const plaintext = randomBytes(50);
 
-                const rijndael = new algorithm.Rijndael128();
-                rijndael.setKey(key);
-                const decipher = new targetMode.Decipher(rijndael, iv);
+                const tripledes = new algorithm.Tripledes();
+                tripledes.setKey(key);
+                const decipher = new targetMode.Decipher(tripledes, iv);
 
                 const encryptTransform = createCipheriv(openssl, key, skipIv ? null : iv);
                 const decryptTransform = encryptTransform.pipe(createDecryptStream(decipher, padding.Pkcs7));
