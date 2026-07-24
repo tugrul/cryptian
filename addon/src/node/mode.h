@@ -51,24 +51,32 @@ protected:
         delete[] buffer;
     }
 
-    static std::vector<char> convertToVector(Local<Value> val) {
+    // Returns false and schedules a TypeError when the value cannot be
+    // converted. Throwing does not unwind C++, so callers must check the
+    // result and return rather than carrying on with an empty vector.
+    static bool convertToVector(Local<Value> val, std::vector<char>& out) {
 
         if (val->IsString()) {
 
             Nan::Utf8String strVal(val);
-            return std::vector<char>(*strVal, (*strVal) + strVal.length());
+            out.assign(*strVal, (*strVal) + strVal.length());
 
-        } else if (node::Buffer::HasInstance(val)) {
+            return true;
+        }
+
+        if (node::Buffer::HasInstance(val)) {
 
             char* valPtr = node::Buffer::Data(val);
             size_t valLen = node::Buffer::Length(val);
 
-            return std::vector<char>(valPtr, valPtr + valLen);
+            out.assign(valPtr, valPtr + valLen);
+
+            return true;
         }
 
         Nan::ThrowTypeError("Value has got incorrect type. Should be Buffer or String.");
 
-        return std::vector<char>();
+        return false;
     }
 
     static Nan::Persistent<Function> constructor;
@@ -94,7 +102,11 @@ protected:
         AlgorithmBlock<algorithm::AlgorithmBlock>* algorithm =
         node::ObjectWrap::Unwrap<AlgorithmBlock<algorithm::AlgorithmBlock>>(Nan::To<v8::Object>(info[0]).ToLocalChecked());
 
-        std::vector<char> iv = convertToVector(info[1]);
+        std::vector<char> iv;
+
+        if (!convertToVector(info[1], iv)) {
+            return info.GetReturnValue().Set(Nan::Undefined());
+        }
 
         Mode<T>* container = new Mode<T>(algorithm->algorithm);
 
@@ -123,7 +135,11 @@ protected:
         Mode<T>* container = ObjectWrap::Unwrap<Mode<T>>(info.This());
 
 
-        std::vector<char> prev = convertToVector(info[0]);
+        std::vector<char> prev;
+
+        if (!convertToVector(info[0], prev)) {
+            return info.GetReturnValue().Set(Nan::Undefined());
+        }
 
         if (container->mode->isPaddingRequired() && !container->mode->isSizeValid(prev.size())) {
             Nan::ThrowError("Data size should be aligned to algorithm block size.");

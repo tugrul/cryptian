@@ -39,24 +39,32 @@ protected:
         delete[] buffer;
     }
 
-    static std::vector<char> convertToVector(Local<Value> val) {
+    // Returns false and schedules a TypeError when the value cannot be
+    // converted. Throwing does not unwind C++, so callers must check the
+    // result and return rather than carrying on with an empty vector.
+    static bool convertToVector(Local<Value> val, std::vector<char>& out) {
 
         if (val->IsString()) {
 
             Nan::Utf8String strVal(val);
-            return std::vector<char>(*strVal, (*strVal) + strVal.length());
+            out.assign(*strVal, (*strVal) + strVal.length());
 
-        } else if (node::Buffer::HasInstance(val)) {
+            return true;
+        }
+
+        if (node::Buffer::HasInstance(val)) {
 
             char* valPtr = node::Buffer::Data(val);
             size_t valLen = node::Buffer::Length(val);
 
-            return std::vector<char>(valPtr, valPtr + valLen);
+            out.assign(valPtr, valPtr + valLen);
+
+            return true;
         }
 
         Nan::ThrowTypeError("Value has got incorrect type. Should be Buffer or String.");
 
-        return std::vector<char>();
+        return false;
     }
 
     static NAN_METHOD(Forbidden) {
@@ -97,11 +105,18 @@ protected:
 
         if (info.Length() < 1) {
             Nan::ThrowTypeError("Missing parameter. Key should be specified.");
+            return info.GetReturnValue().Set(Nan::Undefined());
+        }
+
+        std::vector<char> key;
+
+        if (!AlgorithmBase<T>::convertToVector(info[0], key)) {
+            return info.GetReturnValue().Set(Nan::Undefined());
         }
 
         AlgorithmBase<T>* container = ObjectWrap::Unwrap<AlgorithmBase<T>>(info.This());
 
-        container->algorithm->setKey(AlgorithmBase<T>::convertToVector(info[0]));
+        container->algorithm->setKey(key);
 
         return info.GetReturnValue().Set(info.This());
     }
@@ -119,11 +134,18 @@ protected:
 
         if (info.Length() < 1) {
             Nan::ThrowTypeError("Missing parameter. Plaintext should be specified.");
+            return info.GetReturnValue().Set(Nan::Undefined());
+        }
+
+        std::vector<char> input;
+
+        if (!AlgorithmBase<T>::convertToVector(info[0], input)) {
+            return info.GetReturnValue().Set(Nan::Undefined());
         }
 
         AlgorithmBase<T>* container = ObjectWrap::Unwrap<AlgorithmBase<T>>(info.This());
 
-        std::vector<char> ciphertext = container->algorithm->encrypt(AlgorithmBase<T>::convertToVector(info[0]));
+        std::vector<char> ciphertext = container->algorithm->encrypt(input);
 
         char* buffer = new char[ciphertext.size()];
 
@@ -136,11 +158,18 @@ protected:
 
         if (info.Length() < 1) {
             Nan::ThrowTypeError("Missing parameter. Ciphertext should be specified.");
+            return info.GetReturnValue().Set(Nan::Undefined());
+        }
+
+        std::vector<char> input;
+
+        if (!AlgorithmBase<T>::convertToVector(info[0], input)) {
+            return info.GetReturnValue().Set(Nan::Undefined());
         }
 
         AlgorithmBase<T>* container = ObjectWrap::Unwrap<AlgorithmBase<T>>(info.This());
 
-        std::vector<char> plaintext = container->algorithm->decrypt(AlgorithmBase<T>::convertToVector(info[0]));
+        std::vector<char> plaintext = container->algorithm->decrypt(input);
 
         char* buffer = new char[plaintext.size()];
 
@@ -152,6 +181,7 @@ protected:
     static NAN_METHOD(SetEndianCompat) {
         if (info.Length() < 1) {
             Nan::ThrowTypeError("Missing parameter. Set true to active compatibility mode.");
+            return info.GetReturnValue().Set(Nan::Undefined());
         }
 
         AlgorithmBase<T>* container = ObjectWrap::Unwrap<AlgorithmBase<T>>(info.This());
@@ -274,11 +304,18 @@ protected:
 
         if (info.Length() < 1) {
             Nan::ThrowTypeError("Missing parameter. Iv should be specified.");
+            return info.GetReturnValue().Set(Nan::Undefined());
+        }
+
+        std::vector<char> iv;
+
+        if (!AlgorithmBase<T>::convertToVector(info[0], iv)) {
+            return info.GetReturnValue().Set(Nan::Undefined());
         }
 
         AlgorithmStream<T>* container = node::ObjectWrap::Unwrap<AlgorithmStream<T>>(info.This());
 
-        container->algorithm->setIv(AlgorithmBase<T>::convertToVector(info[0]));
+        container->algorithm->setIv(iv);
 
         return info.GetReturnValue().Set(info.This());
     }
