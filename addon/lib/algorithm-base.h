@@ -107,11 +107,19 @@ public:
 
     void setKey(const std::vector<char> key) {
 
+        // Rebuilding the key schedule is the expensive part of setKey, so it is
+        // skipped when the key has not actually changed.
+        //
+        // The size comparison must stay first. This std::equal overload takes
+        // no end iterator for the second range and reads _key.begin() through
+        // _key.begin() + key.size(), so a longer incoming key would run past
+        // the end of _key. Short circuit evaluation is what prevents that, not
+        // anything inside std::equal. Do not reorder these two conditions or
+        // split them apart.
         if (_key.size() != key.size() || !std::equal(key.begin(), key.end(), _key.begin())) {
             _key = key;
             reset();
         }
-
 
     }
 };
