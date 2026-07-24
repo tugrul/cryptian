@@ -17,6 +17,7 @@
                 "addon/lib/algorithm/safer.cc",
                 "addon/lib/algorithm/saferplus.cc",
                 "addon/lib/algorithm/tripledes.cc",
+                "addon/lib/algorithm/twofish.cc",
                 "addon/lib/algorithm/wake.cc",
                 "addon/lib/algorithm/xtea.cc",
                 "addon/lib/algorithm/dummy.cc",

@@ -89,6 +89,7 @@ Do not rely on this for new code. Derive a full length key instead.
 | `MCRYPT_CAST_256` | `algorithm.Cast256` | 16 | 16 / 24 / 32 |
 | `MCRYPT_DES` | `algorithm.Des` | 8 | 8 |
 | `MCRYPT_3DES`, `MCRYPT_TRIPLEDES` | `algorithm.Tripledes` | 8 | 24 |
+| `MCRYPT_TWOFISH` | `algorithm.Twofish` | 16 | 16 / 24 / 32 |
 | `MCRYPT_GOST` | `algorithm.Gost` | 8 | 32 |
 | `MCRYPT_LOKI97` | `algorithm.Loki97` | 16 | 16 / 24 / 32 |
 | `MCRYPT_RC2` | `algorithm.Rc2` | 8 | up to 128 |
@@ -110,7 +111,7 @@ ciphertext that is the right length and completely wrong.
 
 ### Not implemented
 
-`MCRYPT_TWOFISH`, `MCRYPT_SERPENT`, `MCRYPT_PANAMA`, `MCRYPT_IDEA`,
+`MCRYPT_SERPENT`, `MCRYPT_PANAMA`, `MCRYPT_IDEA`,
 `MCRYPT_RC6` and the `MCRYPT_SAFER_SK*` variants are not available.
 
 ## Mode names

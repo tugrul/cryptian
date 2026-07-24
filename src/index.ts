@@ -37,6 +37,7 @@ export enum BlockAlgorithmList {
     Safer = 'Safer',
     Saferplus = 'Saferplus',
     Tripledes = 'Tripledes',
+    Twofish = 'Twofish',
     Xtea = 'Xtea',
     Dummy = 'Dummy'
 }

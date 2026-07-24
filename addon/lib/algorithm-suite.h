@@ -15,6 +15,7 @@
 #include "algorithm/safer.h"
 #include "algorithm/saferplus.h"
 #include "algorithm/tripledes.h"
+#include "algorithm/twofish.h"
 #include "algorithm/wake.h"
 #include "algorithm/xtea.h"
 #include "algorithm/dummy.h"
