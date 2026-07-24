@@ -23,6 +23,14 @@ tool: decrypt once, re-encrypt with something modern.
 
 ## Known limitations
 
+Calling `encrypt` or `decrypt` on an algorithm directly processes one block and
+silently discards the rest of the input. Every cipher here behaves that way
+except Twofish and Serpent, which process the whole buffer. The mode classes
+are unaffected, because they feed the algorithm one block at a time, and they
+are the supported way to encrypt anything longer than a block. Do not pass
+multiple blocks to an algorithm object and expect all of them back.
+
+
 The addon registers with `NODE_MODULE`, which is not context aware, so it can
 be initialized only once per process. If the main thread has loaded cryptian, a
 `worker_threads` worker that requires it fails with `Module did not
