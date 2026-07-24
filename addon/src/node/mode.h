@@ -43,7 +43,21 @@ protected:
 
     T* mode;
 
+    // The mode keeps a raw pointer to the algorithm's C++ object but nothing
+    // kept the algorithm's JavaScript object reachable, so once it was
+    // collected the pointer dangled and using the mode crashed the process.
+    // That was reachable from ordinary code, because passing a freshly
+    // constructed algorithm straight into the mode leaves no reference to it:
+    //
+    //   new mode.cbc.Cipher(new algorithm.Rijndael128(), iv)
+    //
+    // Holding the handle here keeps the algorithm alive for exactly as long as
+    // the mode is. The algorithm does not refer back, so there is no cycle,
+    // and the handle is released when the mode itself is collected.
+    Nan::Persistent<v8::Object> algorithmHandle;
+
     ~Mode() {
+        algorithmHandle.Reset();
         delete mode;
     }
     
@@ -119,6 +133,8 @@ protected:
         }
 
         container->mode->setIv(iv);
+
+        container->algorithmHandle.Reset(Nan::To<v8::Object>(info[0]).ToLocalChecked());
 
         container->Wrap(info.This());
 

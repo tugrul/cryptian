@@ -106,10 +106,11 @@ export class BlockDecrypt extends Block {
             return callback(new Error('Finishing data does not match the block size'));
         }
 
-        const target = this._cipher.transform(this._tail);
-        
         try {
-            this.push(this._unpad(target));
+            // transform was outside the try, so a failure here escaped _flush
+            // as an uncaught exception instead of being reported on the stream
+            // the way every other failure in this class is.
+            this.push(this._unpad(this._cipher.transform(this._tail)));
             return callback(null);
         } catch (err) {
             return callback(err as Error | null | undefined);
