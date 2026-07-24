@@ -66,7 +66,18 @@ void Arcfour::reset() {
         }
 
         if (_iv.size() > 0) {
-            j += _iv[i + 1 % _iv.size()];
+            // Was _iv[i + 1 % _iv.size()]. The modulus binds tighter than the
+            // addition, so that reduced to _iv[i + 1] and indexed up to 256
+            // into a vector holding far fewer bytes, reading past the end for
+            // every iteration beyond its length. Output varied between
+            // identical runs because it depended on whatever followed the
+            // allocation.
+            //
+            // libmcrypt walks the vector with an index that wraps at its
+            // length and starts at zero, which is i % size. Note that
+            // libmcrypt leaves this path disabled behind USE_IV, so no mcrypt
+            // data was ever produced with an arcfour initialization vector.
+            j += _iv[i % _iv.size()];
         }
 
         j &= 0xff;
