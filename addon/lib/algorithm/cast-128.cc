@@ -142,14 +142,18 @@ void Cast128::reset() {
 		x[i] = 0;
         z[i] = 0;
         t[i] = 0;
+		// The cast has to go through unsigned char. Converting a signed char
+		// straight to unsigned int sign extends first, so a key byte of 0x80
+		// or above sets the top bits and corrupts the neighbouring bytes of
+		// the word. libmcrypt takes the key as u8; the rewrite did not.
 		if ((i * 4 + 0) < _key.size())
-			x[i] = (unsigned int) _key[i * 4 + 0] << 24;
+			x[i] = (unsigned int) static_cast<unsigned char>(_key[i * 4 + 0]) << 24;
 		if ((i * 4 + 1) < _key.size())
-			x[i] |= (unsigned int) _key[i * 4 + 1] << 16;
+			x[i] |= (unsigned int) static_cast<unsigned char>(_key[i * 4 + 1]) << 16;
 		if ((i * 4 + 2) < _key.size())
-			x[i] |= (unsigned int) _key[i * 4 + 2] << 8;
+			x[i] |= (unsigned int) static_cast<unsigned char>(_key[i * 4 + 2]) << 8;
 		if ((i * 4 + 3) < _key.size())
-			x[i] |= (unsigned int) _key[i * 4 + 3];
+			x[i] |= (unsigned int) static_cast<unsigned char>(_key[i * 4 + 3]);
 	}
 
 	// Generate 32 subkeys, four at a time

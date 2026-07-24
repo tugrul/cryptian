@@ -101,11 +101,15 @@ void Blowfish::reset() {
 
     j = 0;
     for (i = 0; i < BF_N + 2; ++i) {
+        // _key holds char, which is signed on most platforms. Without these
+        // casts a key byte of 0x80 or above sign extends and corrupts the
+        // whole word rather than contributing one byte. libmcrypt casts the
+        // key to unsigned char before this loop; the rewrite dropped that.
         data = 0x00000000;
-        data = (data << 8) | _key[(j) % _key.size()];
-        data = (data << 8) | _key[(j + 1) % _key.size()];
-        data = (data << 8) | _key[(j + 2) % _key.size()];
-        data = (data << 8) | _key[(j + 3) % _key.size()];
+        data = (data << 8) | static_cast<unsigned char>(_key[(j) % _key.size()]);
+        data = (data << 8) | static_cast<unsigned char>(_key[(j + 1) % _key.size()]);
+        data = (data << 8) | static_cast<unsigned char>(_key[(j + 2) % _key.size()]);
+        data = (data << 8) | static_cast<unsigned char>(_key[(j + 3) % _key.size()]);
 
         P[i] ^= data;
         j = (j + 4) % _key.size();
