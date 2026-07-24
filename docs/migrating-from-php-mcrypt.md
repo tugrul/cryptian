@@ -122,6 +122,14 @@ no second constant to hint that a flag exists.
 
 `MCRYPT_PANAMA`, `MCRYPT_IDEA` and `MCRYPT_RC6` are not available.
 
+### A note on GOST
+
+GOST does not fix its substitution boxes; they are a parameter. `algorithm.Gost`
+reproduces the set libmcrypt used, which is what mcrypt data needs. Test data
+published against other parameter sets, such as the one from R 34.11-94, will
+not match, and that is a difference in parameters rather than a fault in either
+implementation.
+
 ### A note on throughput
 
 Serpent is roughly two orders of magnitude slower here than Rijndael. Its
@@ -163,6 +171,17 @@ If your data used `MCRYPT_RIJNDAEL_128` in `cbc`, `ecb`, `ncfb`, `nofb` or
 above, provided you handle the null padding yourself. cryptian is required for
 the 192 and 256 bit block sizes, the 8 bit `cfb` and `ofb` modes, and the
 ciphers OpenSSL dropped.
+
+## How compatibility is checked
+
+Every cipher above is tested against vectors produced by compiling libmcrypt
+itself and running its module, with keys spanning the full byte range. That
+matters more than agreement with any published test set, because the property
+this library needs is agreement with what mcrypt wrote.
+
+Rijndael at 192 and 256 bit blocks has no other reference at all. AES fixed the
+block at 128 bits, so no published vector set covers the wider blocks and
+libmcrypt is the only thing left to check against.
 
 ## Worked examples
 
