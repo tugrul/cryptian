@@ -97,23 +97,30 @@ Do not rely on this for new code. Derive a full length key instead.
 | `MCRYPT_SAFER128` | `algorithm.Safer` with a 16 byte key | 8 | 16 |
 | `MCRYPT_SAFERPLUS` | `algorithm.Saferplus` | 16 | 16 / 24 / 32 |
 | `MCRYPT_SERPENT` | `algorithm.Serpent` | 16 | 16 / 24 / 32 |
-| `MCRYPT_THREEWAY` | `algorithm.Threeway` | 12 | 12 |
+| `MCRYPT_THREEWAY` | `algorithm.Threeway` + `setEndianCompat(true)` | 12 | 12 |
 | `MCRYPT_XTEA` | `algorithm.Xtea` | 8 | 16 |
 | `MCRYPT_ARCFOUR` | `algorithm.Arcfour` | stream | up to 256 |
 | `MCRYPT_CRYPT` | `algorithm.Enigma` | stream | 13 |
 | `MCRYPT_WAKE` | `algorithm.Wake` | stream | 32 |
 
 `SAFER64` and `SAFER128` are the same cipher; the key length selects the
-variant, so there is one `Safer` class.
+variant, so there is one `Safer` class. libmcrypt names these modules
+SAFER-SK64 and SAFER-SK128, and that is what `Safer` reproduces.
 
 `MCRYPT_BLOWFISH_COMPAT` is ordinary Blowfish with a different byte order.
 Calling `setEndianCompat(true)` switches to it. Getting this wrong yields
 ciphertext that is the right length and completely wrong.
 
+`MCRYPT_THREEWAY` needs `setEndianCompat(true)` as well, and this one is easier
+to get wrong. Blowfish has two mcrypt constants, so the flag maps to a choice
+you already made in PHP. Threeway has only one, and the default here is the
+byte order of the original 3-Way rather than the one libmcrypt used, so the
+flag is required for every migration. Without it nothing decrypts and there is
+no second constant to hint that a flag exists.
+
 ### Not implemented
 
-`MCRYPT_PANAMA`, `MCRYPT_IDEA`, `MCRYPT_RC6` and the `MCRYPT_SAFER_SK*`
-variants are not available.
+`MCRYPT_PANAMA`, `MCRYPT_IDEA` and `MCRYPT_RC6` are not available.
 
 ### A note on throughput
 
