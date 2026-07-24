@@ -21,6 +21,22 @@ altered without detection. For new work use an AEAD construction such as
 AES-GCM from node's built-in `crypto`, and treat this library as a migration
 tool: decrypt once, re-encrypt with something modern.
 
+## Known limitations
+
+The addon registers with `NODE_MODULE`, which is not context aware, so it can
+be initialized only once per process. If the main thread has loaded cryptian, a
+`worker_threads` worker that requires it fails with `Module did not
+self-register`. A worker can load it only when the main thread has not.
+
+This matters for bulk work, which is the common case here: re-encrypting a large
+table is the obvious thing to parallelize across workers. Until the binding
+moves to Node-API, split that work across processes rather than threads.
+
+Making the module context aware means moving the per class `Nan::Persistent`
+function templates out of static storage first. Marking it context aware
+without that would replace a clear error with shared state across contexts,
+which is worse.
+
 ## Install
 
 ### Using NPM
