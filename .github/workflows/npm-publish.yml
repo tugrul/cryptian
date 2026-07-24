@@ -17,12 +17,8 @@ jobs:
         with:
           node-version: '24.x'
           registry-url: 'https://registry.npmjs.org'
-      - name: Use a node-gyp that recognises Visual Studio 2026
-        shell: bash
-        run: |
-          npm install -g node-gyp@latest
-          echo "npm_config_node_gyp=$(npm root -g)/node-gyp/bin/node-gyp.js" >> "$GITHUB_ENV"
-      - run: npm ci
+      - run: npm ci --ignore-scripts
+      - run: npx node-gyp rebuild
       - run: npm run build --if-present
       - run: npm publish --provenance --access public
         env:
