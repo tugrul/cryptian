@@ -164,7 +164,10 @@ Two traps here:
 - OpenSSL's `aes-128-ofb` is cryptian's **`nofb`**. There is no OpenSSL
   equivalent for cryptian's 8 bit `ofb`.
 
-`pcbc` exists in cryptian but has no mcrypt or OpenSSL counterpart.
+`pcbc` exists in cryptian but has no mcrypt or OpenSSL counterpart. libmcrypt
+has no pcbc module at all, so there is no mcrypt data in that mode to migrate.
+It is checked against a separate implementation of the published definition
+rather than against mcrypt output.
 
 ### When you do not need cryptian
 
@@ -176,8 +179,10 @@ ciphers OpenSSL dropped.
 
 ## How compatibility is checked
 
-Every cipher above is tested against vectors produced by compiling libmcrypt
-itself and running its module, with keys spanning the full byte range. That
+Every cipher above, and every mode except pcbc, is tested against vectors
+produced by compiling libmcrypt itself and running its module, with keys
+spanning the full byte range. The modes are driven through libmcrypt's own mode
+modules at both an eight and a sixteen byte block. That
 matters more than agreement with any published test set, because the property
 this library needs is agreement with what mcrypt wrote.
 
