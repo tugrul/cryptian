@@ -145,6 +145,14 @@ protected:
 
         AlgorithmBase<T>* container = ObjectWrap::Unwrap<AlgorithmBase<T>>(info.This());
 
+        // Empty input is a no operation rather than an error. A stream can hand
+        // over an empty chunk, and there is nothing to reject. Returning here
+        // also keeps the cipher away from the block buffer, which is left
+        // uninitialised when there is nothing to copy into it.
+        if (input.size() == 0) {
+            return info.GetReturnValue().Set(Nan::NewBuffer(0).ToLocalChecked());
+        }
+
         if (!container->algorithm->isDataSizeValid(input.size())) {
             Nan::ThrowError("Data size should be equal to algorithm block size. Use a mode for longer data.");
             return info.GetReturnValue().Set(Nan::Undefined());
@@ -173,6 +181,14 @@ protected:
         }
 
         AlgorithmBase<T>* container = ObjectWrap::Unwrap<AlgorithmBase<T>>(info.This());
+
+        // Empty input is a no operation rather than an error. A stream can hand
+        // over an empty chunk, and there is nothing to reject. Returning here
+        // also keeps the cipher away from the block buffer, which is left
+        // uninitialised when there is nothing to copy into it.
+        if (input.size() == 0) {
+            return info.GetReturnValue().Set(Nan::NewBuffer(0).ToLocalChecked());
+        }
 
         if (!container->algorithm->isDataSizeValid(input.size())) {
             Nan::ThrowError("Data size should be equal to algorithm block size. Use a mode for longer data.");

@@ -24,7 +24,7 @@ tool: decrypt once, re-encrypt with something modern.
 ## Known limitations
 
 `encrypt` and `decrypt` on an algorithm object take exactly one block and throw
-otherwise. They are a single block primitive. For anything longer, or anything
+otherwise. Empty input is a no operation and returns an empty buffer. They are a single block primitive. For anything longer, or anything
 not a whole number of blocks, use a mode: the mode slices the input, calls the
 algorithm once per block, and a padding class handles the remainder.
 

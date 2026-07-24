@@ -59,9 +59,12 @@ describe('raw algorithm api takes exactly one block', () => {
                 expect(() => instance.encrypt(Buffer.alloc(blockSize * 3, 0x41))).toThrow(/block size/);
             });
 
-            it('rejects empty input', () => {
+            // Empty input is a no operation, not an error. A stream can hand
+            // over an empty chunk and there is nothing to reject.
+            it('returns empty for empty input', () => {
 
-                expect(() => create().encrypt(Buffer.alloc(0))).toThrow(/block size/);
+                expect(create().encrypt(Buffer.alloc(0)).length).toBe(0);
+                expect(create().decrypt(Buffer.alloc(0)).length).toBe(0);
             });
 
             it('round trips one block', () => {
@@ -71,6 +74,23 @@ describe('raw algorithm api takes exactly one block', () => {
 
                 expect(create().decrypt(create().encrypt(plaintext)).equals(plaintext)).toBe(true);
             });
+        });
+    });
+
+    // Empty input never reaches the cipher, which matters because the block
+    // buffer inside several of these is left uninitialised when there is
+    // nothing to copy into it.
+    it('empty input is a no operation for every algorithm', () => {
+
+        const every = [...Object.values(BlockAlgorithmList), ...Object.values(StreamAlgorithmList)];
+
+        every.forEach(name => {
+
+            const instance = new algorithm[name]();
+            instance.setKey(Buffer.alloc(13, 0x01));
+
+            expect(instance.encrypt(Buffer.alloc(0)).length).toBe(0);
+            expect(instance.decrypt(Buffer.alloc(0)).length).toBe(0);
         });
     });
 
