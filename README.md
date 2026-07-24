@@ -21,6 +21,20 @@ altered without detection. For new work use an AEAD construction such as
 AES-GCM from node's built-in `crypto`, and treat this library as a migration
 tool: decrypt once, re-encrypt with something modern.
 
+## Modes hold their algorithm
+
+A mode refers to the algorithm you give it rather than copying it, and keeps it
+alive for as long as the mode exists, so this is safe:
+
+```javascript
+const cipher = new mode.cbc.Cipher(new algorithm.Rijndael128(), iv);
+```
+
+Two consequences follow. Several modes can share one algorithm instance. And
+calling `setKey` on an algorithm changes the behaviour of every mode already
+using it, since the mode holds the algorithm and not a snapshot of its key
+schedule. Rekey deliberately, or build a separate algorithm per mode.
+
 ## Known limitations
 
 `encrypt` and `decrypt` on an algorithm object take exactly one block and throw
