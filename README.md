@@ -68,6 +68,8 @@ function templates out of static storage first. Marking it context aware
 without that would replace a clear error with shared state across contexts,
 which is worse.
 
+See [CHANGELOG.md](CHANGELOG.md) for recent changes, including fixes that affect existing data.
+
 ## Install
 
 ### Using NPM

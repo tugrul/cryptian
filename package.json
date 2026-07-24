@@ -1,7 +1,7 @@
 {
   "name": "cryptian",
-  "version": "0.0.8",
-  "description": "Crypto suite",
+  "version": "0.1.0",
+  "description": "MCrypt-compatible cipher suite for Node.js: reads and writes data from PHP mcrypt, including Rijndael 192/256-bit blocks and legacy ciphers OpenSSL dropped",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "scripts": {
@@ -10,8 +10,30 @@
     "lint": "eslint . --ext ts"
   },
   "keywords": [
+    "3des",
+    "aes",
+    "blowfish",
+    "cast",
+    "cbc",
+    "cfb",
+    "cipher",
     "crypto",
-    "mcrypt"
+    "ctr",
+    "des",
+    "encryption",
+    "gost",
+    "legacy",
+    "libmcrypt",
+    "mcrypt",
+    "migration",
+    "ofb",
+    "padding",
+    "php",
+    "pkcs7",
+    "rijndael",
+    "serpent",
+    "tripledes",
+    "twofish"
   ],
   "author": "Tugrul Topuz <tugrultopuz@gmail.com>",
   "bugs": {
@@ -40,5 +62,17 @@
     "ts-jest": "^29.0.5",
     "typescript": "^4.9.5"
   },
-  "gypfile": true
+  "gypfile": true,
+  "files": [
+    "dist/",
+    "addon/lib/",
+    "addon/src/",
+    "binding.gyp",
+    "README.md",
+    "LICENSE",
+    "CHANGELOG.md"
+  ],
+  "engines": {
+    "node": ">=22"
+  }
 }
