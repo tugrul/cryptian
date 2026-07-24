@@ -145,6 +145,11 @@ protected:
 
         AlgorithmBase<T>* container = ObjectWrap::Unwrap<AlgorithmBase<T>>(info.This());
 
+        if (!container->algorithm->isDataSizeValid(input.size())) {
+            Nan::ThrowError("Data size should be equal to algorithm block size. Use a mode for longer data.");
+            return info.GetReturnValue().Set(Nan::Undefined());
+        }
+
         std::vector<char> ciphertext = container->algorithm->encrypt(input);
 
         char* buffer = new char[ciphertext.size()];
@@ -168,6 +173,11 @@ protected:
         }
 
         AlgorithmBase<T>* container = ObjectWrap::Unwrap<AlgorithmBase<T>>(info.This());
+
+        if (!container->algorithm->isDataSizeValid(input.size())) {
+            Nan::ThrowError("Data size should be equal to algorithm block size. Use a mode for longer data.");
+            return info.GetReturnValue().Set(Nan::Undefined());
+        }
 
         std::vector<char> plaintext = container->algorithm->decrypt(input);
 

@@ -284,7 +284,9 @@ void Twofish::reset() {
 
 std::vector<char> Twofish::encrypt(const std::vector<char> plaintext) {
 
-    std::vector<char> ciphertext(plaintext.size());
+    // Sized to whole blocks. Sizing to the input length left any trailing
+    // partial block as zeros, which looked like a successful result.
+    std::vector<char> ciphertext((plaintext.size() / TWOFISH_BLOCK_LEN) * TWOFISH_BLOCK_LEN);
 
     for (std::size_t offset = 0; offset + TWOFISH_BLOCK_LEN <= plaintext.size(); offset += TWOFISH_BLOCK_LEN) {
 
@@ -332,7 +334,7 @@ std::vector<char> Twofish::encrypt(const std::vector<char> plaintext) {
 
 std::vector<char> Twofish::decrypt(const std::vector<char> ciphertext) {
 
-    std::vector<char> plaintext(ciphertext.size());
+    std::vector<char> plaintext((ciphertext.size() / TWOFISH_BLOCK_LEN) * TWOFISH_BLOCK_LEN);
 
     for (std::size_t offset = 0; offset + TWOFISH_BLOCK_LEN <= ciphertext.size(); offset += TWOFISH_BLOCK_LEN) {
 

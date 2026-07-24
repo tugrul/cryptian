@@ -199,7 +199,9 @@ void Serpent::reset() {
 
 std::vector<char> Serpent::encrypt(const std::vector<char> plaintext) {
 
-    std::vector<char> ciphertext(plaintext.size());
+    // Sized to whole blocks. Sizing to the input length left any trailing
+    // partial block as zeros, which looked like a successful result.
+    std::vector<char> ciphertext((plaintext.size() / SERPENT_BLOCK_LEN) * SERPENT_BLOCK_LEN);
 
     for (std::size_t offset = 0; offset + SERPENT_BLOCK_LEN <= plaintext.size(); offset += SERPENT_BLOCK_LEN) {
 
@@ -243,7 +245,7 @@ std::vector<char> Serpent::encrypt(const std::vector<char> plaintext) {
 
 std::vector<char> Serpent::decrypt(const std::vector<char> ciphertext) {
 
-    std::vector<char> plaintext(ciphertext.size());
+    std::vector<char> plaintext((ciphertext.size() / SERPENT_BLOCK_LEN) * SERPENT_BLOCK_LEN);
 
     for (std::size_t offset = 0; offset + SERPENT_BLOCK_LEN <= ciphertext.size(); offset += SERPENT_BLOCK_LEN) {
 

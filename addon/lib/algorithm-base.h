@@ -105,6 +105,11 @@ public:
         _endianCompat = endianCompat;
     }
 
+    // Stream algorithms take any length. Block algorithms override this.
+    virtual bool isDataSizeValid(std::size_t) {
+        return true;
+    }
+
     void setKey(const std::vector<char> key) {
 
         // Rebuilding the key schedule is the expensive part of setKey, so it is

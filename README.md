@@ -23,12 +23,21 @@ tool: decrypt once, re-encrypt with something modern.
 
 ## Known limitations
 
-Calling `encrypt` or `decrypt` on an algorithm directly processes one block and
-silently discards the rest of the input. Every cipher here behaves that way
-except Twofish and Serpent, which process the whole buffer. The mode classes
-are unaffected, because they feed the algorithm one block at a time, and they
-are the supported way to encrypt anything longer than a block. Do not pass
-multiple blocks to an algorithm object and expect all of them back.
+`encrypt` and `decrypt` on an algorithm object take exactly one block and throw
+otherwise. They are a single block primitive. For anything longer, or anything
+not a whole number of blocks, use a mode: the mode slices the input, calls the
+algorithm once per block, and a padding class handles the remainder.
+
+```javascript
+// one block, fine
+rijndael.encrypt(Buffer.alloc(16));
+
+// longer or unaligned data goes through a mode
+const cipher = new mode.cbc.Cipher(rijndael, iv);
+const padder = new padding.Pkcs7(cipher.getBlockSize());
+
+cipher.transform(padder.pad(plaintext));
+```
 
 
 The addon registers with `NODE_MODULE`, which is not context aware, so it can
