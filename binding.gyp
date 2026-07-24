@@ -12,6 +12,7 @@
                 "addon/lib/algorithm/enigma.cc",
                 "addon/lib/algorithm/gost.cc",
                 "addon/lib/algorithm/loki97.cc",
+                "addon/lib/algorithm/panama.cc",
                 "addon/lib/algorithm/rc2.cc",
                 "addon/lib/algorithm/rijndael.cc",
                 "addon/lib/algorithm/safer.cc",

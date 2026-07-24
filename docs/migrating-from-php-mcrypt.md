@@ -102,6 +102,7 @@ Do not rely on this for new code. Derive a full length key instead.
 | `MCRYPT_ARCFOUR` | `algorithm.Arcfour` | stream | up to 256 |
 | `MCRYPT_CRYPT` | `algorithm.Enigma` | stream | 13 |
 | `MCRYPT_WAKE` | `algorithm.Wake` | stream | 32 |
+| `MCRYPT_PANAMA` | `algorithm.Panama` | stream | 32 |
 
 `SAFER64` and `SAFER128` are the same cipher; the key length selects the
 variant, so there is one `Safer` class. libmcrypt names these modules
@@ -120,7 +121,8 @@ no second constant to hint that a flag exists.
 
 ### Not implemented
 
-`MCRYPT_PANAMA`, `MCRYPT_IDEA` and `MCRYPT_RC6` are not available.
+`MCRYPT_IDEA` and `MCRYPT_RC6` are not available. Every other cipher mcrypt
+shipped is present.
 
 ### A note on GOST
 

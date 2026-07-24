@@ -8,6 +8,7 @@
 #include "algorithm/enigma.h"
 #include "algorithm/gost.h"
 #include "algorithm/loki97.h"
+#include "algorithm/panama.h"
 #include "algorithm/rc2.h"
 #include "algorithm/rijndael-128.h"
 #include "algorithm/rijndael-192.h"

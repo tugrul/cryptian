@@ -45,6 +45,7 @@ export enum BlockAlgorithmList {
 
 export enum StreamAlgorithmList {
     Arcfour = 'Arcfour',
+    Panama = 'Panama',
     Enigma = 'Enigma',
     Wake = 'Wake'
 }
