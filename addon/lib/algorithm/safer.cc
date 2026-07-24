@@ -214,10 +214,28 @@ void Safer::reset() {
 	ka[SAFER_BLOCK_LEN] = 0;
 	kb[SAFER_BLOCK_LEN] = 0;
 
+	// The parity byte at index SAFER_BLOCK_LEN is accumulated in a local and
+	// stored once after the loop. Accumulating into ka[SAFER_BLOCK_LEN]
+	// directly is correct, since the index is a constant 8 and the arrays hold
+	// 9 bytes, but gcc's range analysis reports a spurious stringop-overflow
+	// against offset 9 on every build. Verified with guard bytes either side of
+	// both arrays and with address and undefined behaviour sanitizers: nothing
+	// is written out of bounds. Behaviour is unchanged.
+	unsigned char kaParity = 0;
+	unsigned char kbParity = 0;
+
 	for (j = 0; j < SAFER_BLOCK_LEN; j++) {
-		ka[SAFER_BLOCK_LEN] ^= ka[j] = rotl8(key_buffer[j], 5);
-		kb[SAFER_BLOCK_LEN] ^= kb[j] = *key++ = key_buffer[_key.size() > 8 ? j + 8 : j];
+		ka[j] = rotl8(key_buffer[j], 5);
+		kaParity ^= ka[j];
+
+		kb[j] = key_buffer[_key.size() > 8 ? j + 8 : j];
+		kbParity ^= kb[j];
+
+		*key++ = kb[j];
 	}
+
+	ka[SAFER_BLOCK_LEN] = kaParity;
+	kb[SAFER_BLOCK_LEN] = kbParity;
 
 	for (size_t i = 1; i <= nofRounds; i++) {
 

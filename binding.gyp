@@ -30,14 +30,20 @@
                 "addon/lib/mode/ofb.cc",
                 "addon/src/node/cryptian.cc"
             ],
-            "cflags_cc": ["-std=c++17"],
+            "cflags_cc": ["-std=c++20"],
+            "cflags_cc!": ["-std=c++17", "-std=gnu++17", "-fno-exceptions"],
             "include_dirs": [
                 "<!(node -e \"require('nan')\")",
                 "addon/lib/"
             ],
             "xcode_settings": {
-                'CLANG_CXX_LANGUAGE_STANDARD': 'c++17',
+                'CLANG_CXX_LANGUAGE_STANDARD': 'c++20',
                 'CLANG_CXX_LIBRARY': 'libc++'
+            },
+            "msvs_settings": {
+                "VCCLCompilerTool": {
+                    "AdditionalOptions": ["/std:c++20"]
+                }
             }
         }
     ]

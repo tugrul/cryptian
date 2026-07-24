@@ -33,6 +33,16 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
+    # npm bundles node-gyp 11, whose Visual Studio detection only knows major
+    # versions 15 to 17. The Windows runners now ship Visual Studio 2026, which
+    # reports major version 18, so the bundled copy fails with
+    # 'unknown version "undefined"' before it reaches the compiler. node-gyp 13
+    # added major 18 and the v145 toolset. Point npm at that instead.
+    - name: Use a node-gyp that recognises Visual Studio 2026
+      shell: bash
+      run: |
+        npm install -g node-gyp@latest
+        echo "npm_config_node_gyp=$(npm root -g)/node-gyp/bin/node-gyp.js" >> "$GITHUB_ENV"
     - name: Install dependencies and compile the addon
       run: npm ci
     - name: Run ESLint
