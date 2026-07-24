@@ -96,6 +96,7 @@ Do not rely on this for new code. Derive a full length key instead.
 | `MCRYPT_SAFER64` | `algorithm.Safer` with an 8 byte key | 8 | 8 |
 | `MCRYPT_SAFER128` | `algorithm.Safer` with a 16 byte key | 8 | 16 |
 | `MCRYPT_SAFERPLUS` | `algorithm.Saferplus` | 16 | 16 / 24 / 32 |
+| `MCRYPT_SERPENT` | `algorithm.Serpent` | 16 | 16 / 24 / 32 |
 | `MCRYPT_THREEWAY` | `algorithm.Threeway` | 12 | 12 |
 | `MCRYPT_XTEA` | `algorithm.Xtea` | 8 | 16 |
 | `MCRYPT_ARCFOUR` | `algorithm.Arcfour` | stream | up to 256 |
@@ -111,8 +112,17 @@ ciphertext that is the right length and completely wrong.
 
 ### Not implemented
 
-`MCRYPT_SERPENT`, `MCRYPT_PANAMA`, `MCRYPT_IDEA`,
-`MCRYPT_RC6` and the `MCRYPT_SAFER_SK*` variants are not available.
+`MCRYPT_PANAMA`, `MCRYPT_IDEA`, `MCRYPT_RC6` and the `MCRYPT_SAFER_SK*`
+variants are not available.
+
+### A note on throughput
+
+Serpent is roughly two orders of magnitude slower here than Rijndael. Its
+substitution is applied across all four words at once using masks derived from
+the substitution table, which is correct for any box and needs no hand written
+boolean expressions per box, but it is not as fast as an implementation with
+those expressions written out. If you are moving a large body of Serpent data
+and the rate matters, measure before committing to a maintenance window.
 
 ## Mode names
 

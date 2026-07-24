@@ -13,6 +13,7 @@
 #include "algorithm/rijndael-192.h"
 #include "algorithm/rijndael-256.h"
 #include "algorithm/safer.h"
+#include "algorithm/serpent.h"
 #include "algorithm/saferplus.h"
 #include "algorithm/tripledes.h"
 #include "algorithm/twofish.h"

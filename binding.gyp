@@ -15,6 +15,7 @@
                 "addon/lib/algorithm/rc2.cc",
                 "addon/lib/algorithm/rijndael.cc",
                 "addon/lib/algorithm/safer.cc",
+                "addon/lib/algorithm/serpent.cc",
                 "addon/lib/algorithm/saferplus.cc",
                 "addon/lib/algorithm/tripledes.cc",
                 "addon/lib/algorithm/twofish.cc",

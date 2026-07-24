@@ -35,6 +35,7 @@ export enum BlockAlgorithmList {
     Rijndael192 = 'Rijndael192',
     Rijndael256 = 'Rijndael256',
     Safer = 'Safer',
+    Serpent = 'Serpent',
     Saferplus = 'Saferplus',
     Tripledes = 'Tripledes',
     Twofish = 'Twofish',
