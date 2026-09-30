@@ -9,7 +9,7 @@ using namespace v8;
 namespace cryptian {
 
 template <typename T>
-class AlgorithmBase : public node::ObjectWrap {
+class AlgorithmBase : public Nan::ObjectWrap {
 public:
     static Local<FunctionTemplate> getFunctionTemplate(std::string functionName) {
 
@@ -74,21 +74,21 @@ protected:
 
     static NAN_METHOD(GetName) {
 
-        AlgorithmBase<T>* container = node::ObjectWrap::Unwrap<AlgorithmBase<T>>(info.This());
+        AlgorithmBase<T>* container = Nan::ObjectWrap::Unwrap<AlgorithmBase<T>>(info.This());
 
         return info.GetReturnValue().Set(Nan::New<String>(container->algorithm->getName()).ToLocalChecked());
     }
 
     static NAN_METHOD(GetVersion) {
 
-        AlgorithmBase<T>* container = node::ObjectWrap::Unwrap<AlgorithmBase<T>>(info.This());
+        AlgorithmBase<T>* container = Nan::ObjectWrap::Unwrap<AlgorithmBase<T>>(info.This());
 
         return info.GetReturnValue().Set(Nan::New<Number>(container->algorithm->getVersion()));
     }
 
     static NAN_METHOD(GetKeySizes) {
 
-        AlgorithmBase<T>* container = node::ObjectWrap::Unwrap<AlgorithmBase<T>>(info.This());
+        AlgorithmBase<T>* container = Nan::ObjectWrap::Unwrap<AlgorithmBase<T>>(info.This());
 
         std::vector<size_t> keySizes = container->algorithm->getKeySizes();
 
@@ -114,7 +114,7 @@ protected:
             return info.GetReturnValue().Set(Nan::Undefined());
         }
 
-        AlgorithmBase<T>* container = ObjectWrap::Unwrap<AlgorithmBase<T>>(info.This());
+        AlgorithmBase<T>* container = Nan::ObjectWrap::Unwrap<AlgorithmBase<T>>(info.This());
 
         container->algorithm->setKey(key);
 
@@ -123,7 +123,7 @@ protected:
 
     static NAN_METHOD(Reset) {
 
-        AlgorithmBase<T>* container = ObjectWrap::Unwrap<AlgorithmBase<T>>(info.This());
+        AlgorithmBase<T>* container = Nan::ObjectWrap::Unwrap<AlgorithmBase<T>>(info.This());
 
         container->algorithm->reset();
 
@@ -143,7 +143,7 @@ protected:
             return info.GetReturnValue().Set(Nan::Undefined());
         }
 
-        AlgorithmBase<T>* container = ObjectWrap::Unwrap<AlgorithmBase<T>>(info.This());
+        AlgorithmBase<T>* container = Nan::ObjectWrap::Unwrap<AlgorithmBase<T>>(info.This());
 
         // Empty input is a no operation rather than an error. A stream can hand
         // over an empty chunk, and there is nothing to reject. Returning here
@@ -180,7 +180,7 @@ protected:
             return info.GetReturnValue().Set(Nan::Undefined());
         }
 
-        AlgorithmBase<T>* container = ObjectWrap::Unwrap<AlgorithmBase<T>>(info.This());
+        AlgorithmBase<T>* container = Nan::ObjectWrap::Unwrap<AlgorithmBase<T>>(info.This());
 
         // Empty input is a no operation rather than an error. A stream can hand
         // over an empty chunk, and there is nothing to reject. Returning here
@@ -210,7 +210,7 @@ protected:
             return info.GetReturnValue().Set(Nan::Undefined());
         }
 
-        AlgorithmBase<T>* container = ObjectWrap::Unwrap<AlgorithmBase<T>>(info.This());
+        AlgorithmBase<T>* container = Nan::ObjectWrap::Unwrap<AlgorithmBase<T>>(info.This());
 
         container->algorithm->setEndianCompat(Nan::Equals(info[0], Nan::True()).FromJust());
 
@@ -256,11 +256,15 @@ protected:
     static NAN_METHOD(New) {
 
         if (!info.IsConstructCall()) {
+            // Called without new. Guard the MaybeLocal: on current V8 a
+            // re-entrant NewInstance on a template that uses Inherit can come
+            // back empty, and ToLocalChecked on empty aborts the process rather
+            // than throwing. Report it as an ordinary error instead.
             Local<Function> ctr = Nan::New<Function>(AlgorithmBase<T>::constructor);
-            Local<Object> instance;
+            v8::Local<v8::Object> instance;
 
             if (!Nan::NewInstance(ctr).ToLocal(&instance)) {
-                return info.GetReturnValue().Set(Nan::Undefined());
+                return;
             }
 
             return info.GetReturnValue().Set(instance);
@@ -276,7 +280,7 @@ protected:
 
     static NAN_METHOD(GetBlockSize) {
 
-        AlgorithmBlock<T>* container = node::ObjectWrap::Unwrap<AlgorithmBlock<T>>(info.This());
+        AlgorithmBlock<T>* container = Nan::ObjectWrap::Unwrap<AlgorithmBlock<T>>(info.This());
 
         return info.GetReturnValue().Set(Nan::New<Number>(container->algorithm->getBlockSize()));
     }
@@ -321,11 +325,15 @@ protected:
     static NAN_METHOD(New) {
 
         if (!info.IsConstructCall()) {
+            // Called without new. Guard the MaybeLocal: on current V8 a
+            // re-entrant NewInstance on a template that uses Inherit can come
+            // back empty, and ToLocalChecked on empty aborts the process rather
+            // than throwing. Report it as an ordinary error instead.
             Local<Function> ctr = Nan::New<Function>(AlgorithmBase<T>::constructor);
-            Local<Object> instance;
+            v8::Local<v8::Object> instance;
 
             if (!Nan::NewInstance(ctr).ToLocal(&instance)) {
-                return info.GetReturnValue().Set(Nan::Undefined());
+                return;
             }
 
             return info.GetReturnValue().Set(instance);
@@ -351,7 +359,7 @@ protected:
             return info.GetReturnValue().Set(Nan::Undefined());
         }
 
-        AlgorithmStream<T>* container = node::ObjectWrap::Unwrap<AlgorithmStream<T>>(info.This());
+        AlgorithmStream<T>* container = Nan::ObjectWrap::Unwrap<AlgorithmStream<T>>(info.This());
 
         container->algorithm->setIv(iv);
 
@@ -360,7 +368,7 @@ protected:
 
     static NAN_METHOD(GetIvSize) {
 
-        AlgorithmStream<T>* container = node::ObjectWrap::Unwrap<AlgorithmStream<T>>(info.This());
+        AlgorithmStream<T>* container = Nan::ObjectWrap::Unwrap<AlgorithmStream<T>>(info.This());
 
         return info.GetReturnValue().Set(Nan::New<Number>(container->algorithm->getIvSize()));
     }

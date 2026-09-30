@@ -1,5 +1,52 @@
 # Changelog
 
+## v0.1.1
+
+### Fixed
+
+- **Process abort when a constructor is called without `new`.** Calling an
+  algorithm or mode constructor as a plain function (`algorithm.Rijndael128()`
+  instead of `new algorithm.Rijndael128()`) redirected through the stored
+  constructor with `Nan::NewInstance(...).ToLocalChecked()`. On current V8 that
+  re-entrant `NewInstance`, on a template that uses `Inherit`, can return an
+  empty `MaybeLocal`, and `ToLocalChecked` on empty is a fatal abort rather than
+  a throw:
+
+  ```
+  FATAL ERROR: v8::ToLocalChecked Empty MaybeLocal
+  ```
+
+  The redirect now checks the `MaybeLocal` and reports an ordinary error instead
+  of aborting the process. Where V8 permits the redirect it still returns a
+  working instance, so calling with or without `new` both behave as before on
+  the runtimes where they already worked.
+
+- **Process abort on garbage collection on Node 24.19 and newer.** Node 24.19.0
+  added environment cleanup-hook calls to `node::ObjectWrap`, which this addon
+  extended. An addon object's destructor runs from a V8 weak callback with no
+  context entered, so `RemoveEnvironmentCleanupHook` hit Node's own
+  `CHECK_NOT_NULL(env)` and aborted the whole process:
+
+  ```
+  node::RemoveEnvironmentCleanupHook ... Assertion failed: (env) != nullptr
+  cryptian::AlgorithmStream<Arcfour>::~AlgorithmStream()
+  ```
+
+  It fired whenever a cipher or mode object was collected on an affected Node,
+  so it struck ordinary programs that create and drop ciphers, and it was
+  especially visible under test runners such as Vitest that collect aggressively.
+  This is an upstream Node change that affected every `node::ObjectWrap` addon,
+  not only this one. The addon now extends `Nan::ObjectWrap`, whose destructor
+  resets its persistent handle and calls no cleanup hooks, so the null-context
+  path cannot be reached. No API or output change.
+
+### Note
+
+- This does not change the separate `worker_threads` limitation: the addon is
+  still registered with `NODE_MODULE` rather than the context-aware variant, so
+  it cannot be loaded in a worker once the main thread has loaded it. That is
+  tracked separately.
+
 ## v0.1.0
 
 This release corrects several faults that changed output or could crash the

@@ -10,7 +10,7 @@ using namespace v8;
 
 namespace cryptian {
 
-class ModeBase: public node::ObjectWrap {
+class ModeBase: public Nan::ObjectWrap {
 protected:
     static Nan::Persistent<Function> constructor;
 
@@ -33,7 +33,7 @@ public:
 };
 
 template <typename T>
-class Mode: public node::ObjectWrap {
+class Mode: public Nan::ObjectWrap {
 protected:
     explicit Mode(algorithm::AlgorithmBlock* algorithm) {
 
@@ -108,19 +108,24 @@ protected:
         }
 
         if (!info.IsConstructCall()) {
+            // Called without new. Redirect through the stored constructor, but
+            // guard the MaybeLocal: on current V8 a re-entrant NewInstance on a
+            // template that uses Inherit can come back empty, and ToLocalChecked
+            // on an empty MaybeLocal is a fatal process abort rather than a
+            // throw. Report it as an ordinary error instead.
             Local<Value> argv[] = {info[0], info[1]};
             Local<Function> ctr = Nan::New<Function>(constructor);
-            Local<Object> instance;
+            v8::Local<v8::Object> instance;
 
             if (!Nan::NewInstance(ctr, 2, argv).ToLocal(&instance)) {
-                return info.GetReturnValue().Set(Nan::Undefined());
+                return;
             }
 
             return info.GetReturnValue().Set(instance);
         }
 
         AlgorithmBlock<algorithm::AlgorithmBlock>* algorithm =
-        node::ObjectWrap::Unwrap<AlgorithmBlock<algorithm::AlgorithmBlock>>(Nan::To<v8::Object>(info[0]).ToLocalChecked());
+        Nan::ObjectWrap::Unwrap<AlgorithmBlock<algorithm::AlgorithmBlock>>(Nan::To<v8::Object>(info[0]).ToLocalChecked());
 
         std::vector<char> iv;
 
@@ -154,7 +159,7 @@ protected:
             return info.GetReturnValue().Set(Nan::Undefined());
         }
 
-        Mode<T>* container = ObjectWrap::Unwrap<Mode<T>>(info.This());
+        Mode<T>* container = Nan::ObjectWrap::Unwrap<Mode<T>>(info.This());
 
 
         std::vector<char> prev;
@@ -178,14 +183,14 @@ protected:
 
     static NAN_METHOD(IsPaddingRequired) {
 
-        Mode<T>* container = ObjectWrap::Unwrap<Mode<T>>(info.This());
+        Mode<T>* container = Nan::ObjectWrap::Unwrap<Mode<T>>(info.This());
 
         return info.GetReturnValue().Set(Nan::New<Boolean>(container->mode->isPaddingRequired()));
     }
     
     static NAN_METHOD(GetBlockSize) {
 
-        Mode<T>* container = ObjectWrap::Unwrap<Mode<T>>(info.This());
+        Mode<T>* container = Nan::ObjectWrap::Unwrap<Mode<T>>(info.This());
 
         return info.GetReturnValue().Set(Nan::New<Number>(container->mode->getBlockSize()));
     }
