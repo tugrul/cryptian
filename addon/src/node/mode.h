@@ -110,7 +110,13 @@ protected:
         if (!info.IsConstructCall()) {
             Local<Value> argv[] = {info[0], info[1]};
             Local<Function> ctr = Nan::New<Function>(constructor);
-            return info.GetReturnValue().Set(Nan::NewInstance(ctr, 2, argv).ToLocalChecked());
+            Local<Object> instance;
+
+            if (!Nan::NewInstance(ctr, 2, argv).ToLocal(&instance)) {
+                return info.GetReturnValue().Set(Nan::Undefined());
+            }
+
+            return info.GetReturnValue().Set(instance);
         }
 
         AlgorithmBlock<algorithm::AlgorithmBlock>* algorithm =
