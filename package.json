@@ -1,6 +1,6 @@
 {
   "name": "cryptian",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "MCrypt-compatible cipher suite for Node.js: reads and writes data from PHP mcrypt, including Rijndael 192/256-bit blocks and legacy ciphers OpenSSL dropped",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
