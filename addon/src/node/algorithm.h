@@ -257,7 +257,13 @@ protected:
 
         if (!info.IsConstructCall()) {
             Local<Function> ctr = Nan::New<Function>(AlgorithmBase<T>::constructor);
-            return info.GetReturnValue().Set(Nan::NewInstance(ctr).ToLocalChecked());
+            Local<Object> instance;
+
+            if (!Nan::NewInstance(ctr).ToLocal(&instance)) {
+                return info.GetReturnValue().Set(Nan::Undefined());
+            }
+
+            return info.GetReturnValue().Set(instance);
         }
 
         AlgorithmBlock<T>* container = new AlgorithmBlock<T>();
@@ -316,7 +322,13 @@ protected:
 
         if (!info.IsConstructCall()) {
             Local<Function> ctr = Nan::New<Function>(AlgorithmBase<T>::constructor);
-            return info.GetReturnValue().Set(Nan::NewInstance(ctr).ToLocalChecked());
+            Local<Object> instance;
+
+            if (!Nan::NewInstance(ctr).ToLocal(&instance)) {
+                return info.GetReturnValue().Set(Nan::Undefined());
+            }
+
+            return info.GetReturnValue().Set(instance);
         }
 
         AlgorithmStream<T>* container = new AlgorithmStream<T>();
