@@ -107,11 +107,13 @@ std::vector<char> Ctr::transform(const std::vector<char> chunk) {
 
         offset += minSize;
 
-        for (size_t j = 0; j < modSize; j++) {
+        // only the bytes after the block boundary are left; going on for
+        // modSize bytes would run past the end of chunk and blocks
+        counterPos = modSize - minSize;
+
+        for (size_t j = 0; j < counterPos; j++) {
             blocks[offset + j] = chunk[offset + j] ^ counter[j];
         }
-
-        counterPos = modSize - minSize;
 
     }
 
