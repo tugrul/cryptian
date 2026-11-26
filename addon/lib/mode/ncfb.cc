@@ -98,8 +98,10 @@ std::vector<char> Cipher::transform(const std::vector<char> chunk) {
 
         registerPos = modSize - minSize;
 
+        // the rest belongs to the next block and is XORed with its keystream,
+        // which is the encrypted register and not the register itself
         for (size_t j = 0; j < registerPos; j++) {
-            blocks[offset + j] = chunk[offset + j] ^ _register[j];
+            blocks[offset + j] = chunk[offset + j] ^ cipher[j];
         }
 
         std::copy_n(blocks.begin() + offset, registerPos, _register.begin());
@@ -195,11 +197,13 @@ std::vector<char> Decipher::transform(const std::vector<char> chunk) {
 
         cipher = _algorithm->encrypt(_register);
 
-        std::copy_n(chunk.begin() + offset, registerPos, _register.begin());
-
         offset += minSize;
 
         registerPos = modSize - minSize;
+
+        // the register takes the ciphertext of the next block: only the
+        // bytes after the boundary, so offset and registerPos come first
+        std::copy_n(chunk.begin() + offset, registerPos, _register.begin());
 
         for (size_t j = 0; j < registerPos; j++) {
             blocks[offset + j] = chunk[offset + j] ^ cipher[j];
