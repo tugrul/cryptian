@@ -1,5 +1,53 @@
 # Changelog
 
+## Unreleased
+
+Both fixes concern a message that is passed to `transform()` in several calls
+whose lengths are not multiples of the block size. One call per message, calls
+that are whole blocks except for the last one, and `createEncryptStream` and
+`createDecryptStream`, which pass whole blocks until the final call, were not
+affected.
+
+### If you have data written by an earlier version
+
+`ncfb` ciphertext that an earlier version produced from such uneven pieces is
+not valid CFB. The version that wrote it could not read it back either, and a
+fixed version does not. Everything else reads as before: no output that was
+previously correct changes.
+
+### Fixed
+
+- **Heap buffer overflow in `ctr`.** When one call left the mode in the middle
+  of a block and a later call ended across a block boundary, the loop for the
+  bytes after the boundary ran for the whole remainder of the call instead of
+  only for those bytes. It read past the end of the input and wrote past the end
+  of the output buffer, by up to one byte less than the block size, and
+  corrupted the heap. With AES, `transform()` calls of 5 and then 14 bytes
+  aborted the process:
+
+  ```
+  munmap_chunk(): invalid pointer
+  ```
+
+  The bytes returned were already correct, so no output changes.
+
+- **Wrong output from `ncfb`.** In the same situation, encryption XORed the
+  bytes after the block boundary with the feedback register instead of with the
+  keystream. Those bytes were the plaintext XORed with the previous ciphertext
+  block, so the key did not protect them. Decryption refilled the register from
+  the wrong offset, reading past the end of the input, so the blocks that
+  followed decrypted wrongly. `ncfb` now gives the same result wherever a
+  message is cut, and for AES that result matches OpenSSL's `cfb`.
+
+### Added
+
+- A test that cuts a message at every offset, into two and into three pieces,
+  for `cfb`, `ofb`, `ncfb`, `nofb` and `ctr` with DES, Rijndael-128 and
+  Rijndael-256, and requires the same result as one call. The existing split
+  tests use the `Dummy` algorithm, whose `encrypt()` returns its input, so the
+  register and the keystream were the same bytes there and the `ncfb` fault was
+  invisible to them.
+
 ## v0.1.1
 
 ### Fixed
