@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## v0.1.2
 
 Both fixes concern a message that is passed to `transform()` in several calls
 whose lengths are not multiples of the block size. One call per message, calls

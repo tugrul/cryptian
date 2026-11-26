@@ -1,6 +1,6 @@
 {
   "name": "cryptian",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "MCrypt-compatible cipher suite for Node.js: reads and writes data from PHP mcrypt, including Rijndael 192/256-bit blocks and legacy ciphers OpenSSL dropped",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -41,7 +41,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/tugrul/cryptian.git"
+    "url": "git+https://github.com/tugrul/cryptian.git"
   },
   "license": "MIT",
   "dependencies": {
