@@ -48,3 +48,75 @@ jobs:
       run: npm run build --if-present
     - name: Run tests
       run: npm test
+
+  # What users run is "npm install cryptian": npm unpacks the tarball and
+  # builds the addon with the node-gyp that it brings along, not the one
+  # pinned above. This does the same with the tarball of this commit.
+  package:
+
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      fail-fast: false
+      matrix:
+        node-version: [22.x, 24.x, 26.x]
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        exclude:
+          # npm in Node 22 brings node-gyp 11, which does not know Visual
+          # Studio 2026, the only one on the Windows runners. Nothing in this
+          # package can change that.
+          - node-version: 22.x
+            os: windows-latest
+
+    name: npm install on node ${{ matrix.node-version }}, ${{ matrix.os }}
+
+    steps:
+    - uses: actions/checkout@v6
+    - uses: actions/setup-node@v6
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+    # The tarball carries dist/, which tsc writes. The addon is not compiled
+    # here: the npm of the empty project does that, as it does for a user.
+    - name: Install dependencies without building
+      run: npm ci --ignore-scripts
+    - name: Compile TypeScript
+      run: npm run build --if-present
+    # For the log: the settings of this Node that reach an addon build, and
+    # the node-gyp that npm will use. See the comment in binding.gyp.
+    - name: Show how this Node was built
+      shell: bash
+      run: |
+        node -e "
+          var v = process.config.variables, path = require('path'), dir = path.dirname(process.execPath);
+          console.log(process.version + ': clang ' + v.clang + ', enable_lto ' + v.enable_lto + ', enable_thin_lto ' + v.enable_thin_lto + ', lto_jobs ' + JSON.stringify(v.lto_jobs));
+          try {
+            var npm = [path.join(dir, '..', 'lib', 'node_modules', 'npm'), path.join(dir, 'node_modules', 'npm')];
+            console.log('node-gyp of npm: ' + require(require.resolve('node-gyp/package.json', {paths: npm})).version);
+          } catch (e) {
+            console.log('node-gyp of npm: not found');
+          }
+        "
+    - name: Pack, install in an empty project and encrypt
+      shell: bash
+      run: |
+        npm pack --pack-destination "$RUNNER_TEMP"
+        cd "$RUNNER_TEMP"
+        mkdir consumer
+        cd consumer
+        npm init -y > /dev/null
+        npm install ../cryptian-*.tgz
+        node -e "
+          var cryptian = require('cryptian').default, crypto = require('crypto');
+          var key = Buffer.from('0123456789abcdef'), iv = Buffer.alloc(16, 7), text = Buffer.alloc(32, 65);
+          var aes = new cryptian.algorithm.Rijndael128();
+          aes.setKey(key);
+          var ours = new cryptian.mode.cbc.Cipher(aes, iv).transform(text);
+          var openssl = crypto.createCipheriv('aes-128-cbc', key, iv);
+          openssl.setAutoPadding(false);
+          if (!ours.equals(Buffer.concat([openssl.update(text), openssl.final()]))) {
+            console.error('the installed package gives wrong ciphertext');
+            process.exit(1);
+          }
+          console.log('the installed package works');
+        "

@@ -50,32 +50,30 @@
             },
             "conditions": [
                 ["OS=='win'", {
-                    # Node 26 reports enable_thin_lto true in the generated
-                    # config.gypi even when the addon is compiled with MSVC
-                    # rather than clang, so common.gypi contributes clang and
-                    # lld only options to an MSVC project. cl ignores
-                    # -flto=thin with D9002 and link.exe rejects
-                    # /opt:lldltojobs=N with LNK1117, which fails the build.
+                    # The Windows releases of Node 26 are built with clang and
+                    # thin LTO, and common.gypi hands the options for that to
+                    # every addon: -flto=thin and /opt:lldltojobs=N. Addons
+                    # are built with MSVC. cl ignores -flto=thin with D9002,
+                    # and link.exe stops at /opt:lldltojobs=N with LNK1117.
                     # Upstream report: nodejs/node#64674.
                     #
-                    # lto_jobs is emptied so the condition that adds the
-                    # linker option cannot fire, and the -flto options are
-                    # removed from each tool. lto_jobs is not referenced by
-                    # expansion anywhere here because it is absent from the
-                    # config.gypi of older releases.
-                    "variables": {
-                        "enable_thin_lto": "false",
-                        "lto_jobs": ""
-                    },
+                    # node-gyp 13 switches the options off, and CI builds with
+                    # node-gyp 13. The node-gyp that npm brings along in Node
+                    # 26 is 12.4.0 and does not, and that is the one "npm
+                    # install" uses. So the options are taken out here, by
+                    # pattern because N varies.
                     "msvs_settings": {
                         "VCCLCompilerTool": {
-                            "AdditionalOptions!": ["-flto=thin", "-flto=full"]
+                            "AdditionalOptions/": [["exclude", "^-flto"]]
                         },
                         "VCLibrarianTool": {
-                            "AdditionalOptions!": ["-flto=thin", "-flto=full"]
+                            "AdditionalOptions/": [["exclude", "^-flto"]]
                         },
                         "VCLinkerTool": {
-                            "AdditionalOptions!": ["-flto=thin", "-flto=full"]
+                            "AdditionalOptions/": [
+                                ["exclude", "^-flto"],
+                                ["exclude", "^/opt:lldltojobs"]
+                            ]
                         }
                     }
                 }]

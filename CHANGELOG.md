@@ -1,5 +1,28 @@
 # Changelog
 
+## Unreleased
+
+### Fixed
+
+- **`npm install` on Windows with Node 26.** The Windows releases of Node 26
+  are built with clang and thin LTO, and Node passes the options for that on
+  to every addon build, where the compiler is MSVC. `binding.gyp` already
+  removed `-flto=thin`, which MSVC only warns about. The linker option
+  `/opt:lldltojobs=N`, which Node adds when its release was built with a job
+  count, still got through, and `link.exe` rejects it with LNK1117.
+
+  node-gyp 13 switches these options off by itself, and CI compiles with
+  node-gyp 13, so CI never saw it. `npm install` uses the node-gyp inside npm,
+  which in Node 26 is 12.4.0 and leaves them on. `binding.gyp` now removes both
+  options on Windows.
+
+### Tests
+
+- CI now also installs the packed tarball in an empty project with npm's own
+  node-gyp, on Node 22, 24 and 26 on Linux, macOS and Windows, and encrypts
+  with the result. Windows with Node 22 is left out: the node-gyp in its npm
+  does not know Visual Studio 2026 and finds no compiler on the runners.
+
 ## v0.1.2
 
 Both fixes concern a message that is passed to `transform()` in several calls
